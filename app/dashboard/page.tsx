@@ -233,7 +233,7 @@ export default function DashboardPage() {
                 {t("dashboard")}
               </h1>
               <p className="text-muted-foreground">
-                안녕하세요, {user.username || user.email}님!
+                {t("welcomeMessage").replace("{name}", user.username || user.email)}
               </p>
             </div>
             <Link href="/shortener">
@@ -290,7 +290,7 @@ export default function DashboardPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">{t("premium")}</p>
                     <p className="text-2xl font-bold">
-                      {user.isPremium ? "활성" : "비활성"}
+                      {user.isPremium ? t("active") : t("inactive")}
                     </p>
                   </div>
                 </div>
@@ -315,7 +315,7 @@ export default function DashboardPage() {
             className="flex items-center gap-2"
           >
             <BarChart3 className="w-4 h-4" />
-            기본 통계
+            {t("basicStats")}
           </Button>
           <Button
             variant={activeTab === 'geo' ? 'default' : 'outline'}
@@ -347,7 +347,7 @@ export default function DashboardPage() {
                 <div className="flex gap-2">
                   <Select value={selectedTag || undefined} onValueChange={(v) => setSelectedTag(v === 'all' ? '' : v)}>
                     <SelectTrigger className="w-40">
-                      <SelectValue placeholder="태그 선택" />
+                      <SelectValue placeholder={t("selectTag")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">{t("allTags")}</SelectItem>
@@ -362,7 +362,7 @@ export default function DashboardPage() {
                     className="flex items-center gap-2"
                   >
                     <Heart className={`w-4 h-4 ${showFavorites ? "fill-current" : ""}`} />
-                    즐겨찾기
+                    {t("favorites")}
                   </Button>
                 </div>
               </div>
@@ -382,9 +382,9 @@ export default function DashboardPage() {
           <Card>
             <CardContent className="p-8 text-center">
               <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">기본 통계</h3>
+              <h3 className="text-lg font-semibold mb-2">{t("basicStats")}</h3>
               <p className="text-muted-foreground">
-                기본 통계 기능은 곧 추가될 예정입니다.
+                {t("basicStatsComingSoon")}
               </p>
             </CardContent>
           </Card>

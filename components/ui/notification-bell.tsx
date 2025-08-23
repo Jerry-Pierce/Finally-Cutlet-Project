@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/contexts/auth-context"
+import { useLanguage } from "@/contexts/language-context"
 
 interface Notification {
   id: string
@@ -25,6 +26,7 @@ export function NotificationBell() {
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuth()
   const { toast } = useToast()
+  const { t } = useLanguage()
   const wsRef = useRef<WebSocket | null>(null)
 
   // 알림 목록 로드
@@ -221,7 +223,7 @@ export function NotificationBell() {
         <Card className="absolute right-0 top-12 w-80 max-h-96 overflow-hidden shadow-xl z-50">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">알림</CardTitle>
+              <CardTitle className="text-lg">{t("notifications")}</CardTitle>
               <div className="flex gap-2">
                 {unreadCount > 0 && (
                   <Button
@@ -230,7 +232,7 @@ export function NotificationBell() {
                     onClick={markAllAsRead}
                     className="text-xs"
                   >
-                    모두 읽음
+                    {t("markAllAsRead")}
                   </Button>
                 )}
                 <Button
@@ -249,12 +251,12 @@ export function NotificationBell() {
             {isLoading ? (
               <div className="text-center py-8">
                 <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                <p className="text-sm text-muted-foreground">알림을 불러오는 중...</p>
+                <p className="text-sm text-muted-foreground">{t("loadingNotifications")}</p>
               </div>
             ) : notifications.length === 0 ? (
               <div className="text-center py-8">
                 <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-2 opacity-50" />
-                <p className="text-sm text-muted-foreground">새로운 알림이 없습니다</p>
+                <p className="text-sm text-muted-foreground">{t("noNewNotifications")}</p>
               </div>
             ) : (
               <div className="max-h-64 overflow-y-auto">

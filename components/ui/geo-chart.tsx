@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Users, TrendingUp } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 
 // 아이콘 안전하게 사용
 const GlobeIcon = () => (
@@ -22,6 +23,8 @@ interface GeoChartProps {
 }
 
 export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
+  const { t } = useLanguage()
+  
   // 국가 코드를 국가명으로 변환
   const getCountryName = (code: string) => {
     const countryNames: { [key: string]: string } = {
@@ -54,7 +57,7 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <GlobeIcon />
-            지리적 분석 요약
+            {t("geoAnalysisSummary")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -63,19 +66,19 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 {summary.totalCountries}
               </div>
-              <div className="text-sm text-muted-foreground">국가</div>
+              <div className="text-sm text-muted-foreground">{t("countries")}</div>
             </div>
             <div className="text-center p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {summary.totalCities}
               </div>
-              <div className="text-sm text-muted-foreground">도시</div>
+              <div className="text-sm text-muted-foreground">{t("cities")}</div>
             </div>
             <div className="text-center p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {summary.uniqueVisitors}
               </div>
-              <div className="text-sm text-muted-foreground">방문자</div>
+              <div className="text-sm text-muted-foreground">{t("visitors")}</div>
             </div>
           </div>
         </CardContent>
@@ -86,7 +89,7 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="w-5 h-5 text-red-500" />
-            상위 국가별 클릭
+            {t("topCountryClicks")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -114,7 +117,7 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
           ) : (
             <div className="text-center py-8 text-muted-foreground">
               <GlobeIcon />
-              <p>아직 지리적 데이터가 없습니다</p>
+              <p>{t("noGeoDataYet")}</p>
             </div>
           )}
         </CardContent>
@@ -125,7 +128,7 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="w-5 h-5 text-indigo-500" />
-            상위 도시별 클릭
+            {t("topCityClicks")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -151,7 +154,7 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
           ) : (
             <div className="text-center py-8 text-muted-foreground">
               <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
-              <p>아직 도시별 데이터가 없습니다</p>
+              <p>{t("noCityDataYet")}</p>
             </div>
           )}
         </CardContent>

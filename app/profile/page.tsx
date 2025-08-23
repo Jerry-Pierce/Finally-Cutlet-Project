@@ -452,7 +452,7 @@ export default function ProfilePage() {
           <div className="space-y-6">
             <div>
               <h2 className="font-serif text-2xl font-bold mb-2">{t("subscription")}</h2>
-              <p className="text-muted-foreground">구독 정보를 확인하고 관리하세요</p>
+              <p className="text-muted-foreground">{t("manageSubscriptionInfo")}</p>
             </div>
 
             <Card className="border-border/50 shadow-lg shadow-black/5 backdrop-blur-sm bg-card/95">
@@ -460,20 +460,20 @@ export default function ProfilePage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold">현재 플랜</h3>
+                      <h3 className="font-semibold">{t("currentPlan")}</h3>
                       <p className="text-sm text-muted-foreground">
-                        {profileData.isPremium ? "프리미엄" : "무료"}
+                        {profileData.isPremium ? t("premiumPlanName") : t("freePlanName")}
                       </p>
                     </div>
                     <Badge variant={profileData.isPremium ? "default" : "secondary"}>
-                      {profileData.isPremium ? "프리미엄" : "무료"}
+                      {profileData.isPremium ? t("premiumPlanName") : t("freePlanName")}
                     </Badge>
                   </div>
                   
                   {profileData.isPremium && (
                     <div className="pt-4 border-t">
                       <p className="text-sm text-muted-foreground">
-                        다음 결제일: {new Date().toLocaleDateString()}
+                        {t("nextBillingDate")}: {new Date().toLocaleDateString()}
                       </p>
                     </div>
                   )}
@@ -488,14 +488,14 @@ export default function ProfilePage() {
           <div className="space-y-6">
             <div>
               <h2 className="font-serif text-2xl font-bold mb-2">API</h2>
-              <p className="text-muted-foreground">API 키를 관리하세요</p>
+              <p className="text-muted-foreground">{t("manageApiKeys")}</p>
             </div>
 
             <Card className="border-border/50 shadow-lg shadow-black/5 backdrop-blur-sm bg-card/95">
               <CardContent className="pt-6">
                 <div className="space-y-4">
                   <div>
-                    <Label className="text-sm font-medium">API 키</Label>
+                    <Label className="text-sm font-medium">{t("apiKey")}</Label>
                     <div className="flex items-center gap-2 mt-2">
                       <Input
                         value={apiKey}
@@ -519,7 +519,7 @@ export default function ProfilePage() {
                       className="flex items-center gap-2"
                     >
                       <RefreshCw className="w-4 h-4" />
-                      새로고침
+                      {t("refresh")}
                     </Button>
                   </div>
                 </div>
@@ -533,7 +533,7 @@ export default function ProfilePage() {
           <div className="space-y-6">
             <div>
               <h2 className="font-serif text-2xl font-bold mb-2 text-red-600">{t("accountManagement")}</h2>
-              <p className="text-muted-foreground">위험한 작업을 수행할 수 있습니다</p>
+              <p className="text-muted-foreground">{t("dangerousOperations")}</p>
             </div>
 
             <Card className="border-red-200 bg-red-50 dark:bg-red-950/20">
@@ -542,9 +542,9 @@ export default function ProfilePage() {
                   <div className="flex items-center gap-3">
                     <Shield className="w-6 h-6 text-red-500" />
                     <div>
-                      <h3 className="font-semibold text-red-700 dark:text-red-300">계정 삭제</h3>
+                      <h3 className="font-semibold text-red-700 dark:text-red-300">{t("deleteAccount")}</h3>
                       <p className="text-sm text-red-600 dark:text-red-400">
-                        계정을 삭제하면 모든 데이터가 영구적으로 삭제됩니다.
+                        {t("deleteAccountWarning")}
                       </p>
                     </div>
                   </div>
@@ -555,7 +555,7 @@ export default function ProfilePage() {
                     className="flex items-center gap-2"
                   >
                     <Trash2 className="w-4 h-4" />
-                    계정 삭제
+                    {t("deleteAccount")}
                   </Button>
                 </div>
               </CardContent>
@@ -573,9 +573,9 @@ export default function ProfilePage() {
       <div className="container mx-auto px-4 py-8">
         {/* 헤더 */}
         <div className="mb-8">
-          <h1 className="font-serif font-bold text-3xl text-foreground mb-2">프로필 설정</h1>
+          <h1 className="font-serif font-bold text-3xl text-foreground mb-2">{t("profileSettings")}</h1>
           <p className="text-muted-foreground">
-            계정 정보와 설정을 관리하세요
+            {t("manageAccountInfo")}
           </p>
         </div>
 
@@ -617,7 +617,7 @@ export default function ProfilePage() {
                   className="flex items-center gap-2"
                 >
                   <Save className="w-4 h-4" />
-                  {isSaving ? "저장 중..." : "변경사항 저장"}
+                  {isSaving ? t("saving") : t("saveChanges")}
                 </Button>
               </div>
             ) : null}
