@@ -1,0 +1,1 @@
+[2025-08-23 16:36:10.578] INFO [HEALTH_CHECK]: 헬스체크 완료 | {"status":"degraded","responseTime":7,"checks":{"database":{"status":"healthy","responseTime":3},"redis":{"status":"healthy","responseTime":4},"system":{"status":"degraded","memory":{"used":17076355072,"total":17179869184,"usage":99.4},"cpu":{"usage":15.14,"loadAverage":[1.5732421875,1.8486328125,1.66552734375]}}}}
