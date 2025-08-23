@@ -20,7 +20,9 @@ import {
   BarChart3,
   Tag,
   Eye,
-  Globe
+  Globe,
+  TrendingUp,
+  Trophy
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { useLanguage } from "@/contexts/language-context"
@@ -181,6 +183,52 @@ export default function DashboardPage() {
       loadUrls(1)
     }
   }, [user, searchTerm, selectedTag, showFavorites])
+
+  // 기본 통계 데이터 계산
+  const calculateBasicStats = () => {
+    if (!urls.length) return null
+
+    const now = new Date()
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+    
+    // 최근 30일 데이터
+    const recentUrls = urls.filter(url => new Date(url.createdAt) >= thirtyDaysAgo)
+    const recentClicks = recentUrls.reduce((sum, url) => sum + url.clickCount, 0)
+    
+    // 일별 통계 (간단한 시뮬레이션)
+    const dailyStats = []
+    for (let i = 29; i >= 0; i--) {
+      const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000)
+      const dayUrls = urls.filter(url => {
+        const urlDate = new Date(url.createdAt)
+        return urlDate.toDateString() === date.toDateString()
+      })
+      const dayClicks = dayUrls.reduce((sum, url) => sum + url.clickCount, 0)
+      dailyStats.push({ date: date.toDateString(), urls: dayUrls.length, clicks: dayClicks })
+    }
+    
+    // 최고 성과 URL
+    const topUrls = [...urls].sort((a, b) => b.clickCount - a.clickCount).slice(0, 5)
+    
+    // 평균 클릭
+    const averageClicks = urls.length > 0 ? Math.round(urls.reduce((sum, url) => sum + url.clickCount, 0) / urls.length) : 0
+    
+    // 최고/최저 성과일
+    const bestDay = dailyStats.reduce((best, current) => current.clicks > best.clicks ? current : best)
+    const worstDay = dailyStats.reduce((worst, current) => current.clicks < worst.clicks ? current : worst)
+    
+    return {
+      totalUrls: urls.length,
+      totalClicks: urls.reduce((sum, url) => sum + url.clickCount, 0),
+      recentGrowth: recentUrls.length,
+      recentClicks,
+      dailyStats,
+      topUrls,
+      averageClicks,
+      bestDay,
+      worstDay
+    }
+  }
 
   // 지리적 데이터 로드
   const loadGeoData = async () => {
@@ -379,15 +427,124 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'analytics' && (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">{t("basicStats")}</h3>
-              <p className="text-muted-foreground">
-                {t("basicStatsComingSoon")}
-              </p>
-            </CardContent>
-          </Card>
+          <div className="space-y-6">
+            {/* 기본 통계 요약 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-blue-500" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t("urlGrowth")}</p>
+                      <p className="text-2xl font-bold">
+                        {calculateBasicStats()?.recentGrowth || 0}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{t("recent30Days")}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-green-500" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t("averageClicks")}</p>
+                      <p className="text-2xl font-bold">
+                        {calculateBasicStats()?.averageClicks || 0}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{t("averagePerUrl")}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-purple-500" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t("bestDay")}</p>
+                      <p className="text-2xl font-bold">
+                        {calculateBasicStats()?.bestDay?.clicks || 0}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{t("clicks")}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* 최고 성과 URL */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-amber-500" />
+                  {t("topPerformingUrls")}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {calculateBasicStats()?.topUrls?.map((url, index) => (
+                    <div key={url.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">
+                          {index + 1}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium truncate">
+                            {url.title || url.originalUrl.substring(0, 40) + '...'}
+                          </p>
+                          <p className="text-sm text-muted-foreground font-mono">
+                            {url.shortUrl}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-lg">{url.clickCount}</p>
+                        <p className="text-xs text-muted-foreground">{t("clicks")}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 일별 통계 차트 */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-blue-500" />
+                  {t("dailyStats")}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64 flex items-end gap-1 justify-center">
+                  {calculateBasicStats()?.dailyStats?.slice(-7).map((day, index) => (
+                    <div key={index} className="flex flex-col items-center gap-1">
+                      <div 
+                        className="w-8 bg-primary/80 rounded-t-sm transition-all hover:bg-primary"
+                        style={{ 
+                          height: `${Math.max(day.clicks * 2, 4)}px`,
+                          minHeight: '4px'
+                        }}
+                        title={`${day.date}: ${day.clicks} 클릭`}
+                      />
+                      <p className="text-xs text-muted-foreground rotate-45 origin-left">
+                        {new Date(day.date).getDate()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-center mt-4">
+                  <p className="text-sm text-muted-foreground">
+                    {t("recent7DaysClickStats")}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
 
         {activeTab === 'geo' && (
