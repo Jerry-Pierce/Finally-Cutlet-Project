@@ -268,6 +268,17 @@ export const translations = {
     topCountries: "Top Countries",
     systemUptime: "System Uptime",
     lastUpdated: "Last Updated",
+    
+    // Pricing page specific keys
+    simpleTransparentPricing: "Simple & Transparent Pricing",
+    choosePlanForYou: "Choose the plan that fits you",
+    plan: "Plan",
+    totalClicks: "Total Clicks",
+    planDescription: "We provide plans that fit from Personal users to Business users, including All plans include features",
+    popular: "Popular",
+    currentPlanBadge: "Current Plan",
+    freePlanName: "Free",
+    premiumPlanName: "Premium",
   },
   ja: {
     // Navigation
@@ -540,6 +551,17 @@ export const translations = {
     topCountries: "トップ国",
     systemUptime: "システム稼働率",
     lastUpdated: "最終更新",
+    
+    // Pricing page specific keys
+    simpleTransparentPricing: "シンプルで透明な料金プラン",
+    choosePlanForYou: "あなたに合うプランを選択してください",
+    plan: "プラン",
+    totalClicks: "総クリック",
+    planDescription: "個人ユーザーからビジネスユーザーまで、すべてのプランに含まれる機能に合ったプランを提供します",
+    popular: "人気",
+    currentPlanBadge: "現在のプラン",
+    freePlanName: "無料",
+    premiumPlanName: "プレミアム",
   },
   ko: {
     // Navigation
@@ -812,6 +834,17 @@ export const translations = {
     topCountries: "상위 국가",
     systemUptime: "시스템 가동률",
     lastUpdated: "마지막 업데이트",
+    
+    // Pricing page specific keys
+    simpleTransparentPricing: "간단하고 투명한 요금제",
+    choosePlanForYou: "당신에게 맞는 플랜을 선택하세요",
+    plan: "플랜",
+    totalClicks: "총 클릭",
+    planDescription: "Personal users부터 Business users까지, All plans include features에 맞는 플랜을 제공합니다",
+    popular: "인기",
+    currentPlanBadge: "현재 플랜",
+    freePlanName: "무료",
+    premiumPlanName: "프리미엄",
   },
   zh: {
     // Navigation
@@ -1084,6 +1117,17 @@ export const translations = {
     topCountries: "热门国家",
     systemUptime: "系统运行时间",
     lastUpdated: "最后更新",
+    
+    // Pricing page specific keys
+    simpleTransparentPricing: "简单透明的定价",
+    choosePlanForYou: "选择适合您的计划",
+    plan: "计划",
+    totalClicks: "总点击",
+    planDescription: "从个人用户到商业用户，我们提供包含所有计划功能的计划",
+    popular: "热门",
+    currentPlanBadge: "当前计划",
+    freePlanName: "免费",
+    premiumPlanName: "高级版",
   },
   ru: {
     // Navigation
@@ -1356,6 +1400,17 @@ export const translations = {
     topCountries: "Топ стран",
     systemUptime: "Время работы системы",
     lastUpdated: "Последнее обновление",
+    
+    // Pricing page specific keys
+    simpleTransparentPricing: "Простое и прозрачное ценообразование",
+    choosePlanForYou: "Выберите план, который подходит вам",
+    plan: "План",
+    totalClicks: "Общее количество кликов",
+    planDescription: "От личных пользователей до бизнес-пользователей, мы предоставляем планы, включающие все функции планов",
+    popular: "Популярный",
+    currentPlanBadge: "Текущий план",
+    freePlanName: "Бесплатный",
+    premiumPlanName: "Премиум",
   },
   fr: {
     // Navigation
@@ -1628,6 +1683,17 @@ export const translations = {
     topCountries: "Pays les plus populaires",
     systemUptime: "Temps de fonctionnement du système",
     lastUpdated: "Dernière mise à jour",
+    
+    // Pricing page specific keys
+    simpleTransparentPricing: "Tarification simple et transparente",
+    choosePlanForYou: "Choisissez le plan qui vous convient",
+    plan: "Plan",
+    totalClicks: "Total des clics",
+    planDescription: "Des utilisateurs personnels aux utilisateurs professionnels, nous fournissons des plans incluant toutes les fonctionnalités des plans",
+    popular: "Populaire",
+    currentPlanBadge: "Plan actuel",
+    freePlanName: "Gratuit",
+    premiumPlanName: "Premium",
   },
   de: {
     // Navigation
@@ -1900,6 +1966,17 @@ export const translations = {
     topCountries: "Top-Länder",
     systemUptime: "System-Betriebszeit",
     lastUpdated: "Zuletzt aktualisiert",
+    
+    // Pricing page specific keys
+    simpleTransparentPricing: "Einfache und transparente Preisgestaltung",
+    choosePlanForYou: "Wählen Sie den Plan, der zu Ihnen passt",
+    plan: "Plan",
+    totalClicks: "Gesamtklicks",
+    planDescription: "Von privaten Benutzern bis hin zu Geschäftsbenutzern bieten wir Pläne an, die alle Plangrundfunktionen umfassen",
+    popular: "Beliebt",
+    currentPlanBadge: "Aktueller Plan",
+    freePlanName: "Kostenlos",
+    premiumPlanName: "Premium",
   },
 } as const
 

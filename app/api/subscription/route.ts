@@ -5,7 +5,7 @@ import { db } from '@/lib/database'
 // 구독 플랜 정의
 export const SUBSCRIPTION_PLANS = {
   free: {
-    name: '무료',
+    name: 'free', // Will be translated in frontend
     price: 0,
     features: [
       '월 100개 URL 단축',
@@ -21,7 +21,7 @@ export const SUBSCRIPTION_PLANS = {
     }
   },
   premium: {
-    name: '프리미엄',
+    name: 'premium', // Will be translated in frontend
     price: 9900, // 9,900원
     features: [
       '무제한 URL 단축',

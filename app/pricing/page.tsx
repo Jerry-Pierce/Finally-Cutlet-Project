@@ -339,17 +339,17 @@ export default function PricingPage() {
           <div className="text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/20 backdrop-blur-sm shadow-lg shadow-accent/10">
               <Crown className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium text-accent">간단하고 투명한 요금제</span>
+              <span className="text-sm font-medium text-accent">{t("simpleTransparentPricing")}</span>
             </div>
             <h1 className="font-serif font-bold text-4xl md:text-5xl text-foreground">
-              당신에게 맞는{" "}
+              {t("choosePlanForYou").split(" ").slice(0, -1).join(" ")}{" "}
               <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                플랜
+                {t("plan")}
               </span>
-              을 선택하세요
+              {t("choosePlanForYou").split(" ").slice(-1)}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t("personalUsers")}부터 {t("businessUsers")}까지, {t("allRequirements")}에 맞는 플랜을 제공합니다
+              {t("planDescription")}
             </p>
           </div>
 
@@ -361,12 +361,12 @@ export default function PricingPage() {
                   <div className="text-center space-y-4">
                     <div className="flex items-center justify-center gap-2">
                       <Crown className="w-5 h-5 text-primary" />
-                      <h3 className="text-lg font-semibold">현재 플랜: {subscription.planDetails.name}</h3>
+                      <h3 className="text-lg font-semibold">{t("currentPlan")}: {t(subscription.planDetails.name === 'free' ? 'freePlanName' : 'premiumPlanName')}</h3>
                     </div>
                     
                     {subscription.currentPlan === 'premium' && (
                       <p className="text-sm text-muted-foreground">
-                        다음 결제일: {subscription.nextBillingDate ? new Date(subscription.nextBillingDate).toLocaleDateString() : 'N/A'}
+                        {t("nextBillingDate")}: {subscription.nextBillingDate ? new Date(subscription.nextBillingDate).toLocaleDateString() : 'N/A'}
                       </p>
                     )}
                     
@@ -383,7 +383,7 @@ export default function PricingPage() {
                         <p className="font-semibold">{subscription.usage.totalUrls}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground">총 클릭</p>
+                        <p className="text-muted-foreground">{t("totalClicks")}</p>
                         <p className="font-semibold">{subscription.usage.totalClicks}</p>
                       </div>
                     </div>
@@ -395,7 +395,7 @@ export default function PricingPage() {
                         disabled={isUpgrading}
                         className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
                       >
-                        {isUpgrading ? <Loader2 className="w-4 h-4 animate-spin" /> : "구독 취소"}
+                        {isUpgrading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("cancelSubscription")}
                       </Button>
                     )}
                   </div>
@@ -421,7 +421,7 @@ export default function PricingPage() {
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                       <Badge className="bg-primary text-primary-foreground px-3 py-1">
                         <Crown className="w-3 h-3 mr-1" />
-                        인기
+                        {t("popular")}
                       </Badge>
                     </div>
                   )}
@@ -430,7 +430,7 @@ export default function PricingPage() {
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                       <Badge className="bg-green-500 text-white px-3 py-1">
                         <Check className="w-3 h-3 mr-1" />
-                        현재 플랜
+                        {t("currentPlanBadge")}
                       </Badge>
                     </div>
                   )}
@@ -477,7 +477,7 @@ export default function PricingPage() {
                           disabled
                         >
                           <Check className="w-4 h-4 mr-2" />
-                          현재 플랜
+                          {t("currentPlanBadge")}
                         </Button>
                       ) : (
                         <Button
