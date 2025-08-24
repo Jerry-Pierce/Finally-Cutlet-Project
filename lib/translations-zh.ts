@@ -1,0 +1,219 @@
+export const zhTranslations = {
+  // Navigation
+  home: "首页",
+  dashboard: "仪表板",
+  pricing: "定价",
+  profile: "个人资料",
+  admin: "管理",
+  monitoring: "监控",
+  users: "用户",
+  backup: "备份",
+  urlShortenerService: "URL缩短服务",
+
+  // Header
+  fastUrlShortening: "快速简单的URL缩短",
+  shortenLong: "缩短长",
+  links: "链接",
+  complexUrlDescription: "将复杂的URL转换为简单、易记的链接",
+
+  // Form
+  shortenLink: "缩短链接",
+  enterUrlDescription: "输入您要缩短的URL",
+  urlPlaceholder: "https://example.com/very-long-url...",
+  favoriteTooltip: "添加到收藏夹以便快速访问",
+  shorten: "缩短",
+
+  // Premium section
+  premium: "高级版",
+  customUrlSetting: "自定义URL设置",
+  customUrlPlaceholder: "my-awesome-link",
+  premiumOnlyFeature: "仅限高级版用户使用",
+
+  // Tags section
+  classification: "分类",
+  addTags: "添加标签",
+  tagPlaceholder: "输入标签（例如：工作、个人、项目）",
+  add: "添加",
+  tagDescription: "轻松分类和查找您的URL",
+
+  // Expiration
+  selectExpiration: "选择过期时间（默认：永久）",
+  permanent: "永久（永不过期）",
+  oneDayLater: "1天后",
+  sevenDaysLater: "7天后",
+  thirtyDaysLater: "30天后",
+  ninetyDaysLater: "90天后",
+  oneYearLater: "1年后",
+  expirationDescription: "链接将在设定时间后自动过期",
+
+  // Result
+  shortenedUrl: "缩短的URL",
+  copy: "复制",
+
+  // Features
+  fastProcessing: "快速处理",
+  fastProcessingDesc: "在几秒钟内将长URL转换为短链接",
+  secureLinksFeature: "安全链接",
+  secureLinksDesc: "所有链接都经过安全验证和保护",
+  easyToUse: "易于使用",
+  easyToUseDesc: "无需复杂设置即可使用",
+
+  // Toast messages
+  urlShortenComplete: "URL缩短完成！",
+  newShortLinkCreated: "新的短链接已创建。",
+  copyComplete: "复制完成！",
+  copiedToClipboard: "已复制到剪贴板。",
+
+  // Authentication
+  login: "登录",
+  signup: "注册",
+  email: "邮箱",
+  password: "密码",
+  confirmPassword: "确认密码",
+  forgotPassword: "忘记密码？",
+  resetPassword: "重置密码",
+  sendResetLink: "发送重置链接",
+  backToLogin: "返回登录",
+  alreadyHaveAccount: "已有账户？",
+  dontHaveAccount: "没有账户？",
+  createAccount: "创建账户",
+  signInToAccount: "登录您的账户",
+  createNewAccount: "创建新账户",
+  resetPasswordTitle: "重置您的密码",
+  resetPasswordDesc: "输入您的邮箱地址，我们将发送重置密码的链接。",
+  emailPlaceholder: "输入您的邮箱",
+  passwordPlaceholder: "输入您的密码",
+  confirmPasswordPlaceholder: "确认您的密码",
+
+  // Landing page
+  landingDescription: "将您的长而复杂的URL转换为具有自定义URL、分析和过期日期等高级功能的短而可共享的链接。",
+  getStarted: "开始使用",
+  viewPricing: "查看定价",
+  whyChooseCutlet: "为什么选择Cutlet？",
+  featuresDescription: "发现使Cutlet成为最佳URL缩短服务的强大功能。",
+  analytics: "分析",
+  analyticsDesc: "通过详细分析跟踪点击、位置和性能。",
+  customUrls: "自定义URL",
+  customUrlsDesc: "使用自定义URL路径创建品牌化、易记的链接。",
+  globalAccess: "全球访问",
+
+  // Pricing
+  free: "免费",
+  monthly: "月付",
+  freeDescription: "个人用户的基本功能",
+  premiumDescription: "专业人士和商业用户的高级功能",
+  monthly10Urls: "总计10个URL",
+  unlimitedUrls: "无限制URL缩短",
+  basicStats: "基本统计",
+  qrCodeGeneration: "二维码生成",
+  tagManagement: "标签管理",
+  linkStorage7Days: "链接存储7天",
+  standardSupport: "标准支持",
+  customUrl: "自定义URL",
+  advancedStats: "高级统计",
+  geographicAnalysis: "地理分析",
+  customDomain: "自定义域名",
+  expirationDate: "过期日期",
+  favoriteManagement: "收藏夹管理",
+  prioritySupport: "优先支持",
+  apiAccess: "API访问",
+  bulkUrlManagement: "批量URL管理",
+  startFree: "免费开始",
+  startPremium: "高级版开始",
+  customUrlNotAvailable: "自定义URL不可用",
+  advancedAnalyticsLimited: "高级分析受限",
+  apiAccessNotAvailable: "API访问不可用",
+
+  // URL limit exceeded
+  errorOccurred: "发生错误",
+  freePlanUrlLimitExceeded: "免费版最多只能创建10个URL。",
+  upgradeToPremiumForUnlimited: "升级到高级版以创建无限制的URL。",
+
+  // Error messages
+  rateLimitExceeded: "超出速率限制",
+  rateLimitExceededDesc: "请求过多。{retryAfter}后请重试。",
+  urlShorteningError: "URL缩短过程中发生错误。",
+  networkError: "发生网络错误。",
+
+  // API error messages
+  loginRequiredForCustomUrl: "使用自定义URL需要登录",
+  customCodeAlreadyExists: "自定义代码已存在",
+  premiumFavoritePremiumOnly: "高级收藏夹仅限高级版用户使用",
+
+  // Premium upgrade
+  premiumUpgradeRequired: "需要高级版升级",
+  customUrlPremiumOnly: "自定义URL仅限高级版用户使用。升级以解锁此功能和更多功能！",
+  upgradeToPremium: "升级到高级版",
+
+  // QR Code
+  qrCode: "二维码",
+  scanWithSmartphone: "用智能手机扫描以访问链接",
+  download: "下载",
+  copyUrl: "复制URL",
+  copied: "已复制",
+  downloadComplete: "下载完成",
+  qrCodeDownloaded: "二维码已成功下载。",
+  downloadFailed: "下载失败",
+  qrCodeDownloadFailed: "二维码下载失败。",
+  copyComplete: "复制完成",
+  urlCopiedToClipboard: "URL已复制到剪贴板。",
+  copyFailed: "复制失败",
+  urlCopyFailed: "URL复制失败。",
+  scanQrCodeToAccess: "扫描二维码以访问链接",
+
+  // Notifications
+  notifications: "通知",
+
+  // Dashboard
+  dashboard: "仪表板",
+  welcomeMessage: "您好，{name}！",
+  createUrl: "创建URL",
+  urlList: "URL列表",
+  basicStats: "基本统计",
+  geographicAnalysis: "地理分析",
+  searchPlaceholder: "搜索URL...",
+  selectTag: "选择标签",
+  favorites: "收藏夹",
+  totalUrls: "总URL数",
+  totalClicks: "总点击数",
+  active: "活跃",
+  inactive: "非活跃",
+
+  // Profile
+  profile: "个人资料",
+  profileSettings: "个人资料设置",
+  manageAccountInfo: "管理您的账户信息和设置",
+  saveChanges: "保存更改",
+  saving: "保存中...",
+  manageSubscriptionInfo: "查看和管理您的订阅信息",
+  currentPlan: "当前计划",
+  nextBillingDate: "下次计费日期",
+  manageApiKeys: "管理您的API密钥",
+  apiKey: "API密钥",
+  refresh: "刷新",
+  dangerousOperations: "您可以执行危险操作",
+  deleteAccount: "删除账户",
+  deleteAccountWarning: "删除您的账户将永久删除所有数据。",
+  enterPasswordToDelete: "输入密码以删除账户",
+
+  // Account deletion modal
+  accountDeletion: "账户删除",
+  enterPasswordToDeleteAccount: "要删除账户，请输入密码。",
+  reallyDeleteAccount: "您真的确定要删除账户吗？",
+  password: "密码",
+  enterCurrentPassword: "请输入当前密码",
+  accountDeletionWarning: "此操作无法撤销。",
+  deleteDataSummary: "将被删除的数据：",
+  shortenedUrls: "缩短的URL",
+  clickRecords: "点击记录",
+  tags: "标签",
+  favorites: "收藏夹",
+  thisActionCannotBeUndone: "此操作无法撤销。",
+  next: "下一步",
+  cancel: "取消",
+  deleteAccount: "删除账户",
+  checking: "检查中...",
+  deleting: "删除中...",
+} as const
+
+export type ZhTranslationKey = keyof typeof zhTranslations

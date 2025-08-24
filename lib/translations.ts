@@ -1,3 +1,8 @@
+import { jaTranslations } from './translations-ja'
+import { zhTranslations } from './translations-zh'
+import { frTranslations } from './translations-fr'
+import { deTranslations } from './translations-de'
+
 export const translations = {
   en: {
     // Navigation
@@ -154,7 +159,7 @@ export const translations = {
     premiumPlan: "Premium Plan",
     freeDescription: "Basic features for individual users",
     premiumDescription: "Advanced features for professionals and businesses",
-    monthly100Urls: "100 URLs per month",
+    monthly10Urls: "10 URLs total",
     unlimitedUrls: "Unlimited URL shortening",
     basicStats: "Basic statistics",
     advancedStats: "Advanced statistics and analytics",
@@ -349,6 +354,22 @@ export const translations = {
     premiumUpgradeRequired: "Premium Upgrade Required",
     customUrlPremiumOnly: "Custom URLs are only available for premium users. Upgrade to unlock this feature and many more!",
     upgradeToPremium: "Upgrade to Premium",
+    
+    // URL limit exceeded
+    errorOccurred: "Error Occurred",
+    freePlanUrlLimitExceeded: "Only a maximum of 10 URLs can be created with the free plan.",
+    upgradeToPremiumForUnlimited: "Upgrade to premium to create unlimited URLs.",
+    
+    // Error messages
+    rateLimitExceeded: "Rate Limit Exceeded",
+    rateLimitExceededDesc: "Too many requests. Please try again {retryAfter} later.",
+    urlShorteningError: "An error occurred while shortening the URL.",
+    networkError: "A network error occurred.",
+    
+    // API error messages
+    loginRequiredForCustomUrl: "Login required to use custom URLs",
+    customCodeAlreadyExists: "Custom code already exists",
+    premiumFavoritePremiumOnly: "Premium favorites are only available for premium users",
     
     notifications: "Notifications",
     markAllAsRead: "Mark All as Read",
@@ -855,7 +876,7 @@ export const translations = {
     premiumPlan: "프리미엄 플랜",
     freeDescription: "개인 사용자를 위한 기본 기능",
     premiumDescription: "전문가와 비즈니스를 위한 고급 기능",
-    monthly100Urls: "월 100개 URL",
+    monthly10Urls: "총 10개 URL",
     unlimitedUrls: "무제한 URL 단축",
     basicStats: "기본 통계",
     advancedStats: "고급 통계 및 분석",
@@ -1051,6 +1072,22 @@ export const translations = {
     premiumUpgradeRequired: "프리미엄 업그레이드 필요",
     customUrlPremiumOnly: "커스텀 URL은 프리미엄 사용자만 사용할 수 있습니다. 업그레이드하여 이 기능과 더 많은 기능을 잠금 해제하세요!",
     upgradeToPremium: "프리미엄으로 업그레이드",
+    
+    // URL limit exceeded
+    errorOccurred: "오류 발생",
+    freePlanUrlLimitExceeded: "무료 플랜에서는 최대 10개의 URL만 생성할 수 있습니다.",
+    upgradeToPremiumForUnlimited: "프리미엄으로 업그레이드하여 무제한 URL을 생성하세요.",
+    
+    // Error messages
+    rateLimitExceeded: "요청 제한",
+    rateLimitExceededDesc: "요청이 너무 많습니다. {retryAfter} 후 다시 시도해주세요.",
+    urlShorteningError: "URL 단축 중 오류가 발생했습니다.",
+    networkError: "네트워크 오류가 발생했습니다.",
+    
+    // API error messages
+    loginRequiredForCustomUrl: "커스텀 URL을 사용하려면 로그인이 필요합니다",
+    customCodeAlreadyExists: "이미 사용 중인 커스텀 코드입니다",
+    premiumFavoritePremiumOnly: "프리미엄 즐겨찾기는 프리미엄 사용자만 사용할 수 있습니다",
     
     notifications: "알림",
     markAllAsRead: "모두 읽음",
@@ -2391,6 +2428,18 @@ export const translations = {
     clicks: "Klicks",
     recent7DaysClickStats: "Klick-Statistiken der letzten 7 Tage",
   },
+  
+  // Japanese
+  ja: jaTranslations,
+  
+  // Chinese
+  zh: zhTranslations,
+  
+  // French
+  fr: frTranslations,
+  
+  // German
+  de: deTranslations,
 } as const
 
 export type Language = keyof typeof translations

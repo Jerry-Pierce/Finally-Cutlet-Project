@@ -52,7 +52,7 @@ export default function PricingPage() {
       period: t("monthly"),
       description: t("freeDescription"),
       features: [
-        t("monthly100Urls"),
+        t("monthly10Urls"),
         t("basicStats"),
         t("qrCodeGeneration"),
         t("tagManagement"),

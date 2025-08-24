@@ -102,8 +102,8 @@ export default function ShortenerPage() {
           const reset = response.headers.get('X-RateLimit-Reset')
           
           toast({
-            title: "요청 제한",
-            description: `요청이 너무 많습니다. ${retryAfter ? `${retryAfter}초 후` : '잠시 후'} 다시 시도해주세요.`,
+            title: t("rateLimitExceeded"),
+            description: t("rateLimitExceededDesc").replace("{retryAfter}", retryAfter || ""),
             variant: "destructive",
           })
           
@@ -115,9 +115,34 @@ export default function ShortenerPage() {
             })
           }
         } else {
+          // 백엔드에서 받은 번역 키를 처리
+          let errorMessage = t("urlShorteningError")
+          let errorTitle = t("errorOccurred")
+          
+          if (result.error) {
+            // 번역 키가 있는 경우 번역된 메시지 사용
+            if (typeof result.error === 'string' && result.error.includes('freePlanUrlLimitExceeded')) {
+              errorMessage = t("freePlanUrlLimitExceeded")
+              if (result.upgradeMessage) {
+                errorMessage += " " + t(result.upgradeMessage)
+              }
+            } else if (typeof result.error === 'string' && result.error.includes('customUrlPremiumOnly')) {
+              errorMessage = t("customUrlPremiumOnly")
+            } else if (typeof result.error === 'string' && result.error.includes('loginRequiredForCustomUrl')) {
+              errorMessage = t("loginRequiredForCustomUrl")
+            } else if (typeof result.error === 'string' && result.error.includes('customCodeAlreadyExists')) {
+              errorMessage = t("customCodeAlreadyExists")
+            } else if (typeof result.error === 'string' && result.error.includes('premiumFavoritePremiumOnly')) {
+              errorMessage = t("premiumFavoritePremiumOnly")
+            } else {
+              // 기존 오류 메시지 사용
+              errorMessage = result.error
+            }
+          }
+          
           toast({
-            title: "오류 발생",
-            description: result.error || "URL 단축 중 오류가 발생했습니다.",
+            title: errorTitle,
+            description: errorMessage,
             variant: "destructive",
           })
         }
@@ -125,8 +150,8 @@ export default function ShortenerPage() {
     } catch (error) {
       console.error('URL 단축 오류:', error)
       toast({
-        title: "오류 발생",
-        description: "네트워크 오류가 발생했습니다.",
+        title: t("errorOccurred"),
+        description: t("networkError"),
         variant: "destructive",
       })
     } finally {

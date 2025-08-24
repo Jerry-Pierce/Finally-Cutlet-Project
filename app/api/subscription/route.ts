@@ -8,13 +8,13 @@ export const SUBSCRIPTION_PLANS = {
     name: 'free', // Will be translated in frontend
     price: 0,
     features: [
-      '월 100개 URL 단축',
+      '총 10개 URL 단축',
       '기본 통계',
       'QR 코드 생성',
       '태그 관리'
     ],
     limits: {
-      urlsPerMonth: 100,
+      urlsPerMonth: 10,
       customDomains: 0,
       advancedAnalytics: false,
       prioritySupport: false

@@ -68,15 +68,21 @@ export async function POST(request: NextRequest) {
         
         if (!user?.isPremium) {
           return NextResponse.json(
-            { error: '커스텀 URL은 프리미엄 사용자만 사용할 수 있습니다.' },
+            { 
+              error: 'customUrlPremiumOnly',
+              errorType: 'CUSTOM_URL_PREMIUM_REQUIRED'
+            },
             { status: 403 }
           )
         }
       } else {
         // 로그인하지 않은 사용자는 커스텀 URL 사용 불가
         return NextResponse.json(
-          { error: '커스텀 URL을 사용하려면 로그인이 필요합니다.' },
-          { status: 401 }
+          { 
+            error: 'loginRequiredForCustomUrl',
+            errorType: 'LOGIN_REQUIRED'
+          },
+            { status: 401 }
         )
       }
       
@@ -85,12 +91,15 @@ export async function POST(request: NextRequest) {
         where: { customCode }
       })
       
-      if (existingUrl) {
-        return NextResponse.json(
-          { error: '이미 사용 중인 커스텀 코드입니다.' },
-          { status: 409 }
-        )
-      }
+              if (existingUrl) {
+          return NextResponse.json(
+            { 
+              error: 'customCodeAlreadyExists',
+              errorType: 'DUPLICATE_CUSTOM_CODE'
+            },
+            { status: 409 }
+          )
+        }
     }
 
     // 만료일 계산
@@ -98,6 +107,32 @@ export async function POST(request: NextRequest) {
     if (expirationDays && expirationDays !== 'permanent') {
       const days = parseInt(expirationDays)
       expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000)
+    }
+
+    // 무료 사용자 URL 제한 체크 (10개)
+    if (userId) {
+      const user = await db.user.findUnique({
+        where: { id: userId },
+        select: { isPremium: true }
+      })
+      
+      if (!user?.isPremium) {
+        // 무료 사용자의 총 URL 개수 확인
+        const urlCount = await db.shortenedUrl.count({
+          where: { userId }
+        })
+        
+        if (urlCount >= 10) {
+          return NextResponse.json(
+            { 
+              error: 'freePlanUrlLimitExceeded',
+              errorType: 'URL_LIMIT_EXCEEDED',
+              upgradeMessage: 'upgradeToPremiumForUnlimited'
+            },
+            { status: 403 }
+          )
+        }
+      }
     }
 
     // 프리미엄 즐겨찾기 체크
@@ -109,7 +144,10 @@ export async function POST(request: NextRequest) {
       
       if (!user?.isPremium) {
         return NextResponse.json(
-          { error: '프리미엄 즐겨찾기는 프리미엄 사용자만 사용할 수 있습니다.' },
+          { 
+            error: 'premiumFavoritePremiumOnly',
+            errorType: 'PREMIUM_FAVORITE_PREMIUM_REQUIRED'
+          },
           { status: 403 }
         )
       }

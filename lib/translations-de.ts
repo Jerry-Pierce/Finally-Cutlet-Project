@@ -1,0 +1,219 @@
+export const deTranslations = {
+  // Navigation
+  home: "Startseite",
+  dashboard: "Dashboard",
+  pricing: "Preise",
+  profile: "Profil",
+  admin: "Verwaltung",
+  monitoring: "Überwachung",
+  users: "Benutzer",
+  backup: "Backup",
+  urlShortenerService: "URL-Verkürzungsdienst",
+
+  // Header
+  fastUrlShortening: "Schnelle und einfache URL-Verkürzung",
+  shortenLong: "Verkürzen Sie lange",
+  links: "Links",
+  complexUrlDescription: "Transformieren Sie komplexe URLs in einfache, einprägsame Links",
+
+  // Form
+  shortenLink: "Link verkürzen",
+  enterUrlDescription: "Geben Sie die URL ein, die Sie verkürzen möchten",
+  urlPlaceholder: "https://example.com/very-long-url...",
+  favoriteTooltip: "Zu Favoriten hinzufügen für schnellen Zugriff",
+  shorten: "Verkürzen",
+
+  // Premium section
+  premium: "Premium",
+  customUrlSetting: "Benutzerdefinierte URL-Einstellung",
+  customUrlPlaceholder: "my-awesome-link",
+  premiumOnlyFeature: "Nur für Premium-Benutzer verfügbar",
+
+  // Tags section
+  classification: "Klassifizierung",
+  addTags: "Tags hinzufügen",
+  tagPlaceholder: "Tags eingeben (z.B. Arbeit, persönlich, Projekt)",
+  add: "Hinzufügen",
+  tagDescription: "Klassifizieren und finden Sie Ihre URLs einfach",
+
+  // Expiration
+  selectExpiration: "Ablaufzeitraum auswählen (Standard: permanent)",
+  permanent: "Permanent (läuft nie ab)",
+  oneDayLater: "1 Tag später",
+  sevenDaysLater: "7 Tage später",
+  thirtyDaysLater: "30 Tage später",
+  ninetyDaysLater: "90 Tage später",
+  oneYearLater: "1 Jahr später",
+  expirationDescription: "Der Link läuft automatisch nach dem eingestellten Zeitraum ab",
+
+  // Result
+  shortenedUrl: "Verkürzte URL",
+  copy: "Kopieren",
+
+  // Features
+  fastProcessing: "Schnelle Verarbeitung",
+  fastProcessingDesc: "Konvertieren Sie lange URLs in wenigen Sekunden in kurze Links",
+  secureLinksFeature: "Sichere Links",
+  secureLinksDesc: "Alle Links werden sicher verifiziert und geschützt",
+  easyToUse: "Einfach zu verwenden",
+  easyToUseDesc: "Bereit zur Verwendung ohne komplexe Einrichtung",
+
+  // Toast messages
+  urlShortenComplete: "URL-Verkürzung abgeschlossen!",
+  newShortLinkCreated: "Neuer kurzer Link wurde erstellt.",
+  copyComplete: "Kopieren abgeschlossen!",
+  copiedToClipboard: "In die Zwischenablage kopiert.",
+
+  // Authentication
+  login: "Anmelden",
+  signup: "Registrieren",
+  email: "E-Mail",
+  password: "Passwort",
+  confirmPassword: "Passwort bestätigen",
+  forgotPassword: "Passwort vergessen?",
+  resetPassword: "Passwort zurücksetzen",
+  sendResetLink: "Zurücksetzen-Link senden",
+  backToLogin: "Zurück zur Anmeldung",
+  alreadyHaveAccount: "Haben Sie bereits ein Konto?",
+  dontHaveAccount: "Haben Sie kein Konto?",
+  createAccount: "Konto erstellen",
+  signInToAccount: "Melden Sie sich in Ihrem Konto an",
+  createNewAccount: "Neues Konto erstellen",
+  resetPasswordTitle: "Setzen Sie Ihr Passwort zurück",
+  resetPasswordDesc: "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+  emailPlaceholder: "Geben Sie Ihre E-Mail ein",
+  passwordPlaceholder: "Geben Sie Ihr Passwort ein",
+  confirmPasswordPlaceholder: "Bestätigen Sie Ihr Passwort",
+
+  // Landing page
+  landingDescription: "Transformieren Sie Ihre langen, komplexen URLs in kurze, teilbare Links mit erweiterten Funktionen wie benutzerdefinierten URLs, Analysen und Ablaufdaten.",
+  getStarted: "Loslegen",
+  viewPricing: "Preise anzeigen",
+  whyChooseCutlet: "Warum Cutlet wählen?",
+  featuresDescription: "Entdecken Sie die leistungsstarken Funktionen, die Cutlet zum besten URL-Verkürzungsdienst machen.",
+  analytics: "Analysen",
+  analyticsDesc: "Verfolgen Sie Klicks, Standorte und Leistung mit detaillierten Analysen.",
+  customUrls: "Benutzerdefinierte URLs",
+  customUrlsDesc: "Erstellen Sie markenbezogene, einprägsame Links mit benutzerdefinierten URL-Pfaden.",
+  globalAccess: "Globaler Zugriff",
+
+  // Pricing
+  free: "Kostenlos",
+  monthly: "Monatlich",
+  freeDescription: "Grundfunktionen für Einzelbenutzer",
+  premiumDescription: "Erweiterte Funktionen für Fachleute und Unternehmen",
+  monthly10Urls: "Insgesamt 10 URLs",
+  unlimitedUrls: "Unbegrenzte URL-Verkürzung",
+  basicStats: "Grundstatistiken",
+  qrCodeGeneration: "QR-Code-Generierung",
+  tagManagement: "Tag-Verwaltung",
+  linkStorage7Days: "Link-Speicherung 7 Tage",
+  standardSupport: "Standard-Support",
+  customUrl: "Benutzerdefinierte URL",
+  advancedStats: "Erweiterte Statistiken",
+  geographicAnalysis: "Geografische Analyse",
+  customDomain: "Benutzerdefinierte Domain",
+  expirationDate: "Ablaufdatum",
+  favoriteManagement: "Favoriten-Verwaltung",
+  prioritySupport: "Prioritäts-Support",
+  apiAccess: "API-Zugriff",
+  bulkUrlManagement: "Massen-URL-Verwaltung",
+  startFree: "Kostenlos starten",
+  startPremium: "Premium starten",
+  customUrlNotAvailable: "Benutzerdefinierte URL nicht verfügbar",
+  advancedAnalyticsLimited: "Erweiterte Analysen eingeschränkt",
+  apiAccessNotAvailable: "API-Zugriff nicht verfügbar",
+
+  // URL limit exceeded
+  errorOccurred: "Ein Fehler ist aufgetreten",
+  freePlanUrlLimitExceeded: "Der kostenlose Plan kann maximal 10 URLs erstellen.",
+  upgradeToPremiumForUnlimited: "Upgraden Sie auf Premium, um unbegrenzte URLs zu erstellen.",
+
+  // Error messages
+  rateLimitExceeded: "Ratenlimit überschritten",
+  rateLimitExceededDesc: "Zu viele Anfragen. Bitte versuchen Sie es {retryAfter} später erneut.",
+  urlShorteningError: "Beim Verkürzen der URL ist ein Fehler aufgetreten.",
+  networkError: "Ein Netzwerkfehler ist aufgetreten.",
+
+  // API error messages
+  loginRequiredForCustomUrl: "Anmeldung erforderlich, um benutzerdefinierte URLs zu verwenden",
+  customCodeAlreadyExists: "Benutzerdefinierter Code existiert bereits",
+  premiumFavoritePremiumOnly: "Premium-Favoriten sind nur für Premium-Benutzer verfügbar",
+
+  // Premium upgrade
+  premiumUpgradeRequired: "Premium-Upgrade erforderlich",
+  customUrlPremiumOnly: "Benutzerdefinierte URLs sind nur für Premium-Benutzer verfügbar. Upgraden Sie, um diese Funktion und viele weitere freizuschalten!",
+  upgradeToPremium: "Auf Premium upgraden",
+
+  // QR Code
+  qrCode: "QR-Code",
+  scanWithSmartphone: "Scannen Sie mit Ihrem Smartphone, um auf den Link zuzugreifen",
+  download: "Herunterladen",
+  copyUrl: "URL kopieren",
+  copied: "Kopiert",
+  downloadComplete: "Download abgeschlossen",
+  qrCodeDownloaded: "QR-Code wurde erfolgreich heruntergeladen.",
+  downloadFailed: "Download fehlgeschlagen",
+  qrCodeDownloadFailed: "QR-Code-Download fehlgeschlagen.",
+  copyComplete: "Kopieren abgeschlossen",
+  urlCopiedToClipboard: "URL wurde in die Zwischenablage kopiert.",
+  copyFailed: "Kopieren fehlgeschlagen",
+  urlCopyFailed: "URL-Kopieren fehlgeschlagen.",
+  scanQrCodeToAccess: "Scannen Sie den QR-Code, um auf den Link zuzugreifen",
+
+  // Notifications
+  notifications: "Benachrichtigungen",
+
+  // Dashboard
+  dashboard: "Dashboard",
+  welcomeMessage: "Hallo, {name}!",
+  createUrl: "URL erstellen",
+  urlList: "URL-Liste",
+  basicStats: "Grundstatistiken",
+  geographicAnalysis: "Geografische Analyse",
+  searchPlaceholder: "URLs suchen...",
+  selectTag: "Tag auswählen",
+  favorites: "Favoriten",
+  totalUrls: "Gesamt-URLs",
+  totalClicks: "Gesamtklicks",
+  active: "Aktiv",
+  inactive: "Inaktiv",
+
+  // Profile
+  profile: "Profil",
+  profileSettings: "Profileinstellungen",
+  manageAccountInfo: "Verwalten Sie Ihre Kontoinformationen und -einstellungen",
+  saveChanges: "Änderungen speichern",
+  saving: "Speichern...",
+  manageSubscriptionInfo: "Überprüfen und verwalten Sie Ihre Abonnementinformationen",
+  currentPlan: "Aktueller Plan",
+  nextBillingDate: "Nächstes Abrechnungsdatum",
+  manageApiKeys: "Verwalten Sie Ihre API-Schlüssel",
+  apiKey: "API-Schlüssel",
+  refresh: "Aktualisieren",
+  dangerousOperations: "Sie können gefährliche Operationen durchführen",
+  deleteAccount: "Konto löschen",
+  deleteAccountWarning: "Das Löschen Ihres Kontos wird alle Daten dauerhaft löschen.",
+  enterPasswordToDelete: "Passwort eingeben, um das Konto zu löschen",
+
+  // Account deletion modal
+  accountDeletion: "Kontolöschung",
+  enterPasswordToDeleteAccount: "Um das Konto zu löschen, geben Sie bitte das Passwort ein.",
+  reallyDeleteAccount: "Sind Sie wirklich sicher, dass Sie das Konto löschen möchten?",
+  password: "Passwort",
+  enterCurrentPassword: "Bitte geben Sie Ihr aktuelles Passwort ein",
+  accountDeletionWarning: "Diese Aktion kann nicht rückgängig gemacht werden.",
+  deleteDataSummary: "Zu löschende Daten:",
+  shortenedUrls: "Verkürzte URLs",
+  clickRecords: "Klick-Aufzeichnungen",
+  tags: "Tags",
+  favorites: "Favoriten",
+  thisActionCannotBeUndone: "Diese Aktion kann nicht rückgängig gemacht werden.",
+  next: "Weiter",
+  cancel: "Abbrechen",
+  deleteAccount: "Konto löschen",
+  checking: "Überprüfung...",
+  deleting: "Löschung...",
+} as const
+
+export type DeTranslationKey = keyof typeof deTranslations
