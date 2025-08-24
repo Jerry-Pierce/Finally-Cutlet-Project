@@ -10,13 +10,14 @@ import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User, Mail, Lock, Bell, Key, Crown, Shield, Trash2, Camera, Copy, RefreshCw, BarChart3, Save, Eye, EyeOff } from "lucide-react"
+import { DeleteAccountModal } from "@/components/ui/delete-account-modal"
 import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 
 export default function ProfilePage() {
-  const { user, updateUser } = useAuth()
+  const { user, updateUser, logout } = useAuth()
   const { toast } = useToast()
   const router = useRouter()
   const { t } = useLanguage()
@@ -49,6 +50,10 @@ export default function ProfilePage() {
 
   // API 키 (실제로는 백엔드에서 생성)
   const [apiKey] = useState("cutlet_sk_" + Math.random().toString(36).substr(2, 15))
+  
+  // 계정 삭제 모달 상태
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const profileSections = [
     { id: "general", label: t("generalInfo"), icon: User },
@@ -214,11 +219,70 @@ export default function ProfilePage() {
   }
 
   const handleDeleteAccount = () => {
-    if (confirm(t("confirmAccountDeletion"))) {
-      toast({
-        title: "알림",
-        description: t("accountDeletionComingSoon"),
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleDeleteConfirm = async (password: string) => {
+    setIsDeleting(true)
+    
+    try {
+      // 계정 삭제 실행
+      const deleteResponse = await fetch('/api/user/delete-account', {
+        method: 'DELETE',
+        credentials: 'include'
       })
+
+      if (deleteResponse.ok) {
+        toast({
+          title: "계정 삭제 완료",
+          description: "계정이 성공적으로 삭제되었습니다.",
+        })
+        
+        // 로그아웃 처리 - 더 확실하게
+        try {
+          // 1. 백엔드 로그아웃 API 호출
+          await fetch('/api/auth/logout', { 
+            method: 'POST',
+            credentials: 'include'
+          })
+          
+          // 2. 로컬 인증 상태 정리
+          if (logout) {
+            logout()
+          }
+          
+          // 3. 로컬 스토리지 정리
+          localStorage.removeItem('user')
+          sessionStorage.clear()
+          
+          // 4. 쿠키 정리
+          document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+          })
+          
+        } catch (logoutError) {
+          console.error('로그아웃 처리 오류:', logoutError)
+        }
+        
+        // 홈페이지로 리다이렉트
+        router.push('/')
+      } else {
+        const error = await deleteResponse.json()
+        toast({
+          title: "계정 삭제 실패",
+          description: error.error || "계정 삭제에 실패했습니다.",
+          variant: "destructive"
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "오류 발생",
+        description: "계정 삭제 중 오류가 발생했습니다.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsDeleting(false)
+      setIsDeleteModalOpen(false)
     }
   }
 
@@ -624,6 +688,14 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+
+      {/* 계정 삭제 모달 */}
+      <DeleteAccountModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        isLoading={isDeleting}
+      />
     </div>
   )
 }

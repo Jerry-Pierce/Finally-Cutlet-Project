@@ -10,21 +10,48 @@ import { Label } from "@/components/ui/label"
 import { Mail, ArrowLeft, ArrowRight, Scissors } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import Link from "next/link"
-import { useAuth } from "@/contexts/auth-context"
+import { useToast } from "@/hooks/use-toast"
 
 export default function ForgotPasswordPage() {
   const { t } = useLanguage()
-  const { resetPassword, isLoading } = useAuth()
+  const { toast } = useToast()
   const [email, setEmail] = useState("")
   const [isEmailSent, setIsEmailSent] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
-    const success = await resetPassword(email)
+    try {
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
 
-    if (success) {
-      setIsEmailSent(true)
+      if (response.ok) {
+        setIsEmailSent(true)
+        toast({
+          title: "이메일 발송 완료",
+          description: "비밀번호 재설정 링크가 이메일로 발송되었습니다.",
+        })
+      } else {
+        const error = await response.json()
+        toast({
+          title: "오류 발생",
+          description: error.error || "이메일 발송에 실패했습니다.",
+          variant: "destructive"
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "오류 발생",
+        description: "네트워크 오류가 발생했습니다.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 

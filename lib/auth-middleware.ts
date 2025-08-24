@@ -89,3 +89,44 @@ export function requirePremium(handler: (request: AuthenticatedRequest) => Promi
     return handler(authenticatedRequest)
   }
 }
+
+// JWT 토큰 검증 함수
+export async function verifyToken(request: NextRequest): Promise<{ success: boolean; userId?: string; email?: string; isPremium?: boolean }> {
+  try {
+    // 쿠키에서 토큰 가져오기
+    const token = request.cookies.get('auth-token')?.value
+
+    if (!token) {
+      return { success: false }
+    }
+
+    // JWT 토큰 검증
+    const jwtSecret = process.env.JWT_SECRET || 'fallback-secret'
+    const decoded = jwt.verify(token, jwtSecret) as any
+
+    // 사용자 정보 확인
+    const user = await db.user.findUnique({
+      where: { id: decoded.userId },
+      select: {
+        id: true,
+        email: true,
+        isPremium: true,
+      }
+    })
+
+    if (!user) {
+      return { success: false }
+    }
+
+    return {
+      success: true,
+      userId: user.id,
+      email: user.email,
+      isPremium: user.isPremium
+    }
+
+  } catch (error) {
+    console.error('토큰 검증 오류:', error)
+    return { success: false }
+  }
+}
