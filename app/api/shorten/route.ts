@@ -57,8 +57,30 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 커스텀 코드가 있는 경우 중복 확인
+    // 커스텀 코드가 있는 경우 프리미엄 사용자 체크 및 중복 확인
     if (customCode) {
+      // 프리미엄 사용자 체크
+      if (userId) {
+        const user = await db.user.findUnique({
+          where: { id: userId },
+          select: { isPremium: true }
+        })
+        
+        if (!user?.isPremium) {
+          return NextResponse.json(
+            { error: '커스텀 URL은 프리미엄 사용자만 사용할 수 있습니다.' },
+            { status: 403 }
+          )
+        }
+      } else {
+        // 로그인하지 않은 사용자는 커스텀 URL 사용 불가
+        return NextResponse.json(
+          { error: '커스텀 URL을 사용하려면 로그인이 필요합니다.' },
+          { status: 401 }
+        )
+      }
+      
+      // 중복 확인
       const existingUrl = await db.shortenedUrl.findUnique({
         where: { customCode }
       })
@@ -76,6 +98,21 @@ export async function POST(request: NextRequest) {
     if (expirationDays && expirationDays !== 'permanent') {
       const days = parseInt(expirationDays)
       expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000)
+    }
+
+    // 프리미엄 즐겨찾기 체크
+    if (isPremiumFavorite && userId) {
+      const user = await db.user.findUnique({
+        where: { id: userId },
+        select: { isPremium: true }
+      })
+      
+      if (!user?.isPremium) {
+        return NextResponse.json(
+          { error: '프리미엄 즐겨찾기는 프리미엄 사용자만 사용할 수 있습니다.' },
+          { status: 403 }
+        )
+      }
     }
 
     // 짧은 코드 생성

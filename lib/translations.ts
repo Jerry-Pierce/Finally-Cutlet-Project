@@ -345,6 +345,11 @@ export const translations = {
     urlCopyFailed: "Failed to copy URL.",
     scanQrCodeToAccess: "Scan the QR code to access the link",
     
+    // Premium upgrade
+    premiumUpgradeRequired: "Premium Upgrade Required",
+    customUrlPremiumOnly: "Custom URLs are only available for premium users. Upgrade to unlock this feature and many more!",
+    upgradeToPremium: "Upgrade to Premium",
+    
     notifications: "Notifications",
     markAllAsRead: "Mark All as Read",
     loadingNotifications: "Loading notifications...",
@@ -1041,6 +1046,11 @@ export const translations = {
     copyFailed: "복사 실패",
     urlCopyFailed: "URL 복사에 실패했습니다.",
     scanQrCodeToAccess: "QR 코드를 스캔하여 링크에 접속하세요",
+    
+    // Premium upgrade
+    premiumUpgradeRequired: "프리미엄 업그레이드 필요",
+    customUrlPremiumOnly: "커스텀 URL은 프리미엄 사용자만 사용할 수 있습니다. 업그레이드하여 이 기능과 더 많은 기능을 잠금 해제하세요!",
+    upgradeToPremium: "프리미엄으로 업그레이드",
     
     notifications: "알림",
     markAllAsRead: "모두 읽음",

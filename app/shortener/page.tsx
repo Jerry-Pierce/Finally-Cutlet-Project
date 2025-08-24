@@ -230,35 +230,82 @@ export default function ShortenerPage() {
                     </div>
                     <span className="text-sm font-medium text-foreground">{t("customUrl")}</span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <div className="flex-1 flex items-center">
-                        <span className="text-xs sm:text-sm text-muted-foreground bg-muted px-2 sm:px-3 py-2 rounded-l-md border border-r-0 border-border/50 whitespace-nowrap">
-                          cutlet.ly/
-                        </span>
-                        <Input
-                          placeholder={t("customUrlPlaceholder")}
-                          value={customUrl}
-                          onChange={(e) => setCustomUrl(e.target.value)}
-                          className="rounded-l-none shadow-inner shadow-black/5 border-border/50 focus:shadow-lg focus:shadow-amber-500/10 transition-all duration-300 placeholder:text-muted-foreground/60"
-                        />
+                  {user.isPremium ? (
+                    // 프리미엄 사용자: 커스텀 URL 사용 가능
+                    <div className="space-y-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <div className="flex-1 flex items-center">
+                          <span className="text-xs sm:text-sm text-muted-foreground bg-muted px-2 sm:px-3 py-2 rounded-l-md border border-r-0 border-border/50 whitespace-nowrap">
+                            cutlet.ly/
+                          </span>
+                          <Input
+                            placeholder={t("customUrlPlaceholder")}
+                            value={customUrl}
+                            onChange={(e) => setCustomUrl(e.target.value)}
+                            className="rounded-l-none shadow-inner shadow-black/5 border-border/50 focus:shadow-lg focus:shadow-amber-500/10 transition-all duration-300 placeholder:text-muted-foreground/60"
+                          />
+                        </div>
+                        <button
+                          onClick={() => setIsPremiumFavorite(!isPremiumFavorite)}
+                          className={`p-2 rounded-lg border transition-all duration-300 will-change-transform hover:scale-110 active:scale-95 self-start sm:self-auto ${
+                            isPremiumFavorite
+                              ? "bg-pink-500/10 border-pink-500/30 text-pink-500 shadow-lg shadow-pink-500/20"
+                              : "bg-muted border-border/50 text-muted-foreground hover:bg-pink-500/5 hover:border-pink-500/20"
+                          }`}
+                        >
+                          <Heart className={`w-4 h-4 ${isPremiumFavorite ? "fill-current" : ""}`} />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => setIsPremiumFavorite(!isPremiumFavorite)}
-                        className={`p-2 rounded-lg border transition-all duration-300 will-change-transform hover:scale-110 active:scale-95 self-start sm:self-auto ${
-                          isPremiumFavorite
-                            ? "bg-pink-500/10 border-pink-500/30 text-pink-500 shadow-lg shadow-pink-500/20"
-                            : "bg-muted border-border/50 text-muted-foreground hover:bg-pink-500/5 hover:border-pink-500/20"
-                        }`}
-                      >
-                        <Heart className={`w-4 h-4 ${isPremiumFavorite ? "fill-current" : ""}`} />
-                      </button>
+                      <p className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Crown className="w-3 h-3 text-amber-500" />
+                        {t("premiumOnlyFeature")}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Crown className="w-3 h-3 text-amber-500" />
-                      {t("premiumOnlyFeature")}
-                    </p>
-                  </div>
+                  ) : (
+                    // 무료 사용자: 커스텀 URL 사용 불가, 업그레이드 안내
+                    <div className="space-y-3">
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <div className="flex-1 flex items-center opacity-50">
+                          <span className="text-xs sm:text-sm text-muted-foreground bg-muted px-2 sm:px-3 py-2 rounded-l-md border border-r-0 border-border/50 whitespace-nowrap">
+                            cutlet.ly/
+                          </span>
+                          <Input
+                            placeholder={t("customUrlPlaceholder")}
+                            value=""
+                            disabled={true}
+                            className="rounded-l-none shadow-inner shadow-black/5 border-border/50 bg-muted/50 cursor-not-allowed"
+                          />
+                        </div>
+                        <button
+                          disabled={true}
+                          className="p-2 rounded-lg border border-border/50 bg-muted/50 text-muted-foreground cursor-not-allowed opacity-50"
+                        >
+                          <Heart className="w-4 h-4" />
+                        </button>
+                      </div>
+                      
+                      {/* 프리미엄 업그레이드 안내 */}
+                      <div className="p-3 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 rounded-lg border border-amber-500/20">
+                        <div className="flex items-start gap-3">
+                          <Crown className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-amber-700 dark:text-amber-300 mb-1">
+                              {t("premiumUpgradeRequired")}
+                            </p>
+                            <p className="text-xs text-amber-600 dark:text-amber-400 mb-2">
+                              {t("customUrlPremiumOnly")}
+                            </p>
+                            <Link 
+                              href="/pricing" 
+                              className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                            >
+                              {t("upgradeToPremium")} →
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="border-t border-border/30 pt-4">
