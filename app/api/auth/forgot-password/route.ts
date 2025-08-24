@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
-import { sendEmail, createPasswordResetEmail } from '@/lib/email'
+import { sendPasswordResetEmail } from '@/lib/email-service'
 import crypto from 'crypto'
 
 const prisma = new PrismaClient()
@@ -47,10 +47,11 @@ export async function POST(request: NextRequest) {
     })
 
     // 이메일 발송
-    const emailTemplate = createPasswordResetEmail(resetToken, user.username || user.email)
-    const emailSent = await sendEmail(email, emailTemplate)
+    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/reset-password?token=${resetToken}`
+    const emailResult = await sendPasswordResetEmail(email, user.username || user.email, resetLink)
 
-    if (!emailSent) {
+    if (!emailResult.success) {
+      console.error('비밀번호 재설정 이메일 전송 실패:', emailResult.error)
       return NextResponse.json(
         { error: '이메일 발송에 실패했습니다. 잠시 후 다시 시도해주세요.' },
         { status: 500 }

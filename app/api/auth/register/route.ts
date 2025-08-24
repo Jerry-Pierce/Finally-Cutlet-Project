@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 import { db } from '@/lib/database'
+import { sendWelcomeEmail } from '@/lib/email-service'
 
 // 회원가입 요청 스키마
 const registerSchema = z.object({
@@ -55,6 +56,15 @@ export async function POST(request: NextRequest) {
         username: username || null,
       }
     })
+
+    // 환영 이메일 전송 (비동기로 처리, 실패해도 회원가입은 성공)
+    try {
+      await sendWelcomeEmail(email, username || email.split('@')[0])
+      console.log('환영 이메일 전송 완료:', email)
+    } catch (emailError) {
+      console.error('환영 이메일 전송 실패:', emailError)
+      // 이메일 전송 실패는 회원가입 성공에 영향을 주지 않음
+    }
 
     // 비밀번호 해시는 제외하고 응답
     const { passwordHash: _, ...userWithoutPassword } = user
