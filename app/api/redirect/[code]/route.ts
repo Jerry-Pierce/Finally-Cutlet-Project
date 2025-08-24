@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/database'
+import { PrismaClient } from '@prisma/client'
 import { createClickWithGeo } from '@/lib/geo-middleware'
 import { sendNotification } from '@/app/api/notifications/route'
+
+const prisma = new PrismaClient()
 
 export async function GET(
   request: NextRequest,
@@ -18,7 +20,7 @@ export async function GET(
     }
 
     // 데이터베이스에서 URL 찾기
-    const shortenedUrl = await db.shortenedUrl.findFirst({
+    const shortenedUrl = await prisma.shortenedUrl.findFirst({
       where: {
         OR: [
           { shortCode: code },
@@ -53,7 +55,7 @@ export async function GET(
     const clickData = await createClickWithGeo(request, shortenedUrl.id)
 
     // 클릭 기록 저장
-    await db.urlClick.create({
+    await prisma.urlClick.create({
       data: clickData
     })
 
@@ -61,7 +63,7 @@ export async function GET(
     if (shortenedUrl.userId) {
       try {
         // 알림 데이터베이스에 저장
-        await db.notification.create({
+        await prisma.notification.create({
           data: {
             userId: shortenedUrl.userId,
             type: 'url_click',

@@ -116,11 +116,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // 기본 URL 설정 (환경 변수가 없을 때 localhost:3000 사용)
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    
     return NextResponse.json({
       success: true,
       data: {
         id: shortenedUrl.id,
-        shortUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/${shortenedUrl.shortCode}`,
+        shortUrl: `${baseUrl}/${shortenedUrl.shortCode}`,
         originalUrl: shortenedUrl.originalUrl,
         expiresAt: shortenedUrl.expiresAt,
         createdAt: shortenedUrl.createdAt

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/database'
+import { PrismaClient } from '@prisma/client'
+import QRCode from 'qrcode'
+
+const prisma = new PrismaClient()
 
 export async function GET(
   request: NextRequest,
@@ -16,7 +19,7 @@ export async function GET(
     }
 
     // 데이터베이스에서 URL 찾기
-    const shortenedUrl = await db.shortenedUrl.findFirst({
+    const shortenedUrl = await prisma.shortenedUrl.findFirst({
       where: {
         OR: [
           { shortCode: code },
@@ -41,13 +44,28 @@ export async function GET(
     }
 
     // QR 코드 생성을 위한 URL
-    const qrUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${code}`
+    const qrUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/${code}`
     
-    // QR 코드 생성 서비스 (Google Charts API 사용)
-    const googleQrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(qrUrl)}&choe=UTF-8`
-
-    // QR 코드 이미지 리다이렉트
-    return NextResponse.redirect(googleQrUrl)
+    // QR 코드 생성 (qrcode 라이브러리 사용)
+    const qrCodeDataUrl = await QRCode.toDataURL(qrUrl, {
+      width: 300,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF'
+      }
+    })
+    
+    // Data URL을 이미지로 변환하여 응답
+    const base64Data = qrCodeDataUrl.split(',')[1]
+    const buffer = Buffer.from(base64Data, 'base64')
+    
+    return new NextResponse(buffer, {
+      headers: {
+        'Content-Type': 'image/png',
+        'Cache-Control': 'public, max-age=31536000, immutable'
+      }
+    })
 
   } catch (error) {
     console.error('QR 코드 생성 오류:', error)

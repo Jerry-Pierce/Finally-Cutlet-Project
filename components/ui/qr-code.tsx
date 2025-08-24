@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { QrCode, Download, Copy, Check } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useLanguage } from "@/contexts/language-context"
 
 interface QRCodeProps {
   url: string
@@ -13,6 +14,7 @@ interface QRCodeProps {
 }
 
 export function QRCode({ url, code, title }: QRCodeProps) {
+  const { t } = useLanguage()
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
   const { toast } = useToast()
@@ -36,14 +38,14 @@ export function QRCode({ url, code, title }: QRCodeProps) {
       window.URL.revokeObjectURL(downloadUrl)
       
       toast({
-        title: "다운로드 완료",
-        description: "QR 코드가 성공적으로 다운로드되었습니다.",
+        title: t("downloadComplete"),
+        description: t("qrCodeDownloaded"),
       })
     } catch (error) {
       console.error('QR 코드 다운로드 오류:', error)
       toast({
-        title: "다운로드 실패",
-        description: "QR 코드 다운로드에 실패했습니다.",
+        title: t("downloadFailed"),
+        description: t("qrCodeDownloadFailed"),
         variant: "destructive"
       })
     } finally {
@@ -57,15 +59,15 @@ export function QRCode({ url, code, title }: QRCodeProps) {
       setCopied(true)
       
       toast({
-        title: "복사 완료",
-        description: "URL이 클립보드에 복사되었습니다.",
+        title: t("copyComplete"),
+        description: t("urlCopiedToClipboard"),
       })
       
       setTimeout(() => setCopied(false), 2000)
     } catch (error) {
       toast({
-        title: "복사 실패",
-        description: "URL 복사에 실패했습니다.",
+        title: t("copyFailed"),
+        description: t("urlCopyFailed"),
         variant: "destructive"
       })
     }
@@ -76,10 +78,12 @@ export function QRCode({ url, code, title }: QRCodeProps) {
       <CardHeader className="text-center pb-4">
         <CardTitle className="flex items-center justify-center gap-2">
           <QrCode className="w-5 h-5 text-primary" />
-          QR 코드
+          {t("qrCode")}
         </CardTitle>
-        {title && (
+        {title ? (
           <p className="text-sm text-muted-foreground">{title}</p>
+        ) : (
+          <p className="text-sm text-muted-foreground">{t("scanWithSmartphone")}</p>
         )}
       </CardHeader>
       <CardContent className="space-y-4">
@@ -97,7 +101,7 @@ export function QRCode({ url, code, title }: QRCodeProps) {
 
         {/* URL 표시 */}
         <div className="text-center">
-          <p className="text-xs text-muted-foreground mb-1">단축된 URL</p>
+          <p className="text-xs text-muted-foreground mb-1">{t("shortenedUrl")}</p>
           <p className="font-mono text-sm text-primary break-all">
             {url}
           </p>
@@ -116,7 +120,7 @@ export function QRCode({ url, code, title }: QRCodeProps) {
             ) : (
               <>
                 <Download className="w-4 h-4 mr-2" />
-                다운로드
+                {t("download")}
               </>
             )}
           </Button>
@@ -129,12 +133,12 @@ export function QRCode({ url, code, title }: QRCodeProps) {
             {copied ? (
               <>
                 <Check className="w-4 h-4 mr-2" />
-                복사됨
+                {t("copied")}
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4 mr-2" />
-                URL 복사
+                {t("copyUrl")}
               </>
             )}
           </Button>
@@ -142,7 +146,7 @@ export function QRCode({ url, code, title }: QRCodeProps) {
 
         {/* 사용법 안내 */}
         <div className="text-center text-xs text-muted-foreground">
-          <p>QR 코드를 스캔하여 링크에 접속하세요</p>
+          <p>{t("scanQrCodeToAccess")}</p>
         </div>
       </CardContent>
     </Card>

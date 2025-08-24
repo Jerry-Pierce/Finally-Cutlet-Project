@@ -374,7 +374,7 @@ export default function ShortenerPage() {
                     <QRCode 
                       url={shortUrl} 
                       code={shortUrl.split('/').pop() || ''}
-                      title="스마트폰으로 스캔하여 링크에 접속하세요"
+                      title={t("scanWithSmartphone")}
                     />
                   </div>
                 </div>
