@@ -32,6 +32,7 @@ export default function ProfilePage() {
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
+    verificationCode: "",
   })
   
   // 비밀번호 표시 상태
@@ -39,6 +40,15 @@ export default function ProfilePage() {
     current: false,
     new: false,
     confirm: false
+  })
+
+  // 비밀번호 변경 인증 상태
+  const [passwordChangeState, setPasswordChangeState] = useState({
+    isVerificationSent: false,
+    isVerifying: false,
+    isChanging: false,
+    canResend: true,
+    resendCountdown: 0
   })
 
   // 알림 설정
@@ -73,6 +83,16 @@ export default function ProfilePage() {
     loadProfile()
   }, [user, router])
 
+  // 알림설정 로드
+  useEffect(() => {
+    if (profileData) {
+      setNotifications(prev => ({
+        ...prev,
+        email: profileData.emailNotifications ?? true
+      }))
+    }
+  }, [profileData])
+
   const loadProfile = async () => {
     if (!user) return
     
@@ -90,8 +110,15 @@ export default function ProfilePage() {
           email: result.data.email || "",
           currentPassword: "",
           newPassword: "",
-          confirmPassword: ""
+          confirmPassword: "",
+          verificationCode: ""
         })
+        
+        // 알림설정 로드
+        setNotifications(prev => ({
+          ...prev,
+          email: result.data.emailNotifications ?? true
+        }))
       } else {
         toast({
           title: "오류 발생",
@@ -108,6 +135,80 @@ export default function ProfilePage() {
       })
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleSendPasswordChangeVerification = async () => {
+    if (!formData.currentPassword) {
+      toast({
+        title: t("currentPasswordRequired"),
+        description: t("pleaseEnterCurrentPassword"),
+        variant: "destructive"
+      })
+      return
+    }
+
+    setPasswordChangeState(prev => ({ ...prev, isVerifying: true }))
+    
+    try {
+      const response = await fetch('/api/user/send-password-change-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ currentPassword: formData.currentPassword })
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        toast({
+          title: t("verificationCodeSentForPasswordChange"),
+          description: t("verificationCodeSentDesc"),
+        })
+        
+        // 인증 코드를 formData에 저장하지 않음 (사용자가 직접 입력하도록)
+        // 개발용으로는 콘솔에 출력
+        if (result.verificationCode) {
+          console.log('📧 받은 인증 코드:', result.verificationCode)
+          // 자동 입력 방지: setFormData(prev => ({ ...prev, verificationCode: result.verificationCode }))
+        }
+        
+        setPasswordChangeState(prev => ({ 
+          ...prev, 
+          isVerificationSent: true,
+          isVerifying: false,
+          canResend: false 
+        }))
+        
+        // 재전송 카운트다운 시작
+        let countdown = 60
+        setPasswordChangeState(prev => ({ ...prev, resendCountdown: countdown }))
+        
+        const timer = setInterval(() => {
+          countdown--
+          setPasswordChangeState(prev => ({ ...prev, resendCountdown: countdown }))
+          
+          if (countdown <= 0) {
+            clearInterval(timer)
+            setPasswordChangeState(prev => ({ ...prev, canResend: true, resendCountdown: 0 }))
+          }
+        }, 1000)
+        
+      } else {
+        const error = await response.json()
+        toast({
+          title: t("verificationCodeSendFailed"),
+          description: t(error.error) || t("verificationCodeSendFailedDesc"),
+          variant: "destructive"
+        })
+        setPasswordChangeState(prev => ({ ...prev, isVerifying: false }))
+      }
+    } catch (error) {
+      toast({
+        title: t("errorOccurred"),
+        description: t("errorDuringVerificationCodeSend"),
+        variant: "destructive"
+      })
+      setPasswordChangeState(prev => ({ ...prev, isVerifying: false }))
     }
   }
 
@@ -135,10 +236,48 @@ export default function ProfilePage() {
       if (formData.email && formData.email !== profileData?.email) {
         updateData.email = formData.email
       }
+
+      // 알림설정 업데이트
+      if (notifications.email !== profileData?.emailNotifications) {
+        updateData.emailNotifications = notifications.email
+      }
       
-      if (formData.currentPassword && formData.newPassword) {
-        updateData.currentPassword = formData.currentPassword
-        updateData.newPassword = formData.newPassword
+      if (formData.currentPassword && formData.newPassword && formData.verificationCode) {
+        // 이메일 인증을 통한 비밀번호 변경
+        const passwordChangeResponse = await fetch('/api/user/change-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            currentPassword: formData.currentPassword,
+            newPassword: formData.newPassword,
+            verificationCode: formData.verificationCode
+          })
+        })
+
+        if (!passwordChangeResponse.ok) {
+          const error = await passwordChangeResponse.json()
+          toast({
+            title: t("passwordChangeFailed"),
+            description: t(error.error) || t("passwordChangeFailedDesc"),
+            variant: "destructive"
+          })
+          return
+        }
+
+        toast({
+          title: t("passwordChangeSuccess"),
+          description: t("passwordChangeSuccessDesc"),
+        })
+
+        // 비밀번호 변경 상태 초기화
+        setPasswordChangeState({
+          isVerificationSent: false,
+          isVerifying: false,
+          isChanging: false,
+          canResend: true,
+          resendCountdown: 0
+        })
       }
 
       if (Object.keys(updateData).length === 0) {
@@ -387,7 +526,8 @@ export default function ProfilePage() {
 
             <Card className="border-border/50 shadow-lg shadow-black/5 backdrop-blur-sm bg-card/95">
               <CardContent className="pt-6">
-                <div className="space-y-4">
+                <div className="space-y-6">
+                  {/* 현재 비밀번호 입력 */}
                   <div className="grid gap-2">
                     <Label htmlFor="currentPassword">{t("currentPassword")}</Label>
                     <div className="relative">
@@ -409,53 +549,112 @@ export default function ProfilePage() {
                         {showPasswords.current ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
                     </div>
+                    
+                    {/* 인증 코드 전송 버튼 */}
+                    <Button
+                      type="button"
+                      onClick={handleSendPasswordChangeVerification}
+                      disabled={!formData.currentPassword || passwordChangeState.isVerifying || !passwordChangeState.canResend}
+                      className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      {passwordChangeState.isVerifying ? (
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : passwordChangeState.canResend ? (
+                        t("sendVerificationCodeForPasswordChange")
+                      ) : (
+                        `${passwordChangeState.resendCountdown}${t("seconds")} ${t("resendCodeIn")}`
+                      )}
+                    </Button>
                   </div>
   
-                  <div className="grid gap-2">
-                    <Label htmlFor="newPassword">{t("newPassword")}</Label>
-                    <div className="relative">
-                      <Input
-                        id="newPassword"
-                        type={showPasswords.new ? "text" : "password"}
-                        value={formData.newPassword}
-                        onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
-                        className="shadow-inner shadow-black/5 pr-10"
-                        placeholder={t("enterNewPassword")}
-                      />
+                  {/* 이메일 인증 완료 후 표시되는 새 비밀번호 입력 필드들 */}
+                  {passwordChangeState.isVerificationSent && (
+                    <>
+                      {/* 인증 코드 입력 */}
+                      <div className="grid gap-2">
+                        <Label htmlFor="verificationCode">{t("verificationCodeForPasswordChange")}</Label>
+                        <Input
+                          id="verificationCode"
+                          type="text"
+                          value={formData.verificationCode}
+                          onChange={(e) => setFormData({ ...formData, verificationCode: e.target.value })}
+                          className="shadow-inner shadow-black/5"
+                          placeholder={t("verificationCodeForPasswordChangePlaceholder")}
+                          autoComplete="off"
+                          autoCorrect="off"
+                          autoCapitalize="off"
+                          spellCheck="false"
+                        />
+                      </div>
+
+                      {/* 새 비밀번호 입력 */}
+                      <div className="grid gap-2">
+                        <Label htmlFor="newPassword">{t("newPassword")}</Label>
+                        <div className="relative">
+                          <Input
+                            id="newPassword"
+                            type={showPasswords.new ? "text" : "password"}
+                            value={formData.newPassword}
+                            onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
+                            className="shadow-inner shadow-black/5 pr-10"
+                            placeholder={t("enterNewPassword")}
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                            onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
+                          >
+                            {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* 새 비밀번호 확인 */}
+                      <div className="grid gap-2">
+                        <Label htmlFor="confirmPassword">{t("confirmNewPassword")}</Label>
+                        <div className="relative">
+                          <Input
+                            id="confirmPassword"
+                            type={showPasswords.confirm ? "text" : "password"}
+                            value={formData.confirmPassword}
+                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} 
+                            className="shadow-inner shadow-black/5 pr-10"
+                            placeholder={t("reEnterNewPassword")}
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                            onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
+                          >
+                            {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* 비밀번호 변경 버튼 */}
                       <Button
                         type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                        onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
+                        onClick={handleSave}
+                        disabled={!formData.verificationCode || !formData.newPassword || !formData.confirmPassword || formData.newPassword !== formData.confirmPassword}
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
                       >
-                        {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {t("changePassword")}
                       </Button>
+                    </>
+                  )}
+
+                  {/* 보안 안내 메시지 */}
+                  {!passwordChangeState.isVerificationSent && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <p className="text-sm text-blue-800">
+                        💡 <strong>{t("securityTip")}</strong> {t("passwordChangeSecurityDesc")}
+                      </p>
                     </div>
-                  </div>
-  
-                  <div className="grid gap-2">
-                    <Label htmlFor="confirmPassword">{t("confirmNewPassword")}</Label>
-                    <div className="relative">
-                      <Input
-                        id="confirmPassword"
-                        type={showPasswords.confirm ? "text" : "password"}
-                        value={formData.confirmPassword}
-                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                        className="shadow-inner shadow-black/5 pr-10"
-                        placeholder={t("reEnterNewPassword")}
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                        onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
-                      >
-                        {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

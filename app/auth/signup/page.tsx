@@ -23,13 +23,140 @@ export default function SignupPage() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [verificationCode, setVerificationCode] = useState("")
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
+  const [isSendingCode, setIsSendingCode] = useState(false)
+  const [isVerifyingCode, setIsVerifyingCode] = useState(false)
+  const [expectedCode, setExpectedCode] = useState("")
+  const [canResend, setCanResend] = useState(true)
+  const [resendCountdown, setResendCountdown] = useState(0)
+
+  // 이메일 인증 코드 전송
+  const handleSendVerificationCode = async () => {
+    if (!email) {
+      toast({
+        title: t("emailInputRequired"),
+        description: t("pleaseEnterEmailFirst"),
+        variant: "destructive",
+      })
+      return
+    }
+
+    setIsSendingCode(true)
+    try {
+      const response = await fetch('/api/auth/send-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setExpectedCode(result.verificationCode)
+        setIsEmailVerified(false)
+        setVerificationCode("")
+        toast({
+          title: t("verificationCodeSentSuccess"),
+          description: t("verificationCodeSent"),
+        })
+        
+        // 재전송 제한 (1분)
+        setCanResend(false)
+        setResendCountdown(60)
+        const timer = setInterval(() => {
+          setResendCountdown((prev) => {
+            if (prev <= 1) {
+              setCanResend(true)
+              clearInterval(timer)
+              return 0
+            }
+            return prev - 1
+          })
+        }, 1000)
+      } else {
+        toast({
+          title: t("verificationCodeSendFailed"),
+          description: t(result.error) || t("verificationCodeSendFailedDesc"),
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: t("errorOccurred"),
+        description: t("errorDuringVerificationCodeSend"),
+        variant: "destructive",
+      })
+    } finally {
+      setIsSendingCode(false)
+    }
+  }
+
+  // 이메일 인증 코드 확인
+  const handleVerifyEmail = async () => {
+    if (!verificationCode || !expectedCode) {
+      toast({
+        title: t("verificationCodeInputRequired"),
+        description: t("pleaseEnterVerificationCode"),
+        variant: "destructive",
+      })
+      return
+    }
+
+    setIsVerifyingCode(true)
+    try {
+      const response = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email, 
+          verificationCode, 
+          expectedCode 
+        })
+      })
+
+      const result = await response.json()
+
+      if (result.success && result.verified) {
+        setIsEmailVerified(true)
+        toast({
+          title: t("emailVerificationComplete"),
+          description: t("emailVerificationComplete"),
+        })
+      } else {
+        toast({
+          title: t("verificationFailed"),
+          description: t("verificationCodeMismatch"),
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: t("errorOccurred"),
+        description: t("errorDuringVerification"),
+        variant: "destructive",
+      })
+    } finally {
+      setIsVerifyingCode(false)
+    }
+  }
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!isEmailVerified) {
+      toast({
+        title: t("emailVerificationRequired"),
+        description: t("pleaseCompleteEmailVerification"),
+        variant: "destructive",
+      })
+      return
+    }
+    
     if (password !== confirmPassword) {
       toast({
-        title: "Password mismatch",
-        description: "Please make sure your passwords match.",
+        title: t("passwordMismatch"),
+        description: t("pleaseMakeSurePasswordsMatch"),
         variant: "destructive",
       })
       return
@@ -39,14 +166,14 @@ export default function SignupPage() {
 
     if (success) {
       toast({
-        title: "Account created!",
-        description: "Welcome to Cutlet. You can now start shortening URLs.",
+        title: t("accountCreatedSuccess"),
+        description: `${t("welcomeToCutlet")}. ${t("youCanNowStartShorteningUrls")}`,
       })
       router.push("/shortener")
     } else {
       toast({
-        title: "Signup failed",
-        description: "Please try again with different credentials.",
+        title: t("signupFailed"),
+        description: t("pleaseTryAgainWithDifferentCredentials"),
         variant: "destructive",
       })
     }
@@ -89,7 +216,7 @@ export default function SignupPage() {
                     <Input
                       id="username"
                       type="text"
-                      placeholder="사용자명을 입력하세요"
+                      placeholder={t("usernamePlaceholder")}
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       className="shadow-inner shadow-black/5 border-border/50 focus:shadow-lg focus:shadow-primary/10 transition-all duration-300"
@@ -113,7 +240,60 @@ export default function SignupPage() {
                       required
                     />
                   </div>
+                  <Button
+                    type="button"
+                    onClick={handleSendVerificationCode}
+                    disabled={isSendingCode || !email || !canResend}
+                    className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    {isSendingCode ? (
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : canResend ? (
+                      t("sendVerificationCode")
+                    ) : (
+                      `${resendCountdown}${t("seconds")} ${t("resendCodeIn")}`
+                    )}
+                  </Button>
                 </div>
+
+                {/* 이메일 인증 코드 입력란 */}
+                {expectedCode && (
+                  <div className="space-y-2">
+                                      <Label htmlFor="verificationCode" className="text-sm font-medium">
+                    {t("verificationCode")}
+                  </Label>
+                    <div className="flex gap-2">
+                                              <Input
+                          id="verificationCode"
+                          type="text"
+                          placeholder={t("verificationCodePlaceholder")}
+                          value={verificationCode}
+                          onChange={(e) => setVerificationCode(e.target.value)}
+                          className="flex-1 shadow-inner shadow-black/5 border-border/50 focus:shadow-lg focus:shadow-primary/10 transition-all duration-300"
+                          maxLength={6}
+                        />
+                      <Button
+                        type="button"
+                        onClick={handleVerifyEmail}
+                        disabled={isVerifyingCode || !verificationCode || isEmailVerified}
+                        className="px-4 bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        {isVerifyingCode ? (
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : isEmailVerified ? (
+                          t("emailVerificationComplete")
+                        ) : (
+                          t("verifyEmail")
+                        )}
+                      </Button>
+                    </div>
+                    {isEmailVerified && (
+                      <p className="text-sm text-green-600 font-medium">
+                        ✓ {t("emailVerificationComplete")}
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-sm font-medium">
@@ -153,11 +333,15 @@ export default function SignupPage() {
 
                 <Button
                   type="submit"
-                  disabled={isLoading}
-                  className="w-full shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 will-change-transform hover:scale-105 active:scale-95 transition-all duration-200"
+                  disabled={isLoading || !isEmailVerified}
+                  className={`w-full shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 will-change-transform hover:scale-105 active:scale-95 transition-all duration-200 ${
+                    !isEmailVerified ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
                   {isLoading ? (
                     <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                  ) : !isEmailVerified ? (
+                    t("accountCreationPossibleAfterVerification")
                   ) : (
                     <>
                       {t("createAccount")}

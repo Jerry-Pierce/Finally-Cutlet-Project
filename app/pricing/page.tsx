@@ -67,7 +67,7 @@ export default function PricingPage() {
     {
       id: "premium",
       name: t("premium"),
-      price: 9900,
+      price: 3.99,
       period: t("monthly"),
       description: t("premiumDescription"),
       features: [
@@ -75,7 +75,6 @@ export default function PricingPage() {
         t("customUrl"),
         t("advancedStats"),
         t("geographicAnalysis"),
-        t("customDomain"),
         t("expirationDate"),
         t("favoriteManagement"),
         t("prioritySupport"),
@@ -440,7 +439,7 @@ export default function PricingPage() {
                     <CardDescription>{plan.description}</CardDescription>
                     <div className="mt-4">
                       <span className="text-4xl font-bold text-primary">
-                        {plan.price === 0 ? t("free") : `₩${plan.price.toLocaleString()}`}
+                        {plan.price === 0 ? t("free") : `$${plan.price.toFixed(2)}`}
                       </span>
                       {plan.price > 0 && (
                         <span className="text-muted-foreground">/{t(plan.period)}</span>

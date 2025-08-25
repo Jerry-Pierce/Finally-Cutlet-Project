@@ -15,25 +15,23 @@ export const SUBSCRIPTION_PLANS = {
     ],
     limits: {
       urlsPerMonth: 10,
-      customDomains: 0,
       advancedAnalytics: false,
       prioritySupport: false
     }
   },
   premium: {
     name: 'premium', // Will be translated in frontend
-    price: 9900, // 9,900원
+    price: 3.99, // $3.99
     features: [
       '무제한 URL 단축',
       '고급 통계 및 분석',
-      '커스텀 도메인',
+      '커스텀 URL',
       '우선 지원',
       'API 액세스',
       '일괄 URL 관리'
     ],
     limits: {
       urlsPerMonth: -1, // 무제한
-      customDomains: 3,
       advancedAnalytics: true,
       prioritySupport: true
     }
