@@ -57,7 +57,7 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <GlobeIcon />
-            {t("geoAnalysisSummary")}
+            {t("geographicAnalysisSummary")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -117,7 +117,7 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
           ) : (
             <div className="text-center py-8 text-muted-foreground">
               <GlobeIcon />
-              <p>{t("noGeoDataYet")}</p>
+              <p>{t("noGeographicDataYet")}</p>
             </div>
           )}
         </CardContent>

@@ -1223,6 +1223,16 @@ export const translations = {
     averagePerUrl: "URL당 평균",
     clicks: "클릭",
     recent7DaysClickStats: "최근 7일 클릭 통계",
+
+    // Geographic analysis
+    geographicAnalysisSummary: "지리적 분석 요약",
+    countries: "국가",
+    cities: "도시",
+    visitors: "방문자",
+    topCountryClicks: "국가별 상위 클릭",
+    noGeographicDataYet: "아직 지리적 데이터 없음",
+    topCityClicks: "도시별 상위 클릭",
+    noCityDataYet: "아직 도시 데이터 없음",
   },
   zh: {
     // Navigation
@@ -2504,12 +2514,14 @@ export const translations = {
     favorites: "Favoriten",
     basicStatsComingSoon: "Grundlegende Statistikfunktionen werden in Kürze hinzugefügt.",
     geoAnalysisSummary: "Geografische Analyse Zusammenfassung",
+    geographicAnalysisSummary: "Geographic Analysis Summary",
     countries: "Länder",
     cities: "Städte", 
     visitors: "Besucher",
     topCountryClicks: "Top-Klicks nach Ländern",
     topCityClicks: "Top-Klicks nach Städten",
     noGeoDataYet: "Noch keine geografischen Daten",
+    noGeographicDataYet: "No geographic data yet",
     noCityDataYet: "Noch keine Stadtdaten",
     profileSettings: "Profil-Einstellungen",
     manageAccountInfo: "Verwalten Sie Ihre Kontoinformationen und -einstellungen",

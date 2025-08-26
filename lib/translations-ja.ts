@@ -8,6 +8,7 @@ export const jaTranslations = {
   monitoring: "モニタリング",
   users: "ユーザー",
   backup: "バックアップ",
+  urlShortener: "URL短縮ツール",
   urlShortenerService: "URL短縮サービス",
 
   // Header
@@ -96,6 +97,80 @@ export const jaTranslations = {
   customUrls: "カスタムURL",
   customUrlsDesc: "カスタムURLパスでブランド化された覚えやすいリンクを作成。",
   globalAccess: "グローバルアクセス",
+  globalAccessDesc: "世界中どこからでもアクセス可能な高速で信頼性の高いサービス。",
+
+  // Statistics section
+  trustedByThousands: "数千人に信頼されています",
+  joinCommunity: "世界中の成長するコミュニティに参加しましょう",
+  linksShortened: "短縮されたリンク",
+  activeUsers: "アクティブユーザー",
+  premiumPercentage: "プレミアム",
+  totalClicks: "総クリック数",
+  activeUrls: "アクティブURL",
+  clicksPerUrl: "クリック/URL",
+
+  // Call to action
+  readyToStart: "準備はできましたか？",
+  startShorteningToday: "今日からURL短縮を始めて、その違いを体験してください。",
+  createAccount: "アカウント作成",
+  learnMore: "詳細を見る",
+
+  // Pricing page header
+  simpleTransparentPricing: "シンプルで透明な料金体系",
+  choosePlanForYou: "あなたに合ったプランを選択してください",
+  plan: "プラン",
+  planDescription: "個人ユーザーからビジネスユーザーまで、すべてのプランに機能が含まれています",
+
+  // Features section
+  allRequirements: "すべてのプランに機能が含まれています",
+  basicToAdvanced: "基本機能から高度な機能まで、必要なすべてを提供します",
+
+  // Feature cards
+  unlimitedUrlShortening: "無制限URL短縮",
+  unlimitedUrlShorteningDesc: "必要なだけリンクを短縮できます",
+  customUrlTitle: "カスタムURL",
+  customUrlDesc: "ブランド用のカスタマイズされたリンク",
+  detailedAnalytics: "詳細分析",
+  detailedAnalyticsDesc: "クリック統計とユーザー分析",
+  secureLinks: "安全なリンク",
+  secureLinksDesc: "すべてのリンクが安全に保護されています",
+
+  // FAQ section
+  faq: "よくある質問",
+  canChangePlanAnytime: "プランはいつでも変更できますか？",
+  canChangePlanAnytimeDesc: "はい、いつでもプランをアップグレードまたはダウングレードできます。変更は即座に反映されます。",
+  freePlanLimitations: "無料プランの制限は何ですか？",
+  freePlanLimitationsDesc: "無料プランでは、URL短縮を合計10回まで行え、基本的な統計とQRコード生成機能を提供します。",
+  whatArePremiumFeatures: "プレミアム機能は何ですか？",
+  whatArePremiumFeaturesDesc: "プレミアム機能には、無制限のURL短縮、カスタムURL、高度な分析、地理的分析、APIアクセスが含まれます。",
+  howIsPaymentProcessed: "支払いはどのように処理されますか？",
+  howIsPaymentProcessedDesc: "安全な支払い処理を使用しています。お客様の支払い情報は暗号化され、安全です。",
+
+  // Dashboard empty state
+  noUrlsMessage: "まだURLがありません",
+  createFirstUrl: "最初のURLを作成しましょう！",
+  createUrl: "URL作成",
+
+  // Dashboard analytics
+  urlGrowth: "URL成長",
+  recent30Days: "最近30日間",
+  averageClicks: "平均クリック数",
+  averagePerUrl: "URLあたりの平均",
+  bestDay: "最高の日",
+  clicks: "クリック数",
+  topPerformingUrls: "最高実績URL",
+  dailyStats: "日次統計",
+  recent7DaysClickStats: "最近7日間のクリック統計",
+
+  // Geographic analysis
+  geographicAnalysisSummary: "地理的分析サマリー",
+  countries: "国",
+  cities: "都市",
+  visitors: "訪問者",
+  topCountryClicks: "国別トップクリック数",
+  noGeographicDataYet: "まだ地理的データがありません",
+  topCityClicks: "都市別トップクリック数",
+  noCityDataYet: "まだ都市データがありません",
 
   // Pricing
   free: "無料",

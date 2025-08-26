@@ -8,6 +8,7 @@ export const deTranslations = {
   monitoring: "Überwachung",
   users: "Benutzer",
   backup: "Backup",
+  urlShortener: "URL-Verkürzer",
   urlShortenerService: "URL-Verkürzungsdienst",
 
   // Header
@@ -96,6 +97,80 @@ export const deTranslations = {
   customUrls: "Benutzerdefinierte URLs",
   customUrlsDesc: "Erstellen Sie markenbezogene, einprägsame Links mit benutzerdefinierten URL-Pfaden.",
   globalAccess: "Globaler Zugriff",
+  globalAccessDesc: "Schneller und zuverlässiger Service, der weltweit zugänglich ist.",
+
+  // Statistics section
+  trustedByThousands: "Vertraut von Tausenden",
+  joinCommunity: "Schließen Sie sich unserer wachsenden Community von Benutzern weltweit an",
+  linksShortened: "Verkürzte Links",
+  activeUsers: "Aktive Benutzer",
+  premiumPercentage: "Premium",
+  totalClicks: "Gesamtklicks",
+  activeUrls: "Aktive URLs",
+  clicksPerUrl: "Klicks/URL",
+
+  // Call to action
+  readyToStart: "Bereit zu starten?",
+  startShorteningToday: "Beginnen Sie heute mit dem Verkürzen Ihrer URLs und erleben Sie den Unterschied.",
+  createAccount: "Konto erstellen",
+  learnMore: "Mehr erfahren",
+
+  // Pricing page header
+  simpleTransparentPricing: "Einfache und transparente Preisgestaltung",
+  choosePlanForYou: "Wählen Sie den Plan, der zu Ihnen passt",
+  plan: "Plan",
+  planDescription: "Wir bieten Pläne, die von Privatnutzern bis hin zu Geschäftsnutzern passen, alle Pläne enthalten Funktionen",
+
+  // Features section
+  allRequirements: "Alle Pläne enthalten Funktionen",
+  basicToAdvanced: "Von grundlegenden bis hin zu erweiterten Funktionen bieten wir alles, was Sie brauchen",
+
+  // Feature cards
+  unlimitedUrlShortening: "Unbegrenzte URL-Verkürzung",
+  unlimitedUrlShorteningDesc: "Verkürzen Sie so viele Links, wie Sie benötigen",
+  customUrlTitle: "Benutzerdefinierte URL",
+  customUrlDesc: "Angepasste Links für Ihre Marke",
+  detailedAnalytics: "Detaillierte Analysen",
+  detailedAnalyticsDesc: "Klick-Statistiken und Benutzeranalyse",
+  secureLinks: "Sichere Links",
+  secureLinksDesc: "Alle Links sind sicher geschützt",
+
+  // FAQ section
+  faq: "Häufig gestellte Fragen",
+  canChangePlanAnytime: "Kann ich meinen Plan jederzeit ändern?",
+  canChangePlanAnytimeDesc: "Ja, Sie können Ihren Plan jederzeit upgraden oder downgraden. Änderungen treten sofort in Kraft.",
+  freePlanLimitations: "Was sind die Einschränkungen des kostenlosen Plans?",
+  freePlanLimitationsDesc: "Der kostenlose Plan ermöglicht insgesamt 10 URL-Verkürzungen und bietet grundlegende Statistiken und QR-Code-Generierungsfunktionen.",
+  whatArePremiumFeatures: "Was sind die Premium-Funktionen?",
+  whatArePremiumFeaturesDesc: "Premium-Funktionen umfassen unbegrenzte URL-Verkürzung, benutzerdefinierte URLs, erweiterte Analysen, geografische Analysen und API-Zugang.",
+  howIsPaymentProcessed: "Wie wird die Zahlung abgewickelt?",
+  howIsPaymentProcessedDesc: "Wir verwenden eine sichere Zahlungsabwicklung. Ihre Zahlungsinformationen sind verschlüsselt und sicher.",
+
+  // Dashboard empty state
+  noUrlsMessage: "Noch keine URLs",
+  createFirstUrl: "Erstellen Sie Ihre erste URL!",
+  createUrl: "URL erstellen",
+
+  // Dashboard analytics
+  urlGrowth: "URL-Wachstum",
+  recent30Days: "Letzte 30 Tage",
+  averageClicks: "Durchschnittliche Klicks",
+  averagePerUrl: "Durchschnitt pro URL",
+  bestDay: "Bester Tag",
+  clicks: "Klicks",
+  topPerformingUrls: "Beste performing URLs",
+  dailyStats: "Tägliche Statistiken",
+  recent7DaysClickStats: "Klick-Statistiken der letzten 7 Tage",
+
+  // Geographic analysis
+  geographicAnalysisSummary: "Geografische Analyse Zusammenfassung",
+  countries: "Länder",
+  cities: "Städte",
+  visitors: "Besucher",
+  topCountryClicks: "Top Länder-Klicks",
+  noGeographicDataYet: "Noch keine geografischen Daten",
+  topCityClicks: "Top Stadt-Klicks",
+  noCityDataYet: "Noch keine Stadt-Daten",
 
   // Pricing
   free: "Kostenlos",

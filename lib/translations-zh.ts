@@ -8,6 +8,7 @@ export const zhTranslations = {
   monitoring: "监控",
   users: "用户",
   backup: "备份",
+  urlShortener: "URL缩短器",
   urlShortenerService: "URL缩短服务",
 
   // Header
@@ -96,6 +97,80 @@ export const zhTranslations = {
   customUrls: "自定义URL",
   customUrlsDesc: "使用自定义URL路径创建品牌化、易记的链接。",
   globalAccess: "全球访问",
+  globalAccessDesc: "全球高速可靠的访问服务。",
+
+  // Statistics section
+  trustedByThousands: "数千人信赖",
+  joinCommunity: "加入我们不断增长的全球用户社区",
+  linksShortened: "已缩短链接",
+  activeUsers: "活跃用户",
+  premiumPercentage: "高级版",
+  totalClicks: "总点击量",
+  activeUrls: "活跃URL",
+  clicksPerUrl: "点击/URL",
+
+  // Call to action
+  readyToStart: "准备开始了吗？",
+  startShorteningToday: "今天就开始缩短您的URL，体验其中的差异。",
+  createAccount: "创建账户",
+  learnMore: "了解更多",
+
+  // Pricing page header
+  simpleTransparentPricing: "简单透明的定价",
+  choosePlanForYou: "选择适合您的计划",
+  plan: "计划",
+  planDescription: "我们提供从个人用户到商业用户的计划，所有计划都包含功能",
+
+  // Features section
+  allRequirements: "所有计划都包含功能",
+  basicToAdvanced: "从基本功能到高级功能，我们提供您需要的一切",
+
+  // Feature cards
+  unlimitedUrlShortening: "无限制URL缩短",
+  unlimitedUrlShorteningDesc: "根据需要缩短任意数量的链接",
+  customUrlTitle: "自定义URL",
+  customUrlDesc: "为您的品牌定制链接",
+  detailedAnalytics: "详细分析",
+  detailedAnalyticsDesc: "点击统计和用户分析",
+  secureLinks: "安全链接",
+  secureLinksDesc: "所有链接都安全保护",
+
+  // FAQ section
+  faq: "常见问题",
+  canChangePlanAnytime: "我可以随时更改我的计划吗？",
+  canChangePlanAnytimeDesc: "是的，您可以随时升级或降级您的计划。更改立即生效。",
+  freePlanLimitations: "免费计划有什么限制？",
+  freePlanLimitationsDesc: "免费计划允许总共10次URL缩短，并提供基本统计和QR码生成功能。",
+  whatArePremiumFeatures: "高级功能有哪些？",
+  whatArePremiumFeaturesDesc: "高级功能包括无限制URL缩短、自定义URL、高级分析、地理分析和API访问。",
+  howIsPaymentProcessed: "付款是如何处理的？",
+  howIsPaymentProcessedDesc: "我们使用安全的付款处理。您的付款信息经过加密且安全。",
+
+  // Dashboard empty state
+  noUrlsMessage: "还没有URL",
+  createFirstUrl: "创建您的第一个URL！",
+  createUrl: "创建URL",
+
+  // Dashboard analytics
+  urlGrowth: "URL增长",
+  recent30Days: "最近30天",
+  averageClicks: "平均点击量",
+  averagePerUrl: "每个URL的平均值",
+  bestDay: "最佳日期",
+  clicks: "点击量",
+  topPerformingUrls: "表现最佳的URL",
+  dailyStats: "每日统计",
+  recent7DaysClickStats: "最近7天点击统计",
+
+  // Geographic analysis
+  geographicAnalysisSummary: "地理分析摘要",
+  countries: "国家",
+  cities: "城市",
+  visitors: "访问者",
+  topCountryClicks: "国家点击排行",
+  noGeographicDataYet: "还没有地理数据",
+  topCityClicks: "城市点击排行",
+  noCityDataYet: "还没有城市数据",
 
   // Pricing
   free: "免费",

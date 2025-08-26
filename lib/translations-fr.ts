@@ -8,6 +8,7 @@ export const frTranslations = {
   monitoring: "Surveillance",
   users: "Utilisateurs",
   backup: "Sauvegarde",
+  urlShortener: "Raccourcisseur d'URL",
   urlShortenerService: "Service de raccourcissement d'URL",
 
   // Header
@@ -96,6 +97,80 @@ export const frTranslations = {
   customUrls: "URLs personnalisées",
   customUrlsDesc: "Créez des liens mémorables et de marque avec des chemins d'URL personnalisés.",
   globalAccess: "Accès global",
+  globalAccessDesc: "Service rapide et fiable accessible partout dans le monde.",
+
+  // Statistics section
+  trustedByThousands: "Approuvé par des milliers",
+  joinCommunity: "Rejoignez notre communauté d'utilisateurs en pleine croissance dans le monde entier",
+  linksShortened: "Liens raccourcis",
+  activeUsers: "Utilisateurs actifs",
+  premiumPercentage: "Premium",
+  totalClicks: "Total des clics",
+  activeUrls: "URLs actives",
+  clicksPerUrl: "clics/URL",
+
+  // Call to action
+  readyToStart: "Prêt à commencer ?",
+  startShorteningToday: "Commencez à raccourcir vos URLs aujourd'hui et ressentez la différence.",
+  createAccount: "Créer un compte",
+  learnMore: "En savoir plus",
+
+  // Pricing page header
+  simpleTransparentPricing: "Tarification simple et transparente",
+  choosePlanForYou: "Choisissez le plan qui vous convient",
+  plan: "Plan",
+  planDescription: "Nous proposons des plans qui conviennent des utilisateurs personnels aux utilisateurs professionnels, tous les plans incluent des fonctionnalités",
+
+  // Features section
+  allRequirements: "Tous les plans incluent des fonctionnalités",
+  basicToAdvanced: "Des fonctionnalités de base aux fonctionnalités avancées, nous fournissons tout ce dont vous avez besoin",
+
+  // Feature cards
+  unlimitedUrlShortening: "Raccourcissement d'URL illimité",
+  unlimitedUrlShorteningDesc: "Raccourcissez autant de liens que vous en avez besoin",
+  customUrlTitle: "URL personnalisée",
+  customUrlDesc: "Liens personnalisés pour votre marque",
+  detailedAnalytics: "Analyses détaillées",
+  detailedAnalyticsDesc: "Statistiques de clics et analyse des utilisateurs",
+  secureLinks: "Liens sécurisés",
+  secureLinksDesc: "Tous les liens sont en sécurité protégés",
+
+  // FAQ section
+  faq: "Questions fréquemment posées",
+  canChangePlanAnytime: "Puis-je changer mon plan à tout moment ?",
+  canChangePlanAnytimeDesc: "Oui, vous pouvez améliorer ou rétrograder votre plan à tout moment. Les changements prennent effet immédiatement.",
+  freePlanLimitations: "Quelles sont les limitations du plan gratuit ?",
+  freePlanLimitationsDesc: "Le plan gratuit permet 10 raccourcissements d'URL au total et fournit des statistiques de base et des fonctionnalités de génération de codes QR.",
+  whatArePremiumFeatures: "Quelles sont les fonctionnalités premium ?",
+  whatArePremiumFeaturesDesc: "Les fonctionnalités premium incluent un raccourcissement d'URL illimité, des URLs personnalisées, des analyses avancées, une analyse géographique et un accès API.",
+  howIsPaymentProcessed: "Comment le paiement est-il traité ?",
+  howIsPaymentProcessedDesc: "Nous utilisons un traitement de paiement sécurisé. Vos informations de paiement sont cryptées et sécurisées.",
+
+  // Dashboard empty state
+  noUrlsMessage: "Aucune URL pour le moment",
+  createFirstUrl: "Créez votre première URL !",
+  createUrl: "Créer une URL",
+
+  // Dashboard analytics
+  urlGrowth: "Croissance des URLs",
+  recent30Days: "30 derniers jours",
+  averageClicks: "Clics moyens",
+  averagePerUrl: "Moyenne par URL",
+  bestDay: "Meilleur jour",
+  clicks: "Clics",
+  topPerformingUrls: "URLs les plus performantes",
+  dailyStats: "Statistiques quotidiennes",
+  recent7DaysClickStats: "Statistiques de clics des 7 derniers jours",
+
+  // Geographic analysis
+  geographicAnalysisSummary: "Résumé de l'analyse géographique",
+  countries: "Pays",
+  cities: "Villes",
+  visitors: "Visiteurs",
+  topCountryClicks: "Top des clics par pays",
+  noGeographicDataYet: "Aucune donnée géographique pour le moment",
+  topCityClicks: "Top des clics par ville",
+  noCityDataYet: "Aucune donnée de ville pour le moment",
 
   // Pricing
   free: "Gratuit",
