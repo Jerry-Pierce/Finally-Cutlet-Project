@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 import { db } from './database'
+import { TokenBlacklistService } from './token-blacklist'
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: {
@@ -23,6 +24,13 @@ export async function authenticateUser(request: NextRequest): Promise<Authentica
     const jwtSecret = process.env.JWT_SECRET || 'fallback-secret'
     const decoded = jwt.verify(token, jwtSecret) as any
 
+    // 토큰이 블랙리스트에 있는지 확인
+    const isBlacklisted = await TokenBlacklistService.isTokenBlacklisted(token)
+    if (isBlacklisted) {
+      console.log('블랙리스트된 토큰입니다:', decoded.userId)
+      return request as AuthenticatedRequest
+    }
+
     // 사용자 정보 확인
     const user = await db.user.findUnique({
       where: { id: decoded.userId },
@@ -43,6 +51,13 @@ export async function authenticateUser(request: NextRequest): Promise<Authentica
       userId: user.id,
       email: user.email,
       isPremium: user.isPremium
+    }
+
+    // 토큰을 사용자 토큰 목록에 등록
+    try {
+      await TokenBlacklistService.registerUserToken(user.id, token)
+    } catch (error) {
+      console.error('토큰 등록 실패:', error)
     }
 
     return authenticatedRequest

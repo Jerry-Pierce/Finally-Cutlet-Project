@@ -30,6 +30,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { GeoChart } from "@/components/ui/geo-chart"
+import { useAuthStatus } from "@/hooks/use-auth-status"
 
 interface UrlData {
   id: string
@@ -65,6 +66,9 @@ export default function DashboardPage() {
   const { t } = useLanguage()
   const { toast } = useToast()
   const router = useRouter()
+  
+  // 인증 상태 모니터링 (자동 로그아웃)
+  useAuthStatus()
   
   const [urls, setUrls] = useState<UrlData[]>([])
   const [pagination, setPagination] = useState<PaginationData | null>(null)

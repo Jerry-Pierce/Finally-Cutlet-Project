@@ -33,21 +33,21 @@ export default function ForgotPasswordPage() {
       if (response.ok) {
         setIsEmailSent(true)
         toast({
-          title: "이메일 발송 완료",
-          description: "비밀번호 재설정 링크가 이메일로 발송되었습니다.",
+          title: t("emailSentSuccessfully"),
+          description: t("passwordResetLinkSent"),
         })
       } else {
         const error = await response.json()
         toast({
-          title: "오류 발생",
-          description: error.error || "이메일 발송에 실패했습니다.",
+          title: t("errorOccurred"),
+          description: error.error || t("emailSendFailed"),
           variant: "destructive"
         })
       }
     } catch (error) {
       toast({
-        title: "오류 발생",
-        description: "네트워크 오류가 발생했습니다.",
+        title: t("errorOccurred"),
+        description: t("networkError"),
         variant: "destructive"
       })
     } finally {
@@ -124,11 +124,11 @@ export default function ForgotPasswordPage() {
                     <Mail className="w-8 h-8 text-green-500" />
                   </div>
                   <div>
-                    <h3 className="font-serif font-semibold text-lg text-foreground mb-2">Email Sent!</h3>
-                    <p className="text-sm text-muted-foreground">
-                      We've sent a password reset link to <strong>{email}</strong>. Please check your email and follow
-                      the instructions.
-                    </p>
+                    <h3 className="font-serif font-semibold text-lg text-foreground mb-2">{t("emailSent")}</h3>
+                    <p className="text-sm text-muted-foreground" 
+                       dangerouslySetInnerHTML={{ 
+                         __html: t("passwordResetLinkSentDesc").replace('{email}', email) 
+                       }} />
                   </div>
                 </div>
               )}

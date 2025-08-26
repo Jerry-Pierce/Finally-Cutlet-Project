@@ -3,6 +3,7 @@ import { db } from '@/lib/database'
 import { sendEmail } from '@/lib/email-service'
 import { verifyToken } from '@/lib/auth-middleware'
 import bcrypt from 'bcryptjs'
+import { TokenBlacklistService } from '@/lib/token-blacklist'
 
 export async function POST(request: NextRequest) {
   try {
@@ -79,6 +80,14 @@ export async function POST(request: NextRequest) {
       where: { id: userId },
       data: { passwordHash: hashedNewPassword }
     })
+
+    // 모든 기기에서 로그아웃 처리 (모든 토큰 무효화)
+    try {
+      await TokenBlacklistService.invalidateAllUserTokens(userId)
+      console.log(`사용자 ${userId}의 모든 토큰이 무효화되었습니다 (비밀번호 변경)`)
+    } catch (error) {
+      console.error('토큰 무효화 실패:', error)
+    }
 
     // 비밀번호 변경 알림 이메일 전송
     const emailContent = `

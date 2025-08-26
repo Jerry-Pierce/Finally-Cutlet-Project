@@ -7,10 +7,12 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
+import { useLanguage } from "@/contexts/language-context"
 import { Eye, EyeOff, Lock, Mail, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 function ResetPasswordContent() {
+  const { t } = useLanguage()
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -46,16 +48,16 @@ function ResetPasswordContent() {
       } else {
         setIsValidToken(false)
         toast({
-          title: "토큰 오류",
-          description: "비밀번호 재설정 링크가 유효하지 않거나 만료되었습니다.",
+          title: t("tokenError"),
+          description: t("invalidResetLink"),
           variant: "destructive"
         })
       }
     } catch (error) {
       setIsValidToken(false)
       toast({
-        title: "오류 발생",
-        description: "토큰 검증 중 오류가 발생했습니다.",
+        title: t("errorOccurred"),
+        description: t("errorDuringTokenValidation"),
         variant: "destructive"
       })
     }
@@ -66,8 +68,8 @@ function ResetPasswordContent() {
     
     if (password !== confirmPassword) {
       toast({
-        title: "비밀번호 불일치",
-        description: "비밀번호와 확인 비밀번호가 일치하지 않습니다.",
+        title: t("passwordMismatch"),
+        description: t("passwordMismatchDesc"),
         variant: "destructive"
       })
       return
@@ -75,8 +77,8 @@ function ResetPasswordContent() {
 
     if (password.length < 8) {
       toast({
-        title: "비밀번호 길이",
-        description: "비밀번호는 최소 8자 이상이어야 합니다.",
+        title: t("passwordTooShort"),
+        description: t("passwordTooShortDesc"),
         variant: "destructive"
       })
       return
@@ -93,22 +95,22 @@ function ResetPasswordContent() {
 
       if (response.ok) {
         toast({
-          title: "비밀번호 변경 완료",
-          description: "새로운 비밀번호로 로그인할 수 있습니다.",
+          title: t("passwordChangeComplete"),
+          description: t("passwordChangeCompleteDesc"),
         })
         router.push('/auth/login')
       } else {
         const error = await response.json()
         toast({
-          title: "비밀번호 변경 실패",
-          description: error.error || "비밀번호 변경에 실패했습니다.",
+          title: t("passwordChangeFailed"),
+          description: error.error || t("passwordChangeFailedDesc"),
           variant: "destructive"
         })
       }
     } catch (error) {
       toast({
-        title: "오류 발생",
-        description: "네트워크 오류가 발생했습니다.",
+        title: t("errorOccurred"),
+        description: t("networkError"),
         variant: "destructive"
       })
     } finally {
@@ -121,16 +123,16 @@ function ResetPasswordContent() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-card to-background">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-red-600">토큰 오류</CardTitle>
-          <CardDescription>
-            비밀번호 재설정 링크가 유효하지 않거나 만료되었습니다.
-          </CardDescription>
+                  <CardTitle className="text-2xl font-bold text-red-600">{t("tokenError")}</CardTitle>
+        <CardDescription>
+          {t("invalidResetLink")}
+        </CardDescription>
         </CardHeader>
         <CardContent className="text-center">
           <Link href="/auth/forgot-password">
             <Button className="w-full">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              비밀번호 재설정 다시 요청
+              {t("requestPasswordResetAgain")}
             </Button>
           </Link>
         </CardContent>
@@ -146,23 +148,23 @@ function ResetPasswordContent() {
           <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
             <Lock className="w-6 h-6 text-primary" />
           </div>
-          <CardTitle className="text-2xl font-bold">새 비밀번호 설정</CardTitle>
+          <CardTitle className="text-2xl font-bold">{t("setNewPassword")}</CardTitle>
           <CardDescription>
-            새로운 비밀번호를 입력해주세요
+            {t("enterNewPassword")}
           </CardDescription>
         </CardHeader>
         
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">새 비밀번호</Label>
+              <Label htmlFor="password">{t("newPassword")}</Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="새로운 비밀번호 입력"
+                  placeholder={t("newPasswordPlaceholder")}
                   required
                   minLength={8}
                   className="pr-10"
@@ -184,14 +186,14 @@ function ResetPasswordContent() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">비밀번호 확인</Label>
+              <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="비밀번호 다시 입력"
+                  placeholder={t("confirmPasswordPlaceholder")}
                   required
                   className="pr-10"
                 />
@@ -216,13 +218,13 @@ function ResetPasswordContent() {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? "처리 중..." : "비밀번호 변경"}
+              {isLoading ? t("processing") : t("changePassword")}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <Link href="/auth/login" className="text-sm text-muted-foreground hover:text-primary">
-              로그인으로 돌아가기
+              {t("backToLogin")}
             </Link>
           </div>
         </CardContent>
@@ -232,14 +234,16 @@ function ResetPasswordContent() {
 }
 
 export default function ResetPasswordPage() {
+  const { t } = useLanguage()
+  
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-card to-background">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">로딩 중...</CardTitle>
+            <CardTitle className="text-2xl font-bold">{t("loading")}</CardTitle>
             <CardDescription>
-              페이지를 불러오는 중입니다.
+              {t("loadingPage")}
             </CardDescription>
           </CardHeader>
         </Card>

@@ -13,10 +13,14 @@ import { useAuth } from "@/contexts/auth-context"
 import Link from "next/link"
 import { QRCode } from "@/components/ui/qr-code"
 import { RateLimitInfo } from "@/components/ui/rate-limit-info"
+import { useAuthStatus } from "@/hooks/use-auth-status"
 
 export default function ShortenerPage() {
   const { t } = useLanguage()
   const { user } = useAuth()
+  
+  // 인증 상태 모니터링 (자동 로그아웃)
+  useAuthStatus()
   const [url, setUrl] = useState("")
   const [shortUrl, setShortUrl] = useState("")
   const [customUrl, setCustomUrl] = useState("")
