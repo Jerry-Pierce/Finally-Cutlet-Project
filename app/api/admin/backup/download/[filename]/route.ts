@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireAdminHandler } from '@/lib/admin-middleware'
+import { requireAdminHandler, AdminRequest } from '@/lib/admin-middleware'
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'

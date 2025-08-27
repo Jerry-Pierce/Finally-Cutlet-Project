@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     // 토큰 만료 확인
     if (resetToken.expiresAt < new Date()) {
       // 만료된 토큰 삭제
-      await prisma.passwordResetTokens.delete({
+      await prisma.passwordResetToken.delete({
         where: { id: resetToken.id }
       })
       

@@ -7,42 +7,42 @@ const connections = new Map<string, WebSocket>()
 
 async function handler(request: AuthenticatedRequest) {
   try {
-    // WebSocket 업그레이드 확인
-    if (request.headers.get('upgrade') === 'websocket') {
-      // WebSocket 연결 처리
-      const { socket, response } = Deno.upgradeWebSocket(request)
-      
-      const userId = request.user!.userId
-      
-      // 연결 저장
-      connections.set(userId, socket)
-      
-      // 연결 이벤트 처리
-      socket.onopen = () => {
-        console.log(`사용자 ${userId} WebSocket 연결됨`)
-      }
-      
-      socket.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-          console.log('WebSocket 메시지 수신:', data)
-        } catch (error) {
-          console.error('WebSocket 메시지 파싱 오류:', error)
-        }
-      }
-      
-      socket.onclose = () => {
-        console.log(`사용자 ${userId} WebSocket 연결 해제됨`)
-        connections.delete(userId)
-      }
-      
-      socket.onerror = (error) => {
-        console.error(`사용자 ${userId} WebSocket 오류:`, error)
-        connections.delete(userId)
-      }
-      
-      return response
-    }
+    // WebSocket 업그레이드 확인 (현재 Next.js에서 지원되지 않음)
+    // if (request.headers.get('upgrade') === 'websocket') {
+    //   // WebSocket 연결 처리
+    //   const { socket, response } = Deno.upgradeWebSocket(request)
+    //   
+    //   const userId = request.user!.userId
+    //   
+    //   // 연결 저장
+    //   connections.set(userId, socket)
+    //   
+    //   // 연결 이벤트 처리
+    //   socket.onopen = () => {
+    //     console.log(`사용자 ${userId} WebSocket 연결됨`)
+    //   }
+    //   
+    //   socket.onmessage = (event) => {
+    //     try {
+    //       const data = JSON.parse(event.data)
+    //       console.log('WebSocket 메시지 수신:', data)
+    //     } catch (error) {
+    //       console.error('WebSocket 메시지 파싱 오류:', error)
+    //     }
+    //   }
+    //   
+    //   socket.onclose = () => {
+    //     console.log(`사용자 ${userId} WebSocket 연결 해제됨`)
+    //     connections.delete(userId)
+    //   }
+    //   
+    //   socket.onerror = (error) => {
+    //     console.error(`사용자 ${userId} WebSocket 오류:`, error)
+    //     connections.delete(userId)
+    //   }
+    //   
+    //   return response
+    // }
     
     // 일반 HTTP 요청 처리
     const userId = request.user!.userId

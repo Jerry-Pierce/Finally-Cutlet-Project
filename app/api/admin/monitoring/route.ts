@@ -12,8 +12,8 @@ async function handler(request: AuthenticatedRequest) {
   try {
     const user = request.user!
     
-    // 관리자 권한 확인
-    if (!user.isAdmin) {
+    // 관리자 권한 확인 - cutlet.service@gmail.com 계정만 접근 가능
+    if (user.email !== 'cutlet.service@gmail.com') {
       return NextResponse.json(
         { error: '관리자 권한이 필요합니다.' },
         { status: 403 }

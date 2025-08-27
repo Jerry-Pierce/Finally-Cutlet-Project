@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { requireAuthHandler } from '@/lib/auth-middleware'
 import { db } from '@/lib/database'
 
 export async function POST(request: Request) {
