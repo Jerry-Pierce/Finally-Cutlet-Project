@@ -95,6 +95,24 @@ export function extractIPAddress(request: NextRequest): string {
   return 'unknown'
 }
 
+// User-Agent에서 디바이스 타입 추출
+export function extractDeviceType(userAgent: string): string {
+  const ua = userAgent.toLowerCase()
+  
+  // 모바일 디바이스 확인
+  if (ua.includes('mobile') || ua.includes('android') || ua.includes('iphone') || ua.includes('ipod')) {
+    return 'mobile'
+  }
+  
+  // 태블릿 디바이스 확인
+  if (ua.includes('tablet') || ua.includes('ipad') || (ua.includes('android') && !ua.includes('mobile'))) {
+    return 'tablet'
+  }
+  
+  // 데스크톱 (기본값)
+  return 'desktop'
+}
+
 // 지리적 위치 정보를 포함한 클릭 데이터 생성
 export async function createClickWithGeo(
   request: NextRequest, 
@@ -107,6 +125,7 @@ export async function createClickWithGeo(
   country: string | null
   city: string | null
   region: string | null
+  deviceType: string
 }> {
   const ip = extractIPAddress(request)
   const userAgent = request.headers.get('user-agent') || ''
@@ -115,6 +134,9 @@ export async function createClickWithGeo(
   // 지리적 위치 정보 수집
   const geoData = await getGeoData(ip)
   
+  // 디바이스 타입 추출
+  const deviceType = extractDeviceType(userAgent)
+  
   return {
     urlId,
     ipAddress: ip,
@@ -122,6 +144,7 @@ export async function createClickWithGeo(
     referer,
     country: geoData?.country || null,
     city: geoData?.city || null,
-    region: geoData?.region || null
+    region: geoData?.region || null,
+    deviceType
   }
 }

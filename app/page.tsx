@@ -213,28 +213,21 @@ export default function LandingPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary mb-2">
-                    {isLoading ? '...' : formatNumber(stats?.urls.total || 0)}
+                    1,210
                   </div>
                   <div className="text-sm text-muted-foreground">{t("linksShortened")}</div>
-                  {stats?.urls.growthRate && renderGrowthRate(stats.urls.growthRate)}
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-accent mb-2">
-                    {isLoading ? '...' : formatNumber(stats?.users.total || 0)}
+                    114
                   </div>
                   <div className="text-sm text-muted-foreground">{t("activeUsers")}</div>
-                  {stats?.users.premiumPercentage > 0 && (
-                    <div className="text-xs text-muted-foreground">
-                      {stats.users.premiumPercentage.toFixed(1)}% {t("premiumPercentage")}
-                    </div>
-                  )}
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-secondary mb-2">
-                    {isLoading ? '...' : formatNumber(stats?.clicks.total || 0)}
+                    3,524
                   </div>
                   <div className="text-sm text-muted-foreground">{t("totalClicks")}</div>
-                  {stats?.clicks.growthRate && renderGrowthRate(stats.clicks.growthRate)}
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-500 mb-2">

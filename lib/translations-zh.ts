@@ -50,6 +50,9 @@ export const zhTranslations = {
   // Result
   shortenedUrl: "缩短的URL",
   copy: "复制",
+  open: "打开",
+  edit: "编辑",
+  delete: "删除",
 
   // Features
   fastProcessing: "快速处理",
@@ -58,6 +61,14 @@ export const zhTranslations = {
   secureLinksDesc: "所有链接都经过安全验证和保护",
   easyToUse: "易于使用",
   easyToUseDesc: "无需复杂设置即可使用",
+
+  // Device Analytics
+  deviceConnection: "设备连接",
+  userDeviceDistribution: "用户设备分布",
+  desktop: "桌面端",
+  mobile: "移动端",
+  tablet: "平板",
+  total: "总计",
 
   // Toast messages
   urlShortenComplete: "URL缩短完成！",
@@ -100,7 +111,7 @@ export const zhTranslations = {
   globalAccessDesc: "全球高速可靠的访问服务。",
 
   // Statistics section
-  trustedByThousands: "数千人信赖",
+      trustedByThousands: "数百人信赖",
   joinCommunity: "加入我们不断增长的全球用户社区",
   linksShortened: "已缩短链接",
   activeUsers: "活跃用户",
@@ -272,7 +283,8 @@ export const zhTranslations = {
   monthly: "月付",
   freeDescription: "个人用户的基本功能",
   premiumDescription: "专业人士和商业用户的高级功能",
-  monthly10Urls: "总计10个URL",
+  monthly10Urls: "无限制URL",
+  temporaryUnlimitedNotice: "临时 (更新前)",
   unlimitedUrls: "无限制URL缩短",
   basicStats: "基本统计",
   qrCodeGeneration: "二维码生成",

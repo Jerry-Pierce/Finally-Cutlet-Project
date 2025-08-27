@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireAdminHandler } from '@/lib/admin-middleware'
+import { requireAdminHandler, AdminRequest } from '@/lib/admin-middleware'
 import { db } from '@/lib/database'
 
 async function handler(request: AdminRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -50,6 +50,7 @@ async function handler(request: AdminRequest, { params }: { params: Promise<{ id
         break
         
       case 'delete':
+      case '삭제':
         // 링크 삭제 (관련 데이터도 함께 삭제)
         await db.$transaction([
           // URL 클릭 기록 삭제

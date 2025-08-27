@@ -72,7 +72,7 @@ async function handler(request: AdminRequest) {
           original: link.originalUrl,
           title: link.title || '제목 없음',
           description: link.description || '설명 없음',
-          user: link.user?.email || '알 수 없음',
+          user: link.user?.username || link.user?.email || '알 수 없음',
           clicks: clickCount,
           status: link.expiresAt && link.expiresAt < new Date() ? 'expired' : 'active',
           createdAt: link.createdAt.toISOString().split('T')[0],

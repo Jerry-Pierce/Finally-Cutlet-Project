@@ -31,6 +31,9 @@ import {
   RefreshCw,
   Crown,
   Mail,
+  ExternalLink,
+  Trash2,
+  Edit,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/contexts/auth-context"
@@ -418,33 +421,37 @@ export default function AdminPage() {
 
   // 컴포넌트 마운트 시 데이터 로드
   useEffect(() => {
-    fetchOverviewData()
-    fetchUsers()
-    fetchLinks()
-    fetchReports()
-    fetchSettings()
-  }, [])
+    if (user && user.email === 'cutlet.service@gmail.com') {
+      fetchOverviewData()
+      fetchUsers()
+      fetchLinks()
+      fetchReports()
+      fetchSettings()
+    }
+  }, [user])
 
   // 탭 변경 시 해당 데이터 로드 (이미 로드된 데이터가 있으면 재로드하지 않음)
   useEffect(() => {
-    const loadTabData = async () => {
-      // 탭 전환 시 즉시 표시하고, 필요한 경우에만 데이터 로드
-      if (activeTab === 'overview' && !overviewData) {
-        fetchOverviewData()
-      } else if (activeTab === 'users' && !users.length) {
-        fetchUsers()
-      } else if (activeTab === 'links' && !links.length) {
-        fetchLinks()
-      } else if (activeTab === 'reports' && reports.length === 0) {
-        // 신고 데이터는 빈 배열일 때만 로드 (null 체크 대신 length 체크)
-        fetchReports()
-      } else if (activeTab === 'settings' && !settings) {
-        fetchSettings()
+    if (user && user.email === 'cutlet.service@gmail.com') {
+      const loadTabData = async () => {
+        // 탭 전환 시 즉시 표시하고, 필요한 경우에만 데이터 로드
+        if (activeTab === 'overview' && !overviewData) {
+          fetchOverviewData()
+        } else if (activeTab === 'users' && !users.length) {
+          fetchUsers()
+        } else if (activeTab === 'links' && !links.length) {
+          fetchLinks()
+        } else if (activeTab === 'reports' && reports.length === 0) {
+          // 신고 데이터는 빈 배열일 때만 로드 (null 체크 대신 length 체크)
+          fetchReports()
+        } else if (activeTab === 'settings' && !settings) {
+          fetchSettings()
+        }
       }
+      
+      loadTabData()
     }
-    
-    loadTabData()
-  }, [activeTab])
+  }, [activeTab, user])
 
   // 관리자 계정이 아닌 경우 빈 화면 표시
   if (!user || user.email !== 'cutlet.service@gmail.com') {
@@ -837,6 +844,127 @@ export default function AdminPage() {
                                   ) : (
                                     <UserCheck className="w-4 h-4" />
                                   )}
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="links" className="space-y-6">
+              <Card className="border-border/50 shadow-lg shadow-black/5 backdrop-blur-sm bg-card/95">
+                <CardHeader>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <CardTitle className="font-serif">링크 관리</CardTitle>
+                      <CardDescription>생성된 모든 링크를 관리하세요</CardDescription>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          placeholder="링크 검색..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              fetchLinks(1, searchTerm)
+                            }
+                          }}
+                          className="pl-10 w-64 shadow-inner shadow-black/5"
+                        />
+                      </div>
+                      <Button variant="outline" size="sm" className="bg-transparent">
+                        <Filter className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>단축 URL</TableHead>
+                        <TableHead>원본 URL</TableHead>
+                        <TableHead>생성자</TableHead>
+                        <TableHead>태그</TableHead>
+                        <TableHead>클릭 수</TableHead>
+                        <TableHead>생성일</TableHead>
+                        <TableHead>만료일</TableHead>
+                        <TableHead className="text-right">작업</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {loading ? (
+                        <TableRow>
+                          <TableCell colSpan={8} className="text-center py-8">
+                            <div className="flex items-center justify-center">
+                              <RefreshCw className="w-6 h-6 animate-spin mr-2" />
+                              데이터를 불러오는 중...
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ) : links.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                            생성된 링크가 없습니다.
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        links.map((link) => (
+                          <TableRow key={link.id} className="hover:bg-muted/50 transition-colors">
+                            <TableCell>
+                              <code className="text-sm bg-muted px-2 py-1 rounded">{link.short}</code>
+                            </TableCell>
+                            <TableCell className="max-w-xs">
+                              <span className="truncate block" title={link.original}>
+                                {link.original}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-sm">{link.user}</TableCell>
+                            <TableCell>
+                              <div className="flex flex-wrap gap-1">
+                                {link.title && link.title !== '제목 없음' ? (
+                                  <Badge variant="outline" className="text-xs">
+                                    {link.title}
+                                  </Badge>
+                                ) : (
+                                  <span className="text-muted-foreground text-xs">-</span>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell>{link.clicks}</TableCell>
+                            <TableCell className="text-sm text-muted-foreground">
+                              {new Date(link.createdAt).toLocaleDateString('ko-KR')}
+                            </TableCell>
+                            <TableCell className="text-sm text-muted-foreground">
+                              {link.expiresAt 
+                                ? new Date(link.expiresAt).toLocaleDateString('ko-KR')
+                                : '만료 없음'
+                              }
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex gap-1 justify-end">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => window.open(`https://${link.short}`, '_blank')}
+                                  className="will-change-transform hover:scale-110"
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleLinkAction("삭제", link.id)}
+                                  className="will-change-transform hover:scale-110 text-red-500 hover:text-red-600"
+                                >
+                                  <Trash2 className="w-4 h-4" />
                                 </Button>
                               </div>
                             </TableCell>

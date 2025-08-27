@@ -27,12 +27,19 @@ export const metadata: Metadata = {
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/icon-16.png', sizes: '16x16', type: 'image/png' },
       { url: '/icon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-96.png', sizes: '96x96', type: 'image/png' },
       { url: '/icon-128.png', sizes: '128x128', type: 'image/png' },
       { url: '/icon-256.png', sizes: '256x256', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
-    apple: '/icon-128.png',
+    apple: '/icon-180.png',
+    other: [
+      { rel: 'apple-touch-icon', url: '/icon-180.png' },
+      { rel: 'mask-icon', url: '/icon-512.png', color: '#0b1220' },
+    ],
   },
+  manifest: '/manifest.webmanifest',
 }
 
 export default function RootLayout({
@@ -43,6 +50,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#0b1220" />
         <style>{`
 html {
   font-family: ${poppins.style.fontFamily};
@@ -55,6 +64,13 @@ html {
         <ClientWrapper>
           {children}
         </ClientWrapper>
+        <script dangerouslySetInnerHTML={{ __html: `
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(console.error)
+  })
+}
+`}} />
       </body>
     </html>
   )

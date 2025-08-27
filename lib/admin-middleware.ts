@@ -41,6 +41,7 @@ export function requireAdminHandler(handler: (request: AdminRequest) => Promise<
       }
       return await handler(adminRequest)
     } catch (error) {
+      console.error('Admin handler error:', error)
       return NextResponse.json(
         { error: 'INTERNAL_SERVER_ERROR', message: '서버 오류가 발생했습니다.' },
         { status: 500 }

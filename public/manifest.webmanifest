@@ -1,0 +1,21 @@
+{
+  "name": "Cutlet - URL Shortener",
+  "short_name": "Cutlet",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "description": "Fast and secure URL shortening service",
+  "icons": [
+    { "src": "/icon-16.png", "sizes": "16x16", "type": "image/png" },
+    { "src": "/icon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/icon-96.png", "sizes": "96x96", "type": "image/png" },
+    { "src": "/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/icon-256.png", "sizes": "256x256", "type": "image/png" },
+    { "src": "/favicon.ico", "sizes": "48x48 64x64 128x128 256x256", "type": "image/x-icon", "purpose": "any" }
+  ]
+}
+
+

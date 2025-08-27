@@ -14,7 +14,7 @@ export const SUBSCRIPTION_PLANS = {
       '태그 관리'
     ],
     limits: {
-      urlsPerMonth: 10,
+      urlsPerMonth: -1, // 무제한으로 변경
       advancedAnalytics: false,
       prioritySupport: false
     }

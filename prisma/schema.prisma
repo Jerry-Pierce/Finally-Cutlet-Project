@@ -90,14 +90,15 @@ model UrlTag {
 }
 
 model UrlClick {
-  id        String   @id @default(cuid())
-  urlId     String
-  ipAddress String?
-  userAgent String?
-  referer   String?
-  country   String?
-  city      String?
-  clickedAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  urlId      String
+  ipAddress  String?
+  userAgent  String?
+  referer    String?
+  country    String?
+  city       String?
+  deviceType String?  // desktop, mobile, tablet
+  clickedAt  DateTime @default(now())
 
   // Relations
   url ShortenedUrl @relation(fields: [urlId], references: [id], onDelete: Cascade)

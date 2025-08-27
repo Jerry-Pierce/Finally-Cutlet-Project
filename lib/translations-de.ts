@@ -50,6 +50,9 @@ export const deTranslations = {
   // Result
   shortenedUrl: "Verkürzte URL",
   copy: "Kopieren",
+  open: "Öffnen",
+  edit: "Bearbeiten",
+  delete: "Löschen",
 
   // Features
   fastProcessing: "Schnelle Verarbeitung",
@@ -58,6 +61,14 @@ export const deTranslations = {
   secureLinksDesc: "Alle Links werden sicher verifiziert und geschützt",
   easyToUse: "Einfach zu verwenden",
   easyToUseDesc: "Bereit zur Verwendung ohne komplexe Einrichtung",
+
+  // Device Analytics
+  deviceConnection: "Geräteverbindung",
+  userDeviceDistribution: "Benutzergeräte-Verteilung",
+  desktop: "Desktop",
+  mobile: "Mobil",
+  tablet: "Tablet",
+  total: "Gesamt",
 
   // Toast messages
   urlShortenComplete: "URL-Verkürzung abgeschlossen!",
@@ -100,7 +111,7 @@ export const deTranslations = {
   globalAccessDesc: "Schneller und zuverlässiger Service, der weltweit zugänglich ist.",
 
   // Statistics section
-  trustedByThousands: "Vertraut von Tausenden",
+      trustedByThousands: "Vertraut von Hunderten",
   joinCommunity: "Schließen Sie sich unserer wachsenden Community von Benutzern weltweit an",
   linksShortened: "Verkürzte Links",
   activeUsers: "Aktive Benutzer",
@@ -272,7 +283,8 @@ export const deTranslations = {
   monthly: "Monatlich",
   freeDescription: "Grundfunktionen für Einzelbenutzer",
   premiumDescription: "Erweiterte Funktionen für Fachleute und Unternehmen",
-  monthly10Urls: "Insgesamt 10 URLs",
+  monthly10Urls: "Unbegrenzte URLs",
+  temporaryUnlimitedNotice: "Temporär (vor Update)",
   unlimitedUrls: "Unbegrenzte URL-Verkürzung",
   basicStats: "Grundstatistiken",
   qrCodeGeneration: "QR-Code-Generierung",

@@ -374,7 +374,7 @@ export default function PricingPage() {
                         <p className="text-muted-foreground">{t("currentMonthUrls")}</p>
                         <p className="font-semibold">
                           {subscription.usage.urlsThisMonth}
-                          {subscription.usage.limit !== -1 && ` / ${subscription.usage.limit}`}
+                          {subscription.usage.limit !== -1 ? ` / ${subscription.usage.limit}` : ' / ∞'}
                         </p>
                       </div>
                       <div>
@@ -452,7 +452,14 @@ export default function PricingPage() {
                       {plan.features.map((feature, featureIndex) => (
                         <div key={featureIndex} className="flex items-center gap-3">
                           <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          <span className="text-sm">{feature}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm">{feature}</span>
+                            {feature === t("monthly10Urls") && (
+                              <Badge variant="secondary" className="text-xs px-2 py-0.5">
+                                {t("temporaryUnlimitedNotice")}
+                              </Badge>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -504,13 +511,15 @@ export default function PricingPage() {
                       )}
                       
                       {isCurrentPlan ? (
-                        <Button
-                          className="w-full bg-green-600 hover:bg-green-700"
-                          disabled
-                        >
-                          <Check className="w-4 h-4 mr-2" />
-                          {t("currentPlanBadge")}
-                        </Button>
+                        <div className="mt-16">
+                          <Button
+                            className="w-full bg-green-600 hover:bg-green-700"
+                            disabled
+                          >
+                            <Check className="w-4 h-4 mr-2" />
+                            {t("currentPlanBadge")}
+                          </Button>
+                        </div>
                       ) : (
                         <Button
                           onClick={() => {

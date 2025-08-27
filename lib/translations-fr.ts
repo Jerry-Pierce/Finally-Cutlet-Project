@@ -50,6 +50,9 @@ export const frTranslations = {
   // Result
   shortenedUrl: "URL raccourcie",
   copy: "Copier",
+  open: "Ouvrir",
+  edit: "Modifier",
+  delete: "Supprimer",
 
   // Features
   fastProcessing: "Traitement rapide",
@@ -58,6 +61,14 @@ export const frTranslations = {
   secureLinksDesc: "Tous les liens sont vérifiés et protégés en toute sécurité",
   easyToUse: "Facile à utiliser",
   easyToUseDesc: "Prêt à utiliser sans configuration complexe",
+
+  // Device Analytics
+  deviceConnection: "Connexion d'appareil",
+  userDeviceDistribution: "Distribution des appareils utilisateur",
+  desktop: "Ordinateur de bureau",
+  mobile: "Mobile",
+  tablet: "Tablette",
+  total: "Total",
 
   // Toast messages
   urlShortenComplete: "Raccourcissement d'URL terminé !",
@@ -100,7 +111,7 @@ export const frTranslations = {
   globalAccessDesc: "Service rapide et fiable accessible partout dans le monde.",
 
   // Statistics section
-  trustedByThousands: "Approuvé par des milliers",
+      trustedByThousands: "Approuvé par des centaines",
   joinCommunity: "Rejoignez notre communauté d'utilisateurs en pleine croissance dans le monde entier",
   linksShortened: "Liens raccourcis",
   activeUsers: "Utilisateurs actifs",
@@ -272,7 +283,8 @@ export const frTranslations = {
   monthly: "Mensuel",
   freeDescription: "Fonctionnalités de base pour les utilisateurs individuels",
   premiumDescription: "Fonctionnalités avancées pour les professionnels et les entreprises",
-  monthly10Urls: "Total de 10 URLs",
+  monthly10Urls: "URLs illimités",
+  temporaryUnlimitedNotice: "Temporaire (avant mise à jour)",
   unlimitedUrls: "Raccourcissement d'URL illimité",
   basicStats: "Statistiques de base",
   qrCodeGeneration: "Génération de QR code",

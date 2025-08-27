@@ -61,6 +61,9 @@ export const translations = {
     // Result
     shortenedUrl: "Shortened URL",
     copy: "Copy",
+    open: "Open",
+    edit: "Edit",
+    delete: "Delete",
 
     // Features
     fastProcessing: "Fast Processing",
@@ -88,6 +91,14 @@ export const translations = {
     manageAccountSecurity: "Manage your account security",
     manageNotificationSettings: "Manage your notification preferences",
     manageSubscriptionInfo: "Check and manage your subscription information",
+
+    // Device Analytics
+    deviceConnection: "Device Connection",
+    userDeviceDistribution: "User Device Distribution",
+    desktop: "Desktop",
+    mobile: "Mobile",
+    tablet: "Tablet",
+    total: "Total",
 
     // Authentication
     login: "Login",
@@ -150,7 +161,7 @@ export const translations = {
     pleaseCompleteEmailVerificationFirst: "Please complete email verification first to change your password.",
     sendVerificationCodeForPasswordChange: "Send verification code for password change",
     verificationCodeForPasswordChange: "Verification code for password change",
-    verificationCodeForPasswordChangePlaceholder: "Enter verification code",
+    verificationCodeForPasswordChangePlaceholder: "인증 코드 입력",
     changePassword: "Change Password",
     passwordChangeSuccess: "Password changed successfully",
     passwordChangeSuccessDesc: "Your password has been changed successfully. You can now log in with your new password.",
@@ -180,7 +191,7 @@ export const translations = {
     customUrlsDesc: "Create branded, memorable links with custom URL paths.",
     globalAccess: "Global Access",
     globalAccessDesc: "Fast, reliable service available worldwide with CDN support.",
-    trustedByThousands: "Trusted by Thousands",
+    trustedByThousands: "Trusted by Hundreds",
     joinCommunity: "Join our growing community of users worldwide.",
     linksShortened: "Links Shortened",
     activeUsers: "Active Users",
@@ -236,7 +247,8 @@ export const translations = {
     premiumPlan: "Premium Plan",
     freeDescription: "Basic features for individual users",
     premiumDescription: "Advanced features for professionals and businesses",
-    monthly10Urls: "10 URLs total",
+    monthly10Urls: "Unlimited URLs",
+    temporaryUnlimitedNotice: "Temporary (before update)",
     unlimitedUrls: "Unlimited URL shortening",
     basicStats: "Basic statistics",
     advancedStats: "Advanced statistics and analytics",
@@ -691,6 +703,7 @@ export const translations = {
     freeDescription: "個人ユーザー向けの基本機能",
     premiumDescription: "プロフェッショナルとビジネス向けの高度な機能",
     monthly100Urls: "月100個のURL",
+    temporaryUnlimitedNotice: "업데이트 전 임시",
     unlimitedUrls: "無制限URL短縮",
     basicStats: "基本統計",
     advancedStats: "高度な統計と分析",
@@ -915,6 +928,9 @@ export const translations = {
     // Result
     shortenedUrl: "단축된 URL",
     copy: "복사",
+    open: "열기",
+    edit: "편집",
+    delete: "삭제",
 
     // Features
     fastProcessing: "빠른 처리",
@@ -929,6 +945,14 @@ export const translations = {
     newShortLinkCreated: "새로운 짧은 링크가 생성되었습니다.",
     copyComplete: "복사 완료!",
     copiedToClipboard: "클립보드에 복사되었습니다.",
+
+    // Device Analytics
+    deviceConnection: "디바이스별 접속",
+    userDeviceDistribution: "사용자 디바이스 분포",
+    desktop: "데스크톱",
+    mobile: "모바일",
+    tablet: "태블릿",
+    total: "전체",
 
     // Authentication
     login: "로그인",
@@ -991,7 +1015,7 @@ export const translations = {
     pleaseCompleteEmailVerificationFirst: "비밀번호를 변경하려면 먼저 이메일 인증을 완료해주세요.",
     sendVerificationCodeForPasswordChange: "비밀번호 변경 인증 코드 전송",
     verificationCodeForPasswordChange: "비밀번호 변경 인증 코드",
-    verificationCodeForPasswordChangePlaceholder: "인증 코드 입력",
+
     changePassword: "비밀번호 변경",
     passwordChangeSuccess: "비밀번호가 성공적으로 변경되었습니다",
     passwordChangeSuccessDesc: "비밀번호가 성공적으로 변경되었습니다. 이제 새 비밀번호로 로그인할 수 있습니다.",
@@ -1021,7 +1045,7 @@ export const translations = {
     customUrlsDesc: "커스텀 URL 경로로 브랜드화된 기억하기 쉬운 링크를 만드세요.",
     globalAccess: "글로벌 접근",
     globalAccessDesc: "CDN 지원으로 전 세계에서 빠르고 안정적인 서비스를 제공합니다.",
-    trustedByThousands: "수천 명이 신뢰하는 서비스",
+    trustedByThousands: "수백 명이 신뢰하는 서비스",
     joinCommunity: "전 세계 사용자들의 성장하는 커뮤니티에 참여하세요.",
     linksShortened: "단축된 링크",
     activeUsers: "활성 사용자",
@@ -1078,7 +1102,8 @@ export const translations = {
     premiumPlan: "프리미엄 플랜",
     freeDescription: "개인 사용자를 위한 기본 기능",
     premiumDescription: "전문가와 비즈니스를 위한 고급 기능",
-    monthly10Urls: "총 10개 URL",
+    monthly10Urls: "무제한 URL",
+    temporaryUnlimitedNotice: "업데이트 전 임시",
     unlimitedUrls: "무제한 URL 단축",
     basicStats: "기본 통계",
     advancedStats: "고급 통계 및 분석",
@@ -1114,7 +1139,7 @@ export const translations = {
     currentMonthUrls: "이번 달 URL",
     totalUrls: "총 URL",
     freePlanLimitations: "무료 플랜의 제한사항은 무엇인가요?",
-    freePlanLimitationsDesc: "무료 플랜은 총 10개의 URL 단축과 기본 통계, QR 코드 생성 기능을 제공합니다.",
+    freePlanLimitationsDesc: "무료 플랜은 무제한 URL 단축과 기본 통계, QR 코드 생성 기능을 제공합니다.",
     freePlanCannotCancel: "무료 플랜은 취소할 수 없습니다.",
     confirmPremiumCancel: "프리미엄 구독을 취소하시겠습니까? 현재 월 말까지 프리미엄 기능을 사용할 수 있습니다.",
     planComparison: "플랜 비교",
@@ -1141,7 +1166,7 @@ export const translations = {
     apiKeyCopied: "API 키가 클립보드에 복사되었습니다",
     apiKeyRegenerationComingSoon: "API 키 재생성 기능이 곧 제공됩니다",
     confirmAccountDeletion: "정말로 계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
-    accountDeletionComingSoon: "계정 삭제 기능이 곧 제공됩니다",
+    accountDeletionComingSoon: "아카운트 삭제 기능이 곧 제공됩니다",
     manageBasicProfileInfo: "기본 프로필 정보를 관리하세요",
     user: "사용자",
     premiumUser: "프리미엄 사용자",
@@ -1591,6 +1616,7 @@ export const translations = {
     freeDescription: "个人用户的基本功能",
     premiumDescription: "专业人士和企业的先进功能",
     monthly100Urls: "每月100个URL",
+    temporaryUnlimitedNotice: "临时 (更新前)",
     unlimitedUrls: "无限URL缩短",
     basicStats: "基本统计",
     advancedStats: "高级统计和分析",
@@ -1921,6 +1947,7 @@ export const translations = {
     freeDescription: "Базовые функции для индивидуальных пользователей",
     premiumDescription: "Расширенные функции для профессионалов и бизнеса",
     monthly100Urls: "100 URL в месяц",
+    temporaryUnlimitedNotice: "Temporary (before update)",
     unlimitedUrls: "Неограниченное сокращение URL",
     basicStats: "Базовая статистика",
     advancedStats: "Расширенная статистика и аналитика",
@@ -2251,6 +2278,7 @@ export const translations = {
     freeDescription: "Fonctionnalités de base pour les utilisateurs individuels",
     premiumDescription: "Fonctionnalités avancées pour les professionnels et les entreprises",
     monthly100Urls: "100 URL par mois",
+    temporaryUnlimitedNotice: "Temporary (before update)",
     unlimitedUrls: "Raccourcissement d'URL illimité",
     basicStats: "Statistiques de base",
     advancedStats: "Statistiques et analyses avancées",
@@ -2581,6 +2609,7 @@ export const translations = {
     freeDescription: "Grundfunktionen für Einzelbenutzer",
     premiumDescription: "Erweiterte Funktionen für Profis und Unternehmen",
     monthly100Urls: "100 URLs pro Monat",
+    temporaryUnlimitedNotice: "Temporary (before update)",
     unlimitedUrls: "Unbegrenzte URL-Verkürzung",
     basicStats: "Grundstatistiken",
     advancedStats: "Erweiterte Statistiken und Analysen",

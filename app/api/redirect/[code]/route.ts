@@ -54,9 +54,17 @@ export async function GET(
     // 클릭 추적 정보 수집 (지리적 위치 정보 포함)
     const clickData = await createClickWithGeo(request, shortenedUrl.id)
 
-    // 클릭 기록 저장
+    // 클릭 기록 저장 (디바이스 정보 포함)
     await prisma.urlClick.create({
-      data: clickData
+      data: {
+        urlId: clickData.urlId,
+        ipAddress: clickData.ipAddress,
+        userAgent: clickData.userAgent,
+        referer: clickData.referer,
+        country: clickData.country,
+        city: clickData.city,
+        deviceType: clickData.deviceType
+      }
     })
 
     // URL 소유자에게 실시간 알림 전송 (로그인한 사용자인 경우)

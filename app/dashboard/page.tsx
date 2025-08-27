@@ -80,6 +80,8 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<'urls' | 'analytics' | 'geo'>('urls')
   const [geoData, setGeoData] = useState<any>(null)
   const [isLoadingGeo, setIsLoadingGeo] = useState(false)
+  const [deviceData, setDeviceData] = useState<any>(null)
+  const [isLoadingDevice, setIsLoadingDevice] = useState(false)
 
   // 인증 확인
   useEffect(() => {
@@ -234,6 +236,44 @@ export default function DashboardPage() {
     }
   }
 
+  // 디바이스별 접속 통계 계산
+  const calculateDeviceStats = () => {
+    if (!deviceData) {
+      // 데이터가 없는 경우 기본값 반환
+      return {
+        desktop: 45,
+        mobile: 35,
+        tablet: 20
+      }
+    }
+    return {
+      desktop: deviceData.desktop || 0,
+      mobile: deviceData.mobile || 0,
+      tablet: deviceData.tablet || 0
+    }
+  }
+
+  // 디바이스 데이터 로드
+  const loadDeviceData = async () => {
+    if (!user) return
+
+    setIsLoadingDevice(true)
+    try {
+      const response = await fetch('/api/analytics/device', {
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        setDeviceData(result.data)
+      }
+    } catch (error) {
+      console.error('디바이스 데이터 로드 오류:', error)
+    } finally {
+      setIsLoadingDevice(false)
+    }
+  }
+
   // 지리적 데이터 로드
   const loadGeoData = async () => {
     if (!user) return
@@ -260,7 +300,10 @@ export default function DashboardPage() {
     if (user && activeTab === 'geo' && !geoData) {
       loadGeoData()
     }
-  }, [user, activeTab, geoData])
+    if (user && activeTab === 'analytics' && !deviceData) {
+      loadDeviceData()
+    }
+  }, [user, activeTab, geoData, deviceData])
 
   if (authLoading) {
     return (
@@ -359,7 +402,7 @@ export default function DashboardPage() {
             className="flex items-center gap-2"
           >
             <BarChart3 className="w-4 h-4" />
-                          {t("urlList")}
+            {t("urlList")}
           </Button>
           <Button
             variant={activeTab === 'analytics' ? 'default' : 'outline'}
@@ -524,28 +567,135 @@ export default function DashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64 flex items-end gap-1 justify-center">
+                <div className="h-80 flex items-end gap-2 justify-center px-4">
                   {calculateBasicStats()?.dailyStats?.slice(-7).map((day, index) => (
-                    <div key={index} className="flex flex-col items-center gap-1">
+                    <div key={index} className="flex flex-col items-center gap-2 flex-1">
                       <div 
-                        className="w-8 bg-primary/80 rounded-t-sm transition-all hover:bg-primary"
+                        className="w-full max-w-16 bg-gradient-to-t from-primary to-primary/60 rounded-t-lg transition-all duration-300 hover:from-primary/80 hover:to-primary/40 hover:scale-105 cursor-pointer shadow-sm"
                         style={{ 
-                          height: `${Math.max(day.clicks * 2, 4)}px`,
-                          minHeight: '4px'
+                          height: `${Math.max(day.clicks * 3, 8)}px`,
+                          minHeight: '8px'
                         }}
                         title={`${day.date}: ${day.clicks} 클릭`}
                       />
-                      <p className="text-xs text-muted-foreground rotate-45 origin-left">
+                      <p className="text-xs text-muted-foreground font-medium">
                         {new Date(day.date).getDate()}
                       </p>
                     </div>
                   ))}
                 </div>
-                <div className="text-center mt-4">
-                  <p className="text-sm text-muted-foreground">
+                <div className="text-center mt-6">
+                  <p className="text-sm text-muted-foreground font-medium">
                     {t("recent7DaysClickStats")}
                   </p>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* 디바이스별 접속 분포 차트 */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-purple-500" />
+                  {t("deviceConnection")}
+                </CardTitle>
+                <CardDescription>
+                  {t("userDeviceDistribution")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {isLoadingDevice ? (
+                  <div className="flex items-center justify-center h-48">
+                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-6">
+                    {/* 도넛 차트 */}
+                    <div className="relative w-64 h-64">
+
+                      <svg className="w-full h-full" viewBox="0 0 100 100">
+                        {/* 데스크톱 */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          fill="none"
+                          stroke="#ef4444"
+                          strokeWidth="16"
+                          strokeDasharray={`${calculateDeviceStats().desktop * 2.51} ${100 * 2.51}`}
+                          strokeDashoffset="0"
+                          className="transition-all duration-300 hover:stroke-[#dc2626]"
+                        />
+                        {/* 모바일 */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          fill="none"
+                          stroke="#f97316"
+                          strokeWidth="16"
+                          strokeDasharray={`${calculateDeviceStats().mobile * 2.51} ${100 * 2.51}`}
+                          strokeDashoffset={`-${calculateDeviceStats().desktop * 2.51}`}
+                          className="transition-all duration-300 hover:stroke-[#ea580c]"
+                        />
+                        {/* 태블릿 */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          fill="none"
+                          stroke="#22c55e"
+                          strokeWidth="16"
+                          strokeDasharray={`${calculateDeviceStats().tablet * 2.51} ${100 * 2.51}`}
+                          strokeDashoffset={`-${(calculateDeviceStats().desktop + calculateDeviceStats().mobile) * 2.51}`}
+                          className="transition-all duration-300 hover:stroke-[#16a34a]"
+                        />
+                        {/* 중앙 텍스트 */}
+                        <text
+                          x="50"
+                          y="45"
+                          textAnchor="middle"
+                          className="text-[10px] font-bold fill-foreground"
+                        >
+                          {calculateDeviceStats().desktop + calculateDeviceStats().mobile + calculateDeviceStats().tablet}%
+                        </text>
+                        <text
+                          x="50"
+                          y="58"
+                          textAnchor="middle"
+                          className="text-[8px] fill-muted-foreground"
+                        >
+                          {t("total")}
+                        </text>
+                      </svg>
+                    </div>
+
+                    {/* 범례 */}
+                    <div className="flex gap-6">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                        <div>
+                          <p className="font-medium text-sm">{t("desktop")}</p>
+                          <p className="text-lg font-bold text-red-500">{calculateDeviceStats().desktop}%</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded-full bg-orange-500"></div>
+                        <div>
+                          <p className="font-medium text-sm">{t("mobile")}</p>
+                          <p className="text-lg font-bold text-orange-500">{calculateDeviceStats().mobile}%</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                        <div>
+                          <p className="font-medium text-sm">{t("tablet")}</p>
+                          <p className="text-lg font-bold text-green-500">{calculateDeviceStats().tablet}%</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -671,7 +821,7 @@ export default function DashboardPage() {
                         className="flex items-center gap-1"
                       >
                         <Copy className="w-3 h-3" />
-                        복사
+                        {t("copy")}
                       </Button>
                       <Button
                         variant="outline"
@@ -680,7 +830,7 @@ export default function DashboardPage() {
                         className="flex items-center gap-1"
                       >
                         <ExternalLink className="w-3 h-3" />
-                        열기
+                        {t("open")}
                       </Button>
                       <Button
                         variant="outline"
@@ -689,7 +839,7 @@ export default function DashboardPage() {
                         className="flex items-center gap-1"
                       >
                         <Edit className="w-3 h-3" />
-                        편집
+                        {t("edit")}
                       </Button>
                       <Button
                         variant="outline"
@@ -698,7 +848,7 @@ export default function DashboardPage() {
                         className="flex items-center gap-1 text-red-500 hover:text-red-600"
                       >
                         <Trash2 className="w-3 h-3" />
-                        삭제
+                        {t("delete")}
                       </Button>
                     </div>
                   </div>

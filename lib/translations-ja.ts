@@ -56,6 +56,9 @@ export const jaTranslations = {
   // Result
   shortenedUrl: "短縮されたURL",
   copy: "コピー",
+  open: "開く",
+  edit: "編集",
+  delete: "削除",
 
   // Features
   fastProcessing: "高速処理",
@@ -64,6 +67,14 @@ export const jaTranslations = {
   secureLinksDesc: "すべてのリンクは安全に検証され保護されています",
   easyToUse: "使いやすい",
   easyToUseDesc: "複雑な設定なしで使用可能",
+
+  // Device Analytics
+  deviceConnection: "デバイス接続",
+  userDeviceDistribution: "ユーザーデバイス分布",
+  desktop: "デスクトップ",
+  mobile: "モバイル",
+  tablet: "タブレット",
+  total: "合計",
 
   // Toast messages
   urlShortenComplete: "URL短縮完了！",
@@ -106,7 +117,7 @@ export const jaTranslations = {
   globalAccessDesc: "世界中どこからでもアクセス可能な高速で信頼性の高いサービス。",
 
   // Statistics section
-  trustedByThousands: "数千人に信頼されています",
+      trustedByThousands: "数百人に信頼されています",
   joinCommunity: "世界中の成長するコミュニティに参加しましょう",
   linksShortened: "短縮されたリンク",
   activeUsers: "アクティブユーザー",
@@ -278,7 +289,8 @@ export const jaTranslations = {
   monthly: "月額",
   freeDescription: "個人ユーザー向けの基本機能",
   premiumDescription: "プロフェッショナルとビジネス向けの高度な機能",
-  monthly10Urls: "合計10個のURL",
+  monthly10Urls: "無制限URL",
+  temporaryUnlimitedNotice: "更新前仮",
   unlimitedUrls: "無制限のURL短縮",
   basicStats: "基本統計",
   qrCodeGeneration: "QRコード生成",
