@@ -470,6 +470,39 @@ export default function PricingPage() {
                     )}
 
                     <div className="pt-4">
+                      {/* 프리미엄 플랜 안내표 */}
+                      {plan.id === 'premium' && !isCurrentPlan && (
+                        <div className="mb-4 p-4 bg-muted/50 border border-border/50 rounded-lg backdrop-blur-sm">
+                          <div className="flex items-start gap-3">
+                            <div className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5">
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                                {t("premiumSystemNotice")}
+                              </p>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => window.open('https://paypal.me/CutletURL', '_blank')}
+                                  className="text-xs h-8 px-3 bg-primary/10 hover:bg-primary/20 border-primary/30 text-primary hover:text-primary"
+                                >
+                                  <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20.067 8.478c.492.315.844.825.844 1.478 0 .653-.352 1.163-.844 1.478-.492.315-1.133.478-1.844.478H17.5v-1.956h.723c.711 0 1.352-.163 1.844-.478zM17.5 12.956h.723c.711 0 1.352.163 1.844.478.492.315.844.825.844 1.478 0 .653-.352 1.163-.844 1.478-.492.315-1.133.478-1.844.478H17.5v-1.956z"/>
+                                  </svg>
+                                  ( •̀ᴗ•́ )و ̑̑ {t("donateNow")}
+                                </Button>
+                                <span className="text-xs text-muted-foreground">→</span>
+                                <span className="text-xs text-muted-foreground">{t("supportUsDesc")}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
                       {isCurrentPlan ? (
                         <Button
                           className="w-full bg-green-600 hover:bg-green-700"
@@ -484,15 +517,15 @@ export default function PricingPage() {
                             console.log('버튼 클릭됨, 현재 isUpgrading:', isUpgrading)
                             handlePlanChange(plan.id)
                           }}
-                          disabled={isUpgrading}
-                          className="w-full"
+                          disabled={isUpgrading || plan.id === 'premium'}
+                          className={`w-full ${plan.id === 'premium' ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                           {isUpgrading ? (
                             <Loader2 className="w-4 h-4 animate-spin mr-2" />
                           ) : (
                             <Zap className="w-4 h-4 mr-2" />
                           )}
-                          {isUpgrading ? t("processing") : plan.buttonText}
+                          {isUpgrading ? t("processing") : plan.id === 'premium' ? t("comingSoon") : plan.buttonText}
                         </Button>
                       )}
                     </div>

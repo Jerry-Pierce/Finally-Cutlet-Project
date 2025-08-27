@@ -34,6 +34,12 @@ export const translations = {
     customUrlSetting: "Custom URL Setting",
     customUrlPlaceholder: "my-awesome-link",
     premiumOnlyFeature: "Available for premium users only",
+    premiumSystemNotice: "Premium subscription payment system is currently under preparation. Official subscriptions will be supported in the next update, and for now you can support the service through PayPal donations.",
+    comingSoon: "Coming Soon",
+    supportUs: "Support Us",
+    supportUsDesc: "Support our service through PayPal donation",
+    donateNow: "Donate Now",
+    supportCutlet: "Support Cutlet",
 
     // Tags section
     classification: "Classification",
@@ -69,6 +75,10 @@ export const translations = {
     newShortLinkCreated: "New short link has been created.",
     copyComplete: "Copy complete!",
     copiedToClipboard: "Copied to clipboard.",
+    
+    // Notification messages
+    welcomeMessage: "🎉 환영합니다!\nCutlet에 오신 것을 환영합니다!\n긴 URL을 짧게, 복잡한 링크를 간단하게.\nQR코드 생성, 클릭 분석까지!\n지금 시작해보세요! ദ്ദി ˉ͈̀꒳ˉ͈́ )✧",
+    premiumUpdateNotice: "🚀 프리미엄 기능 업데이트 예정\n더 나은 서비스를 위해 노력하고 있어요.\n지금은 후원으로 서비스를 응원해주세요!",
     generalInfo: "General Information",
     security: "Security",
     notifications: "Notifications",
@@ -282,6 +292,10 @@ export const translations = {
     notifications: "Notifications",
     subscription: "Subscription",
     accountManagement: "Account Management",
+    
+    // Notification messages
+    welcomeMessage: "🎉 환영합니다!\nCutlet에 오신 것을 환영합니다!\n긴 URL을 짧게, 복잡한 링크를 간단하게.\nQR코드 생성, 클릭 분석까지!\n지금 시작해보세요! ദ്ദി ˉ͈̀꒳ˉ͈́ )✧",
+    premiumUpdateNotice: "🚀 프리미엄 기능 업데이트 예정\n더 나은 서비스를 위해 노력하고 있어요.\n지금은 후원으로 서비스를 응원해주세요!",
     profileLoadFailed: "Failed to load profile",
     newPasswordMismatch: "New passwords do not match",
     noChanges: "No changes to save",
@@ -493,6 +507,17 @@ export const translations = {
     notifications: "Notifications",
     markAllAsRead: "Mark All as Read",
     loadingNotifications: "Loading notifications...",
+    
+    // Notification content
+    welcomeNotificationTitle: "Welcome!",
+    premiumUpdateTitle: "Premium Feature Update",
+    premiumUpdateScheduled: "Premium Feature Update Scheduled",
+    workingForBetterService: "We are working hard for better service.",
+    pleaseSupportWithDonation: "Please support our service with your donations!",
+    welcomeToCutlet: "Welcome to Cutlet!",
+    shortenLongUrls: "Shorten long URLs, simplify complex links.",
+    qrCodeAndClickAnalysis: "QR code generation, click analysis too!",
+    startNow: "Start now!",
     noNewNotifications: "No new notifications",
     urlGrowth: "URL Growth",
     clickTrends: "Click Trends",
@@ -1265,11 +1290,28 @@ export const translations = {
     loginRequiredForCustomUrl: "커스텀 URL을 사용하려면 로그인이 필요합니다",
     customCodeAlreadyExists: "이미 사용 중인 커스텀 코드입니다",
     premiumFavoritePremiumOnly: "프리미엄 즐겨찾기는 프리미엄 사용자만 사용할 수 있습니다",
+    premiumSystemNotice: "현재 프리미엄 구독 결제 시스템은 준비중 입니다. 정식 구독은 다음 업데이트에서 지원될 예정이며, 지금은 PayPal 후원을 통해 서비스를 응원하실 수 있습니다.",
+    comingSoon: "준비 중",
+    supportUs: "후원하기",
+    supportUsDesc: "PayPal 후원을 통해 서비스를 응원하세요",
+    donateNow: "지금 후원하기",
+    supportCutlet: "Cutlet 응원하기",
     
     notifications: "알림",
     markAllAsRead: "모두 읽음",
     loadingNotifications: "알림을 불러오는 중...",
     noNewNotifications: "새로운 알림이 없습니다",
+    
+    // Notification content
+    welcomeNotificationTitle: "환영합니다!",
+    premiumUpdateTitle: "프리미엄 기능 업데이트",
+    premiumUpdateScheduled: "프리미엄 기능 업데이트 예정",
+    workingForBetterService: "더 나은 서비스를 위해 노력하고 있어요.",
+    pleaseSupportWithDonation: "지금은 후원으로 서비스를 응원해주세요!",
+    welcomeToCutlet: "Cutlet에 오신 것을 환영합니다!",
+    shortenLongUrls: "긴 URL을 짧게, 복잡한 링크를 간단하게.",
+    qrCodeAndClickAnalysis: "QR코드 생성, 클릭 분석까지!",
+    startNow: "지금 시작해보세요!",
     urlGrowth: "URL 성장률",
     clickTrends: "클릭 트렌드",
     topPerformingUrls: "최고 성과 URL",
@@ -2713,6 +2755,17 @@ export const translations = {
     averagePerUrl: "Durchschnitt pro URL",
     clicks: "Klicks",
     recent7DaysClickStats: "Klick-Statistiken der letzten 7 Tage",
+    
+    // Notification system
+    notifications: "Benachrichtigungen",
+    noNewNotifications: "Keine neuen Benachrichtigungen",
+    markAllAsRead: "Alle als gelesen markieren",
+    loadingNotifications: "Lade Benachrichtigungen...",
+    notificationRead: "Benachrichtigung als gelesen markiert",
+    notificationNotFound: "Benachrichtigung nicht gefunden",
+    serverError: "Ein Serverfehler ist aufgetreten",
+    welcomeNotificationTitle: "Willkommen!",
+    premiumUpdateTitle: "Premium-Funktions-Update",
   },
   
   // Japanese

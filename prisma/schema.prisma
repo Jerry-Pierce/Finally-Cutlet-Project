@@ -23,6 +23,7 @@ model User {
   username     String?  @unique
   isPremium    Boolean  @default(false)
   emailNotifications Boolean @default(true)  // 이메일 알림 설정
+  status       String   @default("active")  // active, suspended, pending
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -32,6 +33,7 @@ model User {
   notifications Notification[]
   tags         Tag[]        // 사용자별 커스텀 태그
   passwordResetTokens PasswordResetToken[]
+  reports      Report[]     @relation("UserReports")
 
   @@map("users")
 }
@@ -55,6 +57,7 @@ model ShortenedUrl {
   tags      UrlTag[]
   clicks    UrlClick[]
   favorites Favorite[]
+  reports   Report[]
 
   @@map("shortened_urls")
 }
@@ -150,4 +153,40 @@ model PasswordResetToken {
   @@index([userId])
   @@index([expiresAt])
   @@map("password_reset_tokens")
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  reporterId  String   // 신고자 ID
+  urlId       String   // 신고된 URL ID
+  reason      String   // 신고 사유
+  description String?  // 상세 설명
+  status      String   @default("pending") // pending, reviewed, resolved, dismissed
+  adminNotes  String?  // 관리자 메모
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  reporter User          @relation("UserReports", fields: [reporterId], references: [id], onDelete: Cascade)
+  url      ShortenedUrl @relation(fields: [urlId], references: [id], onDelete: Cascade)
+
+  @@index([reporterId])
+  @@index([urlId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("reports")
+}
+
+model SystemSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique // 설정 키 (예: maintenance, allowRegistration)
+  value       String   // 설정 값 (JSON 문자열로 저장)
+  description String?  // 설정 설명
+  category    String   // 설정 카테고리 (system, security, notification, performance)
+  updatedBy   String?  // 마지막 수정자 ID
+  updatedAt   DateTime @updatedAt
+
+  @@index([key])
+  @@index([category])
+  @@map("system_settings")
 }

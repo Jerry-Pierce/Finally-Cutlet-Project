@@ -66,6 +66,24 @@ export async function POST(request: NextRequest) {
       // 이메일 전송 실패는 회원가입 성공에 영향을 주지 않음
     }
 
+    // 환영 알림 생성 (비동기로 처리, 실패해도 회원가입은 성공)
+    try {
+              await db.notification.create({
+          data: {
+            userId: user.id,
+            type: 'welcome',
+            title: 'welcomeNotificationTitle',
+            message: "🎉 {welcomeNotificationTitle}\n{welcomeToCutlet}\n{shortenLongUrls}\n{qrCodeAndClickAnalysis}\n{startNow} ദ്ദി ˉ͈̀꒳ˉ͈́ )✧",
+            isRead: false,
+            createdAt: new Date()
+          }
+        })
+      console.log('환영 알림 생성 완료:', user.id)
+    } catch (notificationError) {
+      console.error('환영 알림 생성 실패:', notificationError)
+      // 알림 생성 실패는 회원가입 성공에 영향을 주지 않음
+    }
+
     // 비밀번호 해시는 제외하고 응답
     const { passwordHash: _, ...userWithoutPassword } = user
 

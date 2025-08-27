@@ -333,6 +333,20 @@ export const zhTranslations = {
 
   // Notifications
   notifications: "通知",
+  noNewNotifications: "没有新通知",
+  markAllAsRead: "全部标记为已读",
+  loadingNotifications: "正在加载通知...",
+  
+  // Notification content
+  welcomeNotificationTitle: "欢迎！",
+  premiumUpdateTitle: "高级功能更新",
+  premiumUpdateScheduled: "高级功能更新计划",
+  workingForBetterService: "我们正在努力提供更好的服务。",
+  pleaseSupportWithDonation: "现在请通过捐赠支持我们的服务！",
+  welcomeToCutlet: "欢迎来到Cutlet！",
+  shortenLongUrls: "缩短长URL，简化复杂链接。",
+  qrCodeAndClickAnalysis: "QR码生成，点击分析！",
+  startNow: "现在开始！",
 
   // Dashboard
   dashboard: "仪表板",

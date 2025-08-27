@@ -333,6 +333,20 @@ export const frTranslations = {
 
   // Notifications
   notifications: "Notifications",
+  noNewNotifications: "Aucune nouvelle notification",
+  markAllAsRead: "Marquer tout comme lu",
+  loadingNotifications: "Chargement des notifications...",
+  
+  // Notification content
+  welcomeNotificationTitle: "Bienvenue !",
+  premiumUpdateTitle: "Mise à jour des fonctionnalités Premium",
+  premiumUpdateScheduled: "Mise à jour des fonctionnalités Premium prévue",
+  workingForBetterService: "Nous travaillons dur pour un meilleur service.",
+  pleaseSupportWithDonation: "Veuillez soutenir notre service par des dons maintenant !",
+  welcomeToCutlet: "Bienvenue sur Cutlet !",
+  shortenLongUrls: "Raccourcissez les longues URLs, simplifiez les liens complexes.",
+  qrCodeAndClickAnalysis: "Génération de codes QR, analyse des clics !",
+  startNow: "Commencez maintenant !",
 
   // Dashboard
   dashboard: "Tableau de bord",

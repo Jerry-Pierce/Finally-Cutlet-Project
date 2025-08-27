@@ -40,14 +40,14 @@ const protectedNavigationItems = [
     href: "/profile",
     icon: User,
   },
+]
+
+const adminNavigationItems = [
   {
     nameKey: "admin" as const,
     href: "/admin",
     icon: Settings,
   },
-]
-
-const adminNavigationItems = [
   {
     nameKey: "monitoring" as const,
     href: "/admin/monitoring",
@@ -65,6 +65,8 @@ const adminNavigationItems = [
   },
 ]
 
+
+
 export function Navigation() {
   const pathname = usePathname()
   const { t } = useLanguage()
@@ -74,7 +76,7 @@ export function Navigation() {
   const navigationItems = user ? [
     ...publicNavigationItems, 
     ...protectedNavigationItems,
-    ...(user.isAdmin ? adminNavigationItems : [])
+    ...(user.email === 'cutlet.service@gmail.com' ? adminNavigationItems : [])
   ] : publicNavigationItems
 
   const handleLogout = () => {
@@ -88,8 +90,8 @@ export function Navigation() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg shadow-lg shadow-primary/25 will-change-transform group-hover:scale-110 transition-transform duration-300">
-              <Scissors className="w-5 h-5 text-primary-foreground" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg shadow-lg shadow-primary/25 will-change-transform group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+              <img src="/logo.png" alt="Cutlet Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="font-serif font-bold text-xl text-foreground">Cutlet</h1>

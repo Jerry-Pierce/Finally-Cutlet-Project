@@ -1,31 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireAuth, AuthenticatedRequest } from '@/lib/auth-middleware'
+import { requireAdminHandler, AdminRequest } from '@/lib/admin-middleware'
 import { db } from '@/lib/database'
 
-async function handler(request: AuthenticatedRequest) {
+async function handler(request: AdminRequest) {
   try {
-    const user = request.user!
-    
-    // 관리자 권한 확인
-    if (!user.isAdmin) {
-      return NextResponse.json(
-        { error: '관리자 권한이 필요합니다.' },
-        { status: 403 }
-      )
-    }
-
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '20')
+    const limit = parseInt(searchParams.get('limit') || '10')
     const search = searchParams.get('search') || ''
-    const status = searchParams.get('status') || 'all'
-    const sortBy = searchParams.get('sortBy') || 'createdAt'
-    const sortOrder = searchParams.get('sortOrder') || 'desc'
+    const status = searchParams.get('status') || ''
+    const premium = searchParams.get('premium') || ''
 
-    const offset = (page - 1) * limit
+    const skip = (page - 1) * limit
 
-    // 검색 및 필터 조건
+    // 검색 조건 구성
     const where: any = {}
+    
+    console.log('사용자 필터링 파라미터:', { search, status, premium, page, limit })
     
     if (search) {
       where.OR = [
@@ -33,21 +24,25 @@ async function handler(request: AuthenticatedRequest) {
         { username: { contains: search, mode: 'insensitive' } }
       ]
     }
-
-    if (status === 'premium') {
-      where.isPremium = true
-    } else if (status === 'active') {
-      where.isActive = true
-    } else if (status === 'inactive') {
-      where.isActive = false
+    
+    if (status === 'active') {
+      where.status = 'active'
+    } else if (status === 'suspended') {
+      where.status = 'suspended'
+    } else if (status === 'pending') {
+      where.status = 'pending'
     }
-
-    // 정렬 조건
-    const orderBy: any = {}
-    orderBy[sortBy] = sortOrder
+    
+    if (premium === 'premium') {
+      where.isPremium = true
+    } else if (premium === 'free') {
+      where.isPremium = false
+    }
+    
+    console.log('적용된 필터링 조건:', where)
 
     // 사용자 목록 조회
-    const [users, totalUsers] = await Promise.all([
+    const [users, totalCount] = await Promise.all([
       db.user.findMany({
         where,
         select: {
@@ -55,88 +50,94 @@ async function handler(request: AuthenticatedRequest) {
           email: true,
           username: true,
           isPremium: true,
-          isActive: true,
-          isAdmin: true,
           createdAt: true,
           updatedAt: true,
+          status: true,
           _count: {
             select: {
-              shortenedUrls: true,
-              favorites: true
+              shortenedUrls: true
             }
           }
         },
-        orderBy,
-        skip: offset,
+        orderBy: { createdAt: 'desc' },
+        skip,
         take: limit
       }),
       db.user.count({ where })
     ])
 
-    // 사용자별 통계 추가
+    // 사용자별 URL 클릭 수 조회
     const usersWithStats = await Promise.all(
       users.map(async (user) => {
-        // 최근 활동 (마지막 URL 생성)
-        const lastUrlCreated = await db.shortenedUrl.findFirst({
-          where: { userId: user.id },
-          orderBy: { createdAt: 'desc' },
-          select: { createdAt: true }
-        })
-
-        // 최근 로그인 (마지막 업데이트)
-        const lastActivity = user.updatedAt
-
-        // 총 클릭 수
         const totalClicks = await db.urlClick.count({
           where: {
-            shortenedUrl: {
+            url: {
               userId: user.id
             }
           }
         })
 
+        // 마지막 활동 시간 (URL 클릭)
+        const lastActive = await db.urlClick.findFirst({
+          where: {
+            url: {
+              userId: user.id
+            }
+          },
+          orderBy: { clickedAt: 'desc' },
+          select: { clickedAt: true }
+        })
+
+        // 마지막 로그인 시간 (사용자 업데이트 시간으로 대체)
+        const lastLogin = user.updatedAt
+
         return {
-          ...user,
-          lastUrlCreated: lastUrlCreated?.createdAt || null,
-          lastActivity,
-          totalClicks,
-          stats: {
-            totalUrls: user._count.shortenedUrls,
-            totalFavorites: user._count.favorites,
-            totalClicks
-          }
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          isPremium: user.isPremium,
+          createdAt: user.createdAt.toISOString(),
+          lastLogin: lastLogin.toISOString(),
+          status: user.status || 'active',
+          urlCount: user._count.shortenedUrls,
+          clickCount: totalClicks
         }
       })
     )
 
-    // 페이지네이션 정보
-    const totalPages = Math.ceil(totalUsers / limit)
-    const hasNextPage = page < totalPages
-    const hasPrevPage = page > 1
-
     return NextResponse.json({
-      success: true,
-      data: {
-        users: usersWithStats,
-        pagination: {
-          page,
-          limit,
-          totalUsers,
-          totalPages,
-          hasNextPage,
-          hasPrevPage
-        }
+      users: usersWithStats,
+      pagination: {
+        page,
+        limit,
+        total: totalCount,
+        totalPages: Math.ceil(totalCount / limit)
       }
     })
-
   } catch (error) {
-    console.error('사용자 목록 조회 오류:', error)
-    
+    console.error('사용자 목록 조회 실패:', error)
     return NextResponse.json(
-      { error: '사용자 목록을 조회하는 중 오류가 발생했습니다.' },
+      { error: 'INTERNAL_SERVER_ERROR', message: '사용자 목록 조회에 실패했습니다.' },
       { status: 500 }
     )
   }
 }
 
-export const GET = requireAuth(handler)
+// 시간 포맷팅 함수
+function formatTimeAgo(date: Date): string {
+  const now = new Date()
+  const diffInMs = now.getTime() - date.getTime()
+  const diffInMinutes = Math.floor(diffInMs / (1000 * 60))
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`
+  } else if (diffInHours < 24) {
+    return `${diffInHours}시간 전`
+  } else {
+    return `${diffInDays}일 전`
+  }
+}
+
+export const GET = requireAdminHandler(handler)

@@ -108,6 +108,31 @@ async function main() {
   }
 
   console.log('✅ 샘플 클릭 데이터 삽입 완료')
+
+  // 샘플 신고 데이터는 제거 (실제 사용자가 신고할 때까지 비워둠)
+  console.log('ℹ️ 신고 데이터는 실제 사용자 신고 시 생성됩니다')
+
+  // 기본 시스템 설정 생성
+  const defaultSettings = [
+    { key: 'maintenance', value: 'false', category: 'system', description: '시스템 유지보수 모드' },
+    { key: 'allowRegistration', value: 'true', category: 'security', description: '사용자 등록 허용' },
+    { key: 'analytics', value: 'true', category: 'performance', description: '분석 데이터 수집' },
+    { key: 'rateLimit', value: '100', category: 'security', description: 'API 요청 제한' },
+    { key: 'require2FA', value: 'false', category: 'security', description: '2단계 인증 필수' },
+    { key: 'autoScan', value: 'true', category: 'security', description: '자동 보안 스캔' },
+    { key: 'sessionTimeout', value: '60', category: 'security', description: '세션 타임아웃 (분)' },
+    { key: 'backupFrequency', value: '"daily"', category: 'system', description: '백업 빈도' }
+  ]
+
+  for (const setting of defaultSettings) {
+    await prisma.systemSetting.upsert({
+      where: { key: setting.key },
+      update: {},
+      create: setting,
+    })
+  }
+
+  console.log('✅ 기본 시스템 설정 데이터 삽입 완료')
   console.log('🎉 모든 시드 데이터 삽입이 완료되었습니다!')
 }
 

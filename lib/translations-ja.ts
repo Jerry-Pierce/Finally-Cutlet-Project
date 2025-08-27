@@ -29,6 +29,12 @@ export const jaTranslations = {
   customUrlSetting: "カスタムURL設定",
   customUrlPlaceholder: "my-awesome-link",
   premiumOnlyFeature: "プレミアムユーザーのみ利用可能",
+  premiumSystemNotice: "現在、プレミアムサブスクリプション決済システムは準備中です。正式なサブスクリプションは次のアップデートでサポートされる予定で、今はPayPal寄付を通じてサービスを応援できます。",
+  comingSoon: "準備中",
+  supportUs: "サポート",
+  supportUsDesc: "PayPal寄付を通じてサービスをサポート",
+  donateNow: "今すぐ寄付",
+  supportCutlet: "Cutletをサポート",
 
   // Tags section
   classification: "分類",
@@ -333,6 +339,20 @@ export const jaTranslations = {
 
   // Notifications
   notifications: "通知",
+  noNewNotifications: "新しい通知はありません",
+  markAllAsRead: "すべて既読にする",
+  loadingNotifications: "通知を読み込み中...",
+  
+  // Notification content
+  welcomeNotificationTitle: "ようこそ！",
+  premiumUpdateTitle: "プレミアム機能アップデート",
+  premiumUpdateScheduled: "プレミアム機能アップデート予定",
+  workingForBetterService: "より良いサービスのために努力しています。",
+  pleaseSupportWithDonation: "今は寄付でサービスを応援してください！",
+  welcomeToCutlet: "Cutletへようこそ！",
+  shortenLongUrls: "長いURLを短く、複雑なリンクをシンプルに。",
+  qrCodeAndClickAnalysis: "QRコード生成、クリック分析まで！",
+  startNow: "今すぐ始めましょう！",
 
   // Dashboard
   dashboard: "ダッシュボード",

@@ -180,8 +180,9 @@ export default function ShortenerPage() {
       </div>
 
       <div className="container mx-auto px-4 py-8 md:py-12 relative z-10">
-        <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
-          <div className="text-center space-y-3 md:space-y-4">
+        <div className="max-w-4xl mx-auto">
+          {/* 헤더 섹션 */}
+          <div className="text-center space-y-3 md:space-y-4 mb-6 md:mb-8">
             <h1 className="font-serif font-bold text-3xl md:text-4xl lg:text-5xl text-foreground drop-shadow-lg">
               {t("urlShortener")}
             </h1>
@@ -189,8 +190,25 @@ export default function ShortenerPage() {
               {t("complexUrlDescription")}
             </p>
           </div>
+          
+          {/* 후원하기 버튼 - 요금제 페이지와 동일한 스타일 */}
+          <div className="text-center mb-6 md:mb-8">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.open('https://paypal.me/CutletURL', '_blank')}
+              className="text-xs h-8 px-3 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-500/30 text-green-600 dark:text-green-400"
+            >
+              <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.067 8.478c.492.315.844.825.844 1.478 0 .653-.352 1.163-.844 1.478-.492.315-1.133.478-1.844.478H17.5v-1.956h.723c.711 0 1.352-.163 1.844-.478zM17.5 12.956h.723c.711 0 1.352.163 1.844.478.492.315.844.825.844 1.478 0 .653-.352 1.163-.844 1.478-.492.315-1.133.478-1.844.478H17.5v-1.956z"/>
+              </svg>
+                              ( •̀ᴗ•́ )و ̑̑ {t("supportCutlet")}
+            </Button>
+          </div>
 
-          <Card className="border-border/50 shadow-2xl shadow-black/10 backdrop-blur-sm bg-card/95 will-change-transform hover:scale-[1.01] transition-all duration-300 hover:shadow-3xl hover:shadow-black/20 relative overflow-hidden">
+          {/* 링크 단축 카드 - 호버 효과 제거 */}
+          <div className="relative">
+            <Card className="border-border/50 shadow-2xl shadow-black/10 backdrop-blur-sm bg-card/95 relative overflow-hidden">
             {/* Rate Limit 정보 표시 */}
             {rateLimitInfo && (
               <div className="absolute top-4 right-4 z-10">
@@ -456,7 +474,8 @@ export default function ShortenerPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

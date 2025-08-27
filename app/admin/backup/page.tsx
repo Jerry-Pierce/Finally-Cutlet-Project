@@ -230,8 +230,8 @@ export default function BackupPage() {
     }
   }, [user])
 
-  // 관리자 권한 확인
-  if (!user?.isAdmin) {
+  // 관리자 권한 확인 (cutlet.service@gmail.com만 접근 가능)
+  if (!user || user.email !== 'cutlet.service@gmail.com') {
     return (
       <div className="container mx-auto px-4 py-8">
         <Card>

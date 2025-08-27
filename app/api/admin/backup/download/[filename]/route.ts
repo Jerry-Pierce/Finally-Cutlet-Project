@@ -1,98 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireAuth, AuthenticatedRequest } from '@/lib/auth-middleware'
-import { readFile, stat } from 'fs/promises'
+import { requireAdminHandler } from '@/lib/admin-middleware'
+import { readFile } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
 
-async function handler(
-  request: AuthenticatedRequest,
-  { params }: { params: { filename: string } }
-) {
+async function handler(request: AdminRequest, { params }: { params: Promise<{ filename: string }> }) {
   try {
-    const user = request.user!
+    const { filename } = await params
     
-    // 관리자 권한 확인
-    if (!user.isAdmin) {
-      return NextResponse.json(
-        { error: '관리자 권한이 필요합니다.' },
-        { status: 403 }
-      )
-    }
-
-    const { filename } = params
-    
-    if (!filename) {
-      return NextResponse.json(
-        { error: '파일명이 필요합니다.' },
-        { status: 400 }
-      )
-    }
-
-    // 파일 경로 보안 검사
-    if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
-      return NextResponse.json(
-        { error: '잘못된 파일명입니다.' },
-        { status: 400 }
-      )
-    }
-
+    // 백업 파일 경로
     const backupDir = join(process.cwd(), 'backups')
-    const filePath = join(backupDir, filename)
+    const backupPath = join(backupDir, filename)
     
     // 파일 존재 확인
-    if (!existsSync(filePath)) {
+    if (!existsSync(backupPath)) {
       return NextResponse.json(
-        { error: '파일을 찾을 수 없습니다.' },
+        { error: 'BACKUP_NOT_FOUND', message: '백업 파일을 찾을 수 없습니다.' },
         { status: 404 }
       )
     }
-
-    // 파일 정보 가져오기
-    const fileStats = await stat(filePath)
     
-    // 파일 크기 제한 (100MB)
-    const maxSize = 100 * 1024 * 1024
-    if (fileStats.size > maxSize) {
-      return NextResponse.json(
-        { error: '파일이 너무 큽니다.' },
-        { status: 413 }
-      )
-    }
-
     // 파일 읽기
-    const fileContent = await readFile(filePath)
+    const fileContent = await readFile(backupPath, 'utf-8')
     
-    // 파일 타입에 따른 Content-Type 설정
-    let contentType = 'application/json'
-    if (filename.endsWith('.sql')) {
-      contentType = 'application/sql'
-    } else if (filename.endsWith('.zip')) {
-      contentType = 'application/zip'
-    }
-
-    // 응답 헤더 설정
-    const headers = {
-      'Content-Type': contentType,
-      'Content-Disposition': `attachment; filename="${filename}"`,
-      'Content-Length': fileStats.size.toString(),
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
-    }
-
-    return new NextResponse(fileContent, {
-      status: 200,
-      headers
+    // 파일 다운로드 응답 생성
+    const response = new NextResponse(fileContent, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Length': Buffer.byteLength(fileContent, 'utf-8').toString()
+      }
     })
-
-  } catch (error) {
-    console.error('백업 다운로드 오류:', error)
     
+    return response
+    
+  } catch (error) {
+    console.error('백업 다운로드 실패:', error)
     return NextResponse.json(
-      { error: '파일 다운로드 중 오류가 발생했습니다.' },
+      { error: 'INTERNAL_SERVER_ERROR', message: '백업 다운로드에 실패했습니다.' },
       { status: 500 }
     )
   }
 }
 
-export const GET = requireAuth(handler)
+export const GET = requireAdminHandler(handler)

@@ -333,6 +333,20 @@ export const deTranslations = {
 
   // Notifications
   notifications: "Benachrichtigungen",
+  noNewNotifications: "Keine neuen Benachrichtigungen",
+  markAllAsRead: "Alle als gelesen markieren",
+  loadingNotifications: "Lade Benachrichtigungen...",
+  
+  // Notification content
+  welcomeNotificationTitle: "Willkommen!",
+  premiumUpdateTitle: "Premium-Funktions-Update",
+  premiumUpdateScheduled: "Premium-Funktions-Update geplant",
+  workingForBetterService: "Wir arbeiten hart an einem besseren Service.",
+  pleaseSupportWithDonation: "Bitte unterstützen Sie unseren Service jetzt mit Spenden!",
+  welcomeToCutlet: "Willkommen bei Cutlet!",
+  shortenLongUrls: "Verkürzen Sie lange URLs, vereinfachen Sie komplexe Links.",
+  qrCodeAndClickAnalysis: "QR-Code-Generierung, Klick-Analyse!",
+  startNow: "Jetzt starten!",
 
   // Dashboard
   dashboard: "Dashboard",

@@ -22,6 +22,17 @@ export const metadata: Metadata = {
   title: "Cutlet - URL Shortener Service",
   description: "Fast and secure URL shortening service",
   generator: "v0.app",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/icon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-128.png', sizes: '128x128', type: 'image/png' },
+      { url: '/icon-256.png', sizes: '256x256', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/icon-128.png',
+  },
 }
 
 export default function RootLayout({

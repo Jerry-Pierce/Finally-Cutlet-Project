@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { Mail, Lock, ArrowRight, Scissors } from "lucide-react"
+import { Mail, Lock, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
@@ -191,8 +191,8 @@ export default function SignupPage() {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
-                <Scissors className="w-6 h-6 text-primary" />
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 overflow-hidden">
+                <img src="/logo.png" alt="Cutlet Logo" className="w-full h-10 object-cover" />
               </div>
               <span className="font-serif font-bold text-2xl text-foreground">Cutlet</span>
             </div>
