@@ -1,11 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-// Supabase 클라이언트 생성
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-)
+import { createServerClient } from '@supabase/ssr'
 
 export async function middleware(request: NextRequest) {
   try {
@@ -22,103 +16,88 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
-    // 쿠키에서 세션 정보 가져오기
-    const authToken = request.cookies.get('auth-token')?.value
-    const refreshToken = request.cookies.get('refresh-token')?.value
-
     // 응답 객체 생성
     const response = NextResponse.next()
 
-    // 인증 토큰이 있는 경우
-    if (authToken) {
-      try {
-        // Supabase 세션 확인
-        const { data: { session }, error } = await supabase.auth.getSession()
-        
-        if (session && !error) {
-          // 세션이 유효한 경우, 쿠키 갱신
-          const expiresAt = new Date(session.expires_at! * 1000)
-          
-          // 인증 토큰 쿠키 설정
-          response.cookies.set('auth-token', session.access_token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            expires: expiresAt,
-            path: '/'
-          })
-
-          // 사용자 정보 쿠키 설정
-          if (session.user) {
-            response.cookies.set('user-info', JSON.stringify({
-              id: session.user.id,
-              email: session.user.email,
-              created_at: session.user.created_at
-            }), {
-              httpOnly: true,
-              secure: process.env.NODE_ENV === 'production',
-              sameSite: 'lax',
-              expires: expiresAt,
-              path: '/'
+    // Supabase 클라이언트 생성 (createServerClient 사용)
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value
+          },
+          set(name: string, value: string, options: any) {
+            response.cookies.set({
+              name,
+              value,
+              ...options,
             })
-          }
-
-          console.log('✅ 세션 유지됨:', session.user?.email)
-        } else {
-          // 세션이 만료된 경우, 리프레시 토큰으로 갱신 시도
-          if (refreshToken) {
-            const { data: { session: newSession }, error: refreshError } = await supabase.auth.refreshSession({
-              refresh_token: refreshToken
+          },
+          remove(name: string, options: any) {
+            response.cookies.set({
+              name,
+              value: '',
+              ...options,
             })
-
-            if (newSession && !refreshError) {
-              // 새로운 세션으로 쿠키 갱신
-              const newExpiresAt = new Date(newSession.expires_at! * 1000)
-              
-              response.cookies.set('auth-token', newSession.access_token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                expires: newExpiresAt,
-                path: '/'
-              })
-
-              if (newSession.user) {
-                response.cookies.set('user-info', JSON.stringify({
-                  id: newSession.user.id,
-                  email: newSession.user.email,
-                  created_at: newSession.user.created_at
-                }), {
-                  httpOnly: true,
-                  secure: process.env.NODE_ENV === 'production',
-                  sameSite: 'lax',
-                  expires: newExpiresAt,
-                  path: '/'
-                })
-              }
-
-              console.log('✅ 세션 갱신됨:', newSession.user?.email)
-            } else {
-              // 리프레시 실패 시 쿠키 삭제
-              response.cookies.delete('auth-token')
-              response.cookies.delete('refresh-token')
-              response.cookies.delete('user-info')
-              console.log('❌ 세션 갱신 실패, 쿠키 삭제됨')
-            }
-          } else {
-            // 리프레시 토큰이 없는 경우 쿠키 삭제
-            response.cookies.delete('auth-token')
-            response.cookies.delete('user-info')
-            console.log('❌ 리프레시 토큰 없음, 쿠키 삭제됨')
-          }
-        }
-      } catch (error) {
-        console.error('세션 확인 중 오류:', error)
-        // 오류 발생 시 쿠키 삭제
-        response.cookies.delete('auth-token')
-        response.cookies.delete('refresh-token')
-        response.cookies.delete('user-info')
+          },
+        },
       }
+    )
+
+    // 현재 세션 가져오기
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+    
+    if (sessionError) {
+      console.error('세션 가져오기 오류:', sessionError)
+      return response
+    }
+
+    if (session) {
+      // 세션이 있는 경우, 세션 갱신 시도
+      const { data: { session: refreshedSession }, error: refreshError } = await supabase.auth.refreshSession()
+      
+      if (refreshError) {
+        console.error('세션 갱신 오류:', refreshError)
+        // 세션 갱신 실패 시 쿠키 정리
+        response.cookies.set('sb-access-token', '', { maxAge: 0 })
+        response.cookies.set('sb-refresh-token', '', { maxAge: 0 })
+        return response
+      }
+
+      if (refreshedSession) {
+        // 세션 갱신 성공 시 쿠키 업데이트
+        const expiresAt = new Date(refreshedSession.expires_at! * 1000)
+        
+        // 사용자 정보 쿠키 설정
+        response.cookies.set('user-info', JSON.stringify({
+          id: refreshedSession.user.id,
+          email: refreshedSession.user.email,
+          created_at: refreshedSession.user.created_at,
+          last_sign_in_at: refreshedSession.user.last_sign_in_at
+        }), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          expires: expiresAt,
+          path: '/'
+        })
+
+        console.log('✅ 세션 유지됨:', refreshedSession.user?.email)
+      } else {
+        // 세션이 만료된 경우 쿠키 정리
+        response.cookies.set('sb-access-token', '', { maxAge: 0 })
+        response.cookies.set('sb-refresh-token', '', { maxAge: 0 })
+        response.cookies.set('user-info', '', { maxAge: 0 })
+        console.log('❌ 세션 만료됨, 쿠키 정리됨')
+      }
+    } else {
+      // 세션이 없는 경우 쿠키 정리
+      response.cookies.set('sb-access-token', '', { maxAge: 0 })
+      response.cookies.set('sb-refresh-token', '', { maxAge: 0 })
+      response.cookies.set('user-info', '', { maxAge: 0 })
+      console.log('ℹ️ 세션 없음, 쿠키 정리됨')
     }
 
     return response
