@@ -23,10 +23,7 @@ export interface EnvironmentConfig {
   
   // Redis 설정
   redis: {
-    host: string
-    port: number
-    password?: string
-    db: number
+    url: string
     ttl: number
   }
   
@@ -99,11 +96,8 @@ const configs: Record<Environment, EnvironmentConfig> = {
     },
     
     redis: {
-      host: 'localhost',
-      port: 6379,
-      password: undefined,
-      db: 0,
-      ttl: 300 // 5분
+      url: process.env.REDIS_URL || 'redis://localhost:6379',
+      ttl: 1800 // 30분
     },
     
     auth: {
@@ -168,10 +162,7 @@ const configs: Record<Environment, EnvironmentConfig> = {
     },
     
     redis: {
-      host: process.env.REDIS_HOST || 'localhost',
-      port: parseInt(process.env.REDIS_PORT || '6379'),
-      password: process.env.REDIS_PASSWORD,
-      db: parseInt(process.env.REDIS_DB || '0'),
+      url: process.env.REDIS_URL || 'redis://localhost:6379',
       ttl: 1800 // 30분
     },
     
@@ -240,10 +231,7 @@ const configs: Record<Environment, EnvironmentConfig> = {
     },
     
     redis: {
-      host: process.env.REDIS_HOST || 'localhost',
-      port: parseInt(process.env.REDIS_PORT || '6379'),
-      password: process.env.REDIS_PASSWORD,
-      db: parseInt(process.env.REDIS_DB || '0'),
+      url: process.env.REDIS_URL || 'redis://localhost:6379',
       ttl: 3600 // 1시간
     },
     
@@ -349,15 +337,4 @@ export function printConfig(): void {
   console.log(`   포트: ${config.port}`)
   console.log(`   베이스 URL: ${config.baseUrl}`)
   console.log(`   디버그: ${config.debug}`)
-  console.log(`   로그 레벨: ${config.logLevel}`)
-  
-  if (errors.length > 0) {
-    console.log('⚠️  설정 오류:')
-    errors.forEach(error => console.log(`   ${error}`))
-  } else {
-    console.log('✅ 설정 검증 완료')
-  }
-}
-
-// 환경별 설정 내보내기
-export default getConfig
+  console.log(`
