@@ -33,6 +33,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Check for existing session on mount
     const checkAuth = async () => {
       try {
+        // 쿠키에서 auth-token 확인
+        const cookies = document.cookie.split(';')
+        const authToken = cookies.find(cookie => cookie.trim().startsWith('auth-token='))
+        
+        if (!authToken) {
+          // 인증 토큰이 없으면 API 호출하지 않음
+          setIsLoading(false)
+          return
+        }
+
         // 백엔드 API에서 사용자 프로필 확인
         const response = await fetch('/api/user/profile', {
           credentials: 'include' // 쿠키 포함
