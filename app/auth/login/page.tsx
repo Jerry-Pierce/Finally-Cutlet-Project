@@ -24,16 +24,22 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Login form submitted')
+    console.log('Email:', email)
+    console.log('Password length:', password.length)
 
     const success = await login(email, password)
+    console.log('Login result:', success)
 
     if (success) {
+      console.log('Login successful, redirecting to shortener')
       toast({
         title: "Login successful!",
         description: "Welcome back to Cutlet.",
       })
       router.push("/shortener")
     } else {
+      console.log('Login failed, showing error toast')
       toast({
         title: "Login failed",
         description: "Please check your credentials and try again.",

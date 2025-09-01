@@ -13,10 +13,13 @@ const loginSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Login API called')
+    
     // Rate Limiting 적용 (인증 시도 제한)
     const rateLimitResult = await withRateLimit(request, rateLimiters.auth)
     
     if (!rateLimitResult.success) {
+      console.log('Rate limit exceeded for login attempt')
       return NextResponse.json(
         { 
           error: '로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요.',
@@ -37,9 +40,13 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
+    console.log('Login request body:', { email: body.email, password: '[HIDDEN]' })
+    
     const validatedData = loginSchema.parse(body)
     
     const { email, password } = validatedData
+
+    console.log('Looking for user with email:', email)
 
     // 사용자 찾기
     const user = await db.user.findUnique({
@@ -47,21 +54,27 @@ export async function POST(request: NextRequest) {
     })
     
     if (!user) {
+      console.log('User not found for email:', email)
       return NextResponse.json(
         { error: '이메일 또는 비밀번호가 올바르지 않습니다.' },
         { status: 401 }
       )
     }
 
+    console.log('User found, checking password')
+
     // 비밀번호 검증
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
     
     if (!isPasswordValid) {
+      console.log('Invalid password for user:', email)
       return NextResponse.json(
         { error: '이메일 또는 비밀번호가 올바르지 않습니다.' },
         { status: 401 }
       )
     }
+
+    console.log('Password valid, generating JWT token')
 
     // JWT 토큰 생성
     const jwtSecret = process.env.JWT_SECRET || 'fallback-secret'
@@ -77,6 +90,8 @@ export async function POST(request: NextRequest) {
 
     // 비밀번호 해시는 제외하고 응답
     const { passwordHash: _, ...userWithoutPassword } = user
+
+    console.log('Login successful for user:', email)
 
     // 쿠키에 토큰 설정
     const response = NextResponse.json({
@@ -96,6 +111,8 @@ export async function POST(request: NextRequest) {
       maxAge: 7 * 24 * 60 * 60, // 7일
       path: '/'
     })
+
+    console.log('Auth token cookie set successfully')
 
     return response
 
