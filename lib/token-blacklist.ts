@@ -47,6 +47,7 @@ export class TokenBlacklistService {
       return exists === 1
     } catch (error) {
       console.error('토큰 블랙리스트 확인 실패:', error)
+      // Redis 오류 시 기본적으로 블랙리스트되지 않은 것으로 처리
       return false
     }
   }
@@ -97,7 +98,8 @@ export class TokenBlacklistService {
       console.log(`사용자 ${userId}의 토큰이 등록되었습니다`)
     } catch (error) {
       console.error('사용자 토큰 등록 실패:', error)
-      throw error
+      // Redis 오류 시 토큰 등록을 건너뛰고 계속 진행
+      console.log('Redis 오류로 인해 토큰 등록을 건너뜁니다')
     }
   }
 
