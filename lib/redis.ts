@@ -257,6 +257,9 @@ export { redis }
 // 연결 테스트
 export async function testRedisConnection(): Promise<boolean> {
   try {
+    console.log('🔍 Redis 연결 테스트 시작...')
+    console.log('Redis URL:', process.env.REDIS_URL ? '설정됨' : '설정되지 않음')
+    
     const isConnected = await cache.ping()
     if (isConnected) {
       console.log('✅ Redis 연결 테스트 성공')
@@ -267,6 +270,7 @@ export async function testRedisConnection(): Promise<boolean> {
     }
   } catch (error) {
     console.error('❌ Redis 연결 테스트 오류:', error)
+    console.error('Redis URL:', process.env.REDIS_URL)
     return false
   }
 }
@@ -280,5 +284,18 @@ export async function ensureRedisConnection(): Promise<boolean> {
   } catch (error) {
     console.error('❌ Redis 연결 확인 오류:', error)
     return false
+  }
+}
+
+// Redis 연결 상태 상세 정보
+export function getRedisStatus(): {
+  status: string
+  url: string | undefined
+  isConnected: boolean
+} {
+  return {
+    status: redis.status,
+    url: process.env.REDIS_URL,
+    isConnected: redis.status === 'ready'
   }
 }
