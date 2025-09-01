@@ -2,7 +2,7 @@ import { Redis } from 'ioredis'
 
 // Redis 클라이언트 설정
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
-  maxRetriesPerRequest: 3,    // 재시도 횟수 제한
+  maxRetriesPerRequest: 10,   // 재시도 횟수 증가
   lazyConnect: true,          // 지연 연결 (필요할 때 연결)
   keepAlive: 30000,
   connectTimeout: 10000,      // 연결 타임아웃 설정
@@ -267,6 +267,18 @@ export async function testRedisConnection(): Promise<boolean> {
     }
   } catch (error) {
     console.error('❌ Redis 연결 테스트 오류:', error)
+    return false
+  }
+}
+
+// Redis 연결 상태 확인 및 재연결
+export async function ensureRedisConnection(): Promise<boolean> {
+  try {
+    // ping으로 연결 상태 확인
+    const result = await redis.ping()
+    return result === 'PONG'
+  } catch (error) {
+    console.error('❌ Redis 연결 확인 오류:', error)
     return false
   }
 }
