@@ -33,27 +33,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Check for existing session on mount
     const checkAuth = async () => {
       try {
-        // 쿠키에서 auth-token 확인
-        const cookies = document.cookie.split(';')
-        const authToken = cookies.find(cookie => cookie.trim().startsWith('auth-token='))
+        // 쿠키에서 auth-token 확인 (개선된 방식)
+        const getCookie = (name: string) => {
+          const value = `; ${document.cookie}`
+          const parts = value.split(`; ${name}=`)
+          if (parts.length === 2) return parts.pop()?.split(';').shift()
+          return null
+        }
+        
+        const authToken = getCookie('auth-token')
         
         if (!authToken) {
-          // 인증 토큰이 없으면 API 호출하지 않음
+          console.log('No auth-token found in cookies')
           setIsLoading(false)
           return
         }
+
+        console.log('Auth token found, checking user profile')
 
         // 백엔드 API에서 사용자 프로필 확인
         const response = await fetch('/api/user/profile', {
           credentials: 'include' // 쿠키 포함
         })
 
+        console.log('Profile check response status:', response.status)
+
         if (response.ok) {
           const result = await response.json()
+          console.log('Profile check successful:', result.data)
           setUser(result.data)
+        } else {
+          console.log('Profile check failed, clearing user')
+          setUser(null)
         }
       } catch (error) {
         console.error("Auth check failed:", error)
+        setUser(null)
       } finally {
         setIsLoading(false)
       }
