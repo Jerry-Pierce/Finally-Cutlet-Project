@@ -22,7 +22,8 @@ import {
   Eye,
   Globe,
   TrendingUp,
-  Trophy
+  Trophy,
+  RefreshCw
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { useLanguage } from "@/contexts/language-context"
@@ -190,6 +191,29 @@ export default function DashboardPage() {
     }
   }, [user, searchTerm, selectedTag, showFavorites])
 
+  // 실시간 클릭 수 업데이트 (30초마다)
+  useEffect(() => {
+    if (!user) return
+
+    const interval = setInterval(() => {
+      loadUrls(currentPage)
+    }, 30000) // 30초마다 업데이트
+
+    return () => clearInterval(interval)
+  }, [user, currentPage])
+
+  // 페이지 포커스 시 데이터 새로고침
+  useEffect(() => {
+    const handleFocus = () => {
+      if (user) {
+        loadUrls(currentPage)
+      }
+    }
+
+    window.addEventListener('focus', handleFocus)
+    return () => window.removeEventListener('focus', handleFocus)
+  }, [user, currentPage])
+
   // 기본 통계 데이터 계산
   const calculateBasicStats = () => {
     if (!urls.length) return null
@@ -331,12 +355,24 @@ export default function DashboardPage() {
                 {t("welcomeMessage").replace("{name}", user.username || user.email)}
               </p>
             </div>
-            <Link href="/shortener">
-              <Button className="flex items-center gap-2">
-                <Plus className="w-4 h-4" />
-                {t("createUrl")}
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => loadUrls(currentPage)}
+                disabled={isLoading}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+                {t("refresh")}
               </Button>
-            </Link>
+              <Link href="/shortener">
+                <Button className="flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  {t("createUrl")}
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* 통계 카드 */}
