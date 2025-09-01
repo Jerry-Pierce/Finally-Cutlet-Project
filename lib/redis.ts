@@ -2,12 +2,12 @@ import { Redis } from 'ioredis'
 
 // Redis 클라이언트 설정
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
-  maxRetriesPerRequest: null, // 무제한 재시도 (개발 중)
-  lazyConnect: false,         // 즉시 연결
+  maxRetriesPerRequest: 3,    // 재시도 횟수 제한
+  lazyConnect: true,          // 지연 연결 (필요할 때 연결)
   keepAlive: 30000,
   connectTimeout: 10000,      // 연결 타임아웃 설정
   commandTimeout: 5000,       // 명령 타임아웃 설정
-  enableOfflineQueue: false,  // 오프라인 큐 비활성화
+  enableOfflineQueue: true,   // 오프라인 큐 활성화
   enableReadyCheck: true,     // 준비 상태 확인 활성화
 })
 
