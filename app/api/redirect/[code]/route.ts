@@ -12,6 +12,10 @@ export async function GET(
   try {
     const { code } = params
 
+    console.log('Redirect request received for code:', code)
+    console.log('User-Agent:', request.headers.get('user-agent'))
+    console.log('IP Address:', request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown')
+
     if (!code) {
       return NextResponse.json(
         { error: 'URL 코드가 필요합니다.' },
@@ -37,14 +41,18 @@ export async function GET(
     })
 
     if (!shortenedUrl) {
+      console.log('URL not found for code:', code)
       return NextResponse.json(
         { error: 'URL을 찾을 수 없습니다.' },
         { status: 404 }
       )
     }
 
+    console.log('URL found:', shortenedUrl.originalUrl)
+
     // 만료 확인
     if (shortenedUrl.expiresAt && new Date() > shortenedUrl.expiresAt) {
+      console.log('URL expired for code:', code)
       return NextResponse.json(
         { error: '이 링크는 만료되었습니다.' },
         { status: 410 }
@@ -52,10 +60,18 @@ export async function GET(
     }
 
     // 클릭 추적 정보 수집 (지리적 위치 정보 포함)
+    console.log('Creating click data for URL ID:', shortenedUrl.id)
     const clickData = await createClickWithGeo(request, shortenedUrl.id)
+    console.log('Click data created:', {
+      ipAddress: clickData.ipAddress,
+      deviceType: clickData.deviceType,
+      country: clickData.country,
+      city: clickData.city
+    })
 
     // 클릭 기록 저장 (디바이스 정보 포함)
-    await prisma.urlClick.create({
+    console.log('Saving click record to database...')
+    const savedClick = await prisma.urlClick.create({
       data: {
         urlId: clickData.urlId,
         ipAddress: clickData.ipAddress,
@@ -66,6 +82,7 @@ export async function GET(
         deviceType: clickData.deviceType
       }
     })
+    console.log('Click record saved with ID:', savedClick.id)
 
     // URL 소유자에게 실시간 알림 전송 (로그인한 사용자인 경우)
     if (shortenedUrl.userId) {
