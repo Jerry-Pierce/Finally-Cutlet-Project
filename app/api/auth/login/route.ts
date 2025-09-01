@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
 
     // HTTP-only 쿠키로 토큰 설정
     response.cookies.set('auth-token', token, {
-      httpOnly: true,
+      httpOnly: false, // 클라이언트에서 접근 가능하도록 변경
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60, // 7일

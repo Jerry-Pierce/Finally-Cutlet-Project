@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     // 인증 토큰 쿠키 제거
     response.cookies.set('auth-token', '', {
-      httpOnly: true,
+      httpOnly: false, // 클라이언트에서 접근 가능하도록 변경
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       expires: new Date(0), // 즉시 만료
