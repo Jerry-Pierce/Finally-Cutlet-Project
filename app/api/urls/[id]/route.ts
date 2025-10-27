@@ -3,9 +3,11 @@ import { requireAuth, AuthenticatedRequest } from '@/lib/auth-middleware'
 import { db } from '@/lib/database'
 
 // URL 삭제
-async function DELETEHandler(request: AuthenticatedRequest, { params }: { params: { id: string } }) {
+async function DELETEHandler(request: AuthenticatedRequest) {
   try {
-    const { id } = params
+    const requestUrl = new URL(request.url)
+    const pathSegments = requestUrl.pathname.split('/')
+    const id = pathSegments[pathSegments.length - 1]
     const userId = request.user!.userId
 
     // URL이 사용자 소유인지 확인
@@ -44,9 +46,11 @@ async function DELETEHandler(request: AuthenticatedRequest, { params }: { params
 }
 
 // URL 정보 업데이트
-async function PATCHHandler(request: AuthenticatedRequest, { params }: { params: { id: string } }) {
+async function PATCHHandler(request: AuthenticatedRequest) {
   try {
-    const { id } = params
+    const requestUrl = new URL(request.url)
+    const pathSegments = requestUrl.pathname.split('/')
+    const id = pathSegments[pathSegments.length - 1]
     const userId = request.user!.userId
     const body = await request.json()
 

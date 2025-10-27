@@ -4,10 +4,6 @@ import { db } from '@/lib/database'
 import bcrypt from 'bcryptjs'
 
 export const GET = requireAuth(async (request: AuthenticatedRequest) => {
-<<<<<<< HEAD
-  try {
-    const userId = request.user!.userId
-=======
   // 즉시 사용자 정보 반환 (DB 조회 없이)
   const userInfo = request.user!
   
@@ -26,45 +22,8 @@ export const GET = requireAuth(async (request: AuthenticatedRequest) => {
       totalFavorites: 0
     }
   }
->>>>>>> 4c44706 (Remove premium features and PayPal integration - Convert to free-only service)
 
-    // 기존 프로필 조회 로직
-    const user = await db.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        isPremium: true,
-        emailNotifications: true,
-        createdAt: true,
-        updatedAt: true
-      }
-    })
-
-    if (!user) {
-      return NextResponse.json({ error: '사용자를 찾을 수 없습니다.' }, { status: 404 })
-    }
-
-    // URL 및 즐겨찾기 개수 조회
-    const [urlCount, favoriteCount] = await Promise.all([
-      db.shortenedUrl.count({ where: { userId } }),
-      db.favorite.count({ where: { userId } })
-    ])
-
-    const profile = {
-      ...user,
-      stats: {
-        totalUrls: urlCount,
-        totalFavorites: favoriteCount
-      }
-    }
-
-    return NextResponse.json({ success: true, data: profile })
-  } catch (error) {
-    console.error('프로필 조회 오류:', error)
-    return NextResponse.json({ error: '프로필 조회에 실패했습니다.' }, { status: 500 })
-  }
+  return NextResponse.json({ success: true, data: profile })
 })
 
 export const PATCH = requireAuth(async (request: AuthenticatedRequest) => {
@@ -134,7 +93,6 @@ export const PATCH = requireAuth(async (request: AuthenticatedRequest) => {
         id: true,
         email: true,
         username: true,
-        isPremium: true,
         emailNotifications: true,
         updatedAt: true
       }
