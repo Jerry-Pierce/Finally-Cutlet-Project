@@ -10,10 +10,10 @@ export function useAuthStatus() {
   const { toast } = useToast()
   const { t } = useLanguage()
 
-  // 토큰 유효성 검증
+  // 토큰 유효성 검증 (가벼운 API 사용)
   const validateToken = useCallback(async () => {
     try {
-      const response = await fetch('/api/user/profile', {
+      const response = await fetch('/api/auth/check', {
         method: 'GET',
         credentials: 'include'
       })

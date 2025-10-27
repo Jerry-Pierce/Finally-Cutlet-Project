@@ -15,7 +15,6 @@ import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
-import { useAuthStatus } from "@/hooks/use-auth-status"
 
 export default function ProfilePage() {
   const { user, updateUser, logout } = useAuth()
@@ -23,8 +22,7 @@ export default function ProfilePage() {
   const router = useRouter()
   const { t } = useLanguage()
   
-  // 인증 상태 모니터링 (자동 로그아웃)
-  useAuthStatus()
+  // 인증 상태 모니터링 제거 (프로필 페이지에서는 loadProfile로 대체)
 
   const [activeSection, setActiveSection] = useState("general")
   const [profileData, setProfileData] = useState<any>(null)
@@ -123,6 +121,16 @@ export default function ProfilePage() {
           ...prev,
           email: result.data.emailNotifications ?? true
         }))
+      } else if (response.status === 401) {
+        // 인증 실패 - 자동 로그아웃
+        console.log('인증 실패, 자동 로그아웃 처리')
+        toast({
+          title: t("sessionExpired"),
+          description: t("sessionExpiredDesc"),
+          variant: "destructive"
+        })
+        await logout()
+        router.push('/auth/login')
       } else {
         toast({
           title: t("errorOccurred"),
