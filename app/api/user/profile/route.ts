@@ -4,26 +4,55 @@ import { db } from '@/lib/database'
 import bcrypt from 'bcryptjs'
 
 export const GET = requireAuth(async (request: AuthenticatedRequest) => {
-  // 즉시 사용자 정보 반환 (DB 조회 없이)
-  const userInfo = request.user!
-  
-  console.log('즉시 프로필 API 응답 - 사용자:', userInfo.email)
-  
-  const profile = {
-    id: userInfo.userId,
-    email: userInfo.email,
-    username: userInfo.username || userInfo.email?.split('@')[0] || 'user', // JWT에서 실제 사용자명 사용
-    emailNotifications: true,
-    status: 'active' as const,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    stats: {
-      totalUrls: 0,
-      totalFavorites: 0
-    }
-  }
+  try {
+    const userInfo = request.user!
+    console.log('프로필 API 응답 - 사용자:', userInfo.email)
+    
+    // 실제 사용자 데이터와 통계를 가져옴
+    const [user, totalUrls, totalFavorites] = await Promise.all([
+      db.user.findUnique({
+        where: { id: userInfo.userId },
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          emailNotifications: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true
+        }
+      }),
+      db.shortenedUrl.count({
+        where: { userId: userInfo.userId }
+      }),
+      db.shortenedUrl.count({
+        where: { userId: userInfo.userId, isFavorite: true }
+      })
+    ])
 
-  return NextResponse.json({ success: true, data: profile })
+    if (!user) {
+      return NextResponse.json({ error: '사용자를 찾을 수 없습니다.' }, { status: 404 })
+    }
+
+    const profile = {
+      id: user.id,
+      email: user.email,
+      username: user.username || userInfo.email?.split('@')[0] || 'user',
+      emailNotifications: user.emailNotifications,
+      status: user.status,
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
+      stats: {
+        totalUrls,
+        totalFavorites
+      }
+    }
+
+    return NextResponse.json({ success: true, data: profile })
+  } catch (error) {
+    console.error('프로필 조회 오류:', error)
+    return NextResponse.json({ error: '프로필을 불러올 수 없습니다.' }, { status: 500 })
+  }
 })
 
 export const PATCH = requireAuth(async (request: AuthenticatedRequest) => {

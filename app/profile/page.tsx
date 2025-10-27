@@ -474,7 +474,7 @@ export default function ProfilePage() {
                     <p className="text-muted-foreground">{profileData.email}</p>
                     <Badge variant="secondary" className="mt-2 bg-accent/10 text-accent border-accent/20">
                       <Crown className="w-3 h-3 mr-1" />
-                      {profileData.isPremium ? t("premiumUser") : t("regularUser")}
+                      {t("regularUser")}
                     </Badge>
                   </div>
                 </div>
@@ -729,21 +729,13 @@ export default function ProfilePage() {
                     <div>
                       <h3 className="font-semibold">{t("currentPlan")}</h3>
                       <p className="text-sm text-muted-foreground">
-                        {profileData.isPremium ? t("premiumPlanName") : t("freePlanName")}
+                        {t("freePlanName")}
                       </p>
                     </div>
-                    <Badge variant={profileData.isPremium ? "default" : "default"}>
-                      {profileData.isPremium ? t("premiumPlanName") : t("freePlanName")}
+                    <Badge variant="default">
+                      {t("freePlanName")}
                     </Badge>
                   </div>
-                  
-                  {profileData.isPremium && (
-                    <div className="pt-4 border-t">
-                      <p className="text-sm text-muted-foreground">
-                        {t("nextBillingDate")}: {new Date().toLocaleDateString()}
-                      </p>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
