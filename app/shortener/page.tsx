@@ -285,16 +285,6 @@ export default function ShortenerPage() {
                             className="rounded-l-none shadow-inner shadow-black/5 border-border/50 focus:shadow-lg focus:shadow-amber-500/10 transition-all duration-300 placeholder:text-muted-foreground/60"
                           />
                         </div>
-                        <button
-                          onClick={() => setIsPremiumFavorite(!isPremiumFavorite)}
-                          className={`p-2 rounded-lg border transition-all duration-300 will-change-transform hover:scale-110 active:scale-95 self-start sm:self-auto ${
-                            isPremiumFavorite
-                              ? "bg-pink-500/10 border-pink-500/30 text-pink-500 shadow-lg shadow-pink-500/20"
-                              : "bg-muted border-border/50 text-muted-foreground hover:bg-pink-500/5 hover:border-pink-500/20"
-                          }`}
-                        >
-                          <Heart className={`w-4 h-4 ${isPremiumFavorite ? "fill-current" : ""}`} />
-                        </button>
                       </div>
                       <p className="text-xs text-muted-foreground flex items-center gap-1">
                         <Crown className="w-3 h-3 text-amber-500" />

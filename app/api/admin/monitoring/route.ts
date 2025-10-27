@@ -251,7 +251,7 @@ async function getUrlStats() {
     getActiveUrlCount(),
     getExpiredUrlCount(),
     db.shortenedUrl.count({ where: { customCode: { not: null } } }),
-    db.shortenedUrl.count({ where: { isPremiumFavorite: true } }),
+    Promise.resolve(0), // Premium favorites removed
     getNewUrlCount('today'),
     getNewUrlCount('week')
   ])

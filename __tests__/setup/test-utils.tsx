@@ -40,7 +40,6 @@ export const mockShortenedUrl = {
   title: 'Test URL',
   description: 'Test description',
   isFavorite: false,
-  isPremiumFavorite: false,
   expiresAt: null,
   createdAt: new Date(),
   updatedAt: new Date(),
