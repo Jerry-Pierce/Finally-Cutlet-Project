@@ -7,7 +7,7 @@ export interface AuthenticatedRequest extends NextRequest {
   user?: {
     userId: string
     email: string
-    isPremium: boolean
+    username?: string
   }
 }
 
@@ -37,7 +37,7 @@ export async function authenticateUser(request: NextRequest): Promise<Authentica
       select: {
         id: true,
         email: true,
-        isPremium: true,
+        username: true,
       }
     })
 
@@ -50,7 +50,7 @@ export async function authenticateUser(request: NextRequest): Promise<Authentica
     authenticatedRequest.user = {
       userId: user.id,
       email: user.email,
-      isPremium: user.isPremium
+      username: user.username
     }
 
     // 토큰을 사용자 토큰 목록에 등록
@@ -83,30 +83,13 @@ export function requireAuth(handler: (request: AuthenticatedRequest) => Promise<
   }
 }
 
+// Premium features removed - function kept for backward compatibility
 export function requirePremium(handler: (request: AuthenticatedRequest) => Promise<NextResponse>) {
-  return async (request: NextRequest) => {
-    const authenticatedRequest = await authenticateUser(request)
-    
-    if (!authenticatedRequest.user) {
-      return NextResponse.json(
-        { error: '인증이 필요합니다.' },
-        { status: 401 }
-      )
-    }
-
-    if (!authenticatedRequest.user.isPremium) {
-      return NextResponse.json(
-        { error: '프리미엄 사용자만 이용할 수 있는 기능입니다.' },
-        { status: 403 }
-      )
-    }
-
-    return handler(authenticatedRequest)
-  }
+  return requireAuth(handler) // Just require basic auth since premium is removed
 }
 
 // JWT 토큰 검증 함수
-export async function verifyToken(request: NextRequest): Promise<{ success: boolean; userId?: string; email?: string; isPremium?: boolean }> {
+export async function verifyToken(request: NextRequest): Promise<{ success: boolean; userId?: string; email?: string; username?: string }> {
   try {
     // 쿠키에서 토큰 가져오기
     const token = request.cookies.get('auth-token')?.value
@@ -125,7 +108,7 @@ export async function verifyToken(request: NextRequest): Promise<{ success: bool
       select: {
         id: true,
         email: true,
-        isPremium: true,
+        username: true,
       }
     })
 
@@ -137,7 +120,7 @@ export async function verifyToken(request: NextRequest): Promise<{ success: bool
       success: true,
       userId: user.id,
       email: user.email,
-      isPremium: user.isPremium
+      username: user.username
     }
 
   } catch (error) {
