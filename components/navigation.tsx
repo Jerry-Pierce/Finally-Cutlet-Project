@@ -17,11 +17,6 @@ const publicNavigationItems = [
     href: "/",
     icon: Home,
   },
-  {
-    nameKey: "pricing" as const,
-    href: "/pricing",
-    icon: CreditCard,
-  },
 ]
 
 const protectedNavigationItems = [

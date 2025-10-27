@@ -76,7 +76,6 @@ async function handler(request: AuthenticatedRequest) {
       title: url.title,
       description: url.description,
       isFavorite: url.isFavorite,
-      isPremiumFavorite: url.isPremiumFavorite,
       expiresAt: url.expiresAt,
       createdAt: url.createdAt,
       clickCount: url._count.clicks,

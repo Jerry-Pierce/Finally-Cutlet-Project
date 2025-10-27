@@ -71,7 +71,6 @@ async function PATCHHandler(request: AuthenticatedRequest, { params }: { params:
     if (body.title !== undefined) updateData.title = body.title
     if (body.description !== undefined) updateData.description = body.description
     if (body.isFavorite !== undefined) updateData.isFavorite = body.isFavorite
-    if (body.isPremiumFavorite !== undefined) updateData.isPremiumFavorite = body.isPremiumFavorite
     if (body.expiresAt !== undefined) updateData.expiresAt = body.expiresAt
 
     // URL 업데이트
@@ -99,7 +98,6 @@ async function PATCHHandler(request: AuthenticatedRequest, { params }: { params:
         title: updatedUrl.title,
         description: updatedUrl.description,
         isFavorite: updatedUrl.isFavorite,
-        isPremiumFavorite: updatedUrl.isPremiumFavorite,
         expiresAt: updatedUrl.expiresAt,
         createdAt: updatedUrl.createdAt,
         tags: updatedUrl.tags.map(urlTag => ({

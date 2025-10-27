@@ -21,7 +21,6 @@ model User {
   email        String   @unique
   passwordHash String
   username     String?  @unique
-  isPremium    Boolean  @default(false)
   emailNotifications Boolean @default(true)  // 이메일 알림 설정
   status       String   @default("active")  // active, suspended, pending
   createdAt    DateTime @default(now())
@@ -47,7 +46,6 @@ model ShortenedUrl {
   title             String?
   description       String?
   isFavorite        Boolean   @default(false)
-  isPremiumFavorite Boolean   @default(false)
   expiresAt         DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -126,7 +124,7 @@ model Notification {
   type      String   // url_click, url_expired, system
   title     String
   message   String
-  data      Json?   // 추가 데이터
+  data      String?   // 추가 데이터 (JSON string)
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 

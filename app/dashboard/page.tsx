@@ -42,7 +42,6 @@ interface UrlData {
   title: string | null
   description: string | null
   isFavorite: boolean
-  isPremiumFavorite: boolean
   expiresAt: string | null
   createdAt: string
   clickCount: number
@@ -418,12 +417,6 @@ export default function DashboardPage() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <Crown className="w-5 h-5 text-amber-500" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">{t("premium")}</p>
-                    <p className="text-2xl font-bold">
-                      {user.isPremium ? t("active") : t("inactive")}
-                    </p>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -794,9 +787,6 @@ export default function DashboardPage() {
                       <div className="flex items-start gap-2 mb-2">
                         {url.isFavorite && (
                           <Heart className="w-4 h-4 text-pink-500 fill-current" />
-                        )}
-                        {url.isPremiumFavorite && (
-                          <Crown className="w-4 h-4 text-amber-500" />
                         )}
                         <h3 className="font-semibold truncate">
                           {url.title || url.originalUrl.substring(0, 50) + '...'}

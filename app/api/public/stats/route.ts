@@ -22,7 +22,7 @@ export async function GET() {
           ]
         }
       }),
-      db.user.count({ where: { isPremium: true } })
+Promise.resolve(0) // 프리미엄 사용자 통계 제거
     ])
 
     // 오늘 생성된 URL 수

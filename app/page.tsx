@@ -9,8 +9,6 @@ import Link from "next/link"
 interface PublicStats {
   users: {
     total: number
-    premium: number
-    premiumPercentage: number
   }
   urls: {
     total: number
@@ -119,15 +117,6 @@ export default function LandingPage() {
               >
                 {t("getStarted")}
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
-            <Link href="/pricing">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 py-6 text-lg shadow-lg hover:shadow-xl will-change-transform hover:scale-105 active:scale-95 transition-all duration-200 bg-transparent"
-              >
-                {t("viewPricing")}
               </Button>
             </Link>
           </div>
@@ -257,15 +246,6 @@ export default function LandingPage() {
                   >
                     {t("createAccount")}
                     <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-                <Link href="/pricing">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="px-8 py-6 text-lg shadow-lg hover:shadow-xl will-change-transform hover:scale-105 active:scale-95 transition-all duration-200 bg-transparent"
-                  >
-                    {t("learnMore")}
                   </Button>
                 </Link>
               </div>

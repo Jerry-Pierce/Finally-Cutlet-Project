@@ -12,7 +12,6 @@ const shortenUrlSchema = z.object({
   tags: z.array(z.string()).optional(),
   expirationDays: z.string().optional(),
   isFavorite: z.boolean().optional(),
-  isPremiumFavorite: z.boolean().optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -47,7 +46,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = shortenUrlSchema.parse(body)
     
-    const { originalUrl, customCode, tags, expirationDays, isFavorite, isPremiumFavorite } = validatedData
+    const { originalUrl, customCode, tags, expirationDays, isFavorite } = validatedData
 
     // URL 유효성 검사
     if (!validateUrl(originalUrl)) {
@@ -57,26 +56,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 커스텀 코드가 있는 경우 프리미엄 사용자 체크 및 중복 확인
+    // 커스텀 코드가 있는 경우 중복 확인
     if (customCode) {
-      // 프리미엄 사용자 체크
-      if (userId) {
-        const user = await db.user.findUnique({
-          where: { id: userId },
-          select: { isPremium: true }
-        })
-        
-        if (!user?.isPremium) {
-          return NextResponse.json(
-            { 
-              error: 'customUrlPremiumOnly',
-              errorType: 'CUSTOM_URL_PREMIUM_REQUIRED'
-            },
-            { status: 403 }
-          )
-        }
-      } else {
-        // 로그인하지 않은 사용자는 커스텀 URL 사용 불가
+      // 로그인하지 않은 사용자는 커스텀 URL 사용 불가
+      if (!userId) {
         return NextResponse.json(
           { 
             error: 'loginRequiredForCustomUrl',
@@ -91,15 +74,15 @@ export async function POST(request: NextRequest) {
         where: { customCode }
       })
       
-              if (existingUrl) {
-          return NextResponse.json(
-            { 
-              error: 'customCodeAlreadyExists',
-              errorType: 'DUPLICATE_CUSTOM_CODE'
-            },
-            { status: 409 }
-          )
-        }
+      if (existingUrl) {
+        return NextResponse.json(
+          { 
+            error: 'customCodeAlreadyExists',
+            errorType: 'DUPLICATE_CUSTOM_CODE'
+          },
+          { status: 409 }
+        )
+      }
     }
 
     // 만료일 계산
@@ -135,23 +118,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 프리미엄 즐겨찾기 체크
-    if (isPremiumFavorite && userId) {
-      const user = await db.user.findUnique({
-        where: { id: userId },
-        select: { isPremium: true }
-      })
-      
-      if (!user?.isPremium) {
-        return NextResponse.json(
-          { 
-            error: 'premiumFavoritePremiumOnly',
-            errorType: 'PREMIUM_FAVORITE_PREMIUM_REQUIRED'
-          },
-          { status: 403 }
-        )
-      }
-    }
 
     // 짧은 코드 생성
     const shortCode = customCode || generateShortCode()
@@ -164,7 +130,6 @@ export async function POST(request: NextRequest) {
         customCode: customCode || null,
         expiresAt,
         isFavorite: isFavorite || false,
-        isPremiumFavorite: isPremiumFavorite || false,
         userId: userId || null,
       }
     })

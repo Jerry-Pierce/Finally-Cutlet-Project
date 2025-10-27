@@ -28,7 +28,6 @@ export default function ShortenerPage() {
   const [tags, setTags] = useState<string[]>([])
   const [currentTag, setCurrentTag] = useState("")
   const [isFavorite, setIsFavorite] = useState(false)
-  const [isPremiumFavorite, setIsPremiumFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [rateLimitInfo, setRateLimitInfo] = useState<{
     limit: number
@@ -72,7 +71,6 @@ export default function ShortenerPage() {
           tags: tags,
           expirationDays: expirationDays,
           isFavorite: isFavorite,
-          isPremiumFavorite: isPremiumFavorite,
         }),
       })
 
@@ -130,14 +128,10 @@ export default function ShortenerPage() {
               if (result.upgradeMessage) {
                 errorMessage += " " + t(result.upgradeMessage)
               }
-            } else if (typeof result.error === 'string' && result.error.includes('customUrlPremiumOnly')) {
-              errorMessage = t("customUrlPremiumOnly")
             } else if (typeof result.error === 'string' && result.error.includes('loginRequiredForCustomUrl')) {
               errorMessage = t("loginRequiredForCustomUrl")
             } else if (typeof result.error === 'string' && result.error.includes('customCodeAlreadyExists')) {
               errorMessage = t("customCodeAlreadyExists")
-            } else if (typeof result.error === 'string' && result.error.includes('premiumFavoritePremiumOnly')) {
-              errorMessage = t("premiumFavoritePremiumOnly")
             } else {
               // 기존 오류 메시지 사용
               errorMessage = result.error
@@ -273,11 +267,10 @@ export default function ShortenerPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
                     <div className="flex items-center gap-1.5 px-2 py-1 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 rounded-full border border-r-0 border-border/50">
                       <Crown className="w-3 h-3 text-amber-500" />
-                      <span className="text-xs font-medium text-amber-600 dark:text-amber-400">{t("premium")}</span>
                     </div>
                     <span className="text-sm font-medium text-foreground">{t("customUrl")}</span>
                   </div>
-                  {user.isPremium ? (
+                  {user ? (
                     // 프리미엄 사용자: 커스텀 URL 사용 가능
                     <div className="space-y-2">
                       <div className="flex flex-col sm:flex-row gap-2">

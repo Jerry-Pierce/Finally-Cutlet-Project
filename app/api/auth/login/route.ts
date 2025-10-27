@@ -82,7 +82,11 @@ export async function POST(request: NextRequest) {
       { 
         userId: user.id, 
         email: user.email,
+<<<<<<< HEAD
         isPremium: user.isPremium 
+=======
+        username: user.username || user.email.split('@')[0], // 사용자명 포함
+>>>>>>> 4c44706 (Remove premium features and PayPal integration - Convert to free-only service)
       },
       jwtSecret,
       { expiresIn: '7d' }

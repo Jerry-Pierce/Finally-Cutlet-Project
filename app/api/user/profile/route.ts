@@ -4,8 +4,29 @@ import { db } from '@/lib/database'
 import bcrypt from 'bcryptjs'
 
 export const GET = requireAuth(async (request: AuthenticatedRequest) => {
+<<<<<<< HEAD
   try {
     const userId = request.user!.userId
+=======
+  // 즉시 사용자 정보 반환 (DB 조회 없이)
+  const userInfo = request.user!
+  
+  console.log('즉시 프로필 API 응답 - 사용자:', userInfo.email)
+  
+  const profile = {
+    id: userInfo.userId,
+    email: userInfo.email,
+    username: userInfo.username || userInfo.email?.split('@')[0] || 'user', // JWT에서 실제 사용자명 사용
+    emailNotifications: true,
+    status: 'active' as const,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    stats: {
+      totalUrls: 0,
+      totalFavorites: 0
+    }
+  }
+>>>>>>> 4c44706 (Remove premium features and PayPal integration - Convert to free-only service)
 
     // 기존 프로필 조회 로직
     const user = await db.user.findUnique({
