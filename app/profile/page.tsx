@@ -98,14 +98,22 @@ export default function ProfilePage() {
   const loadProfile = async () => {
     if (!user) return
     
+    console.log('🔄 프로필 로딩 시작:', new Date().toISOString())
+    const startTime = Date.now()
     setIsLoading(true)
     try {
+      console.log('📡 API 호출 시작...')
       const response = await fetch('/api/user/profile', {
         credentials: 'include'
       })
+      console.log('📡 API 응답 완료:', Date.now() - startTime, 'ms')
       
       if (response.ok) {
+        console.log('📦 JSON 파싱 시작...')
+        const jsonStartTime = Date.now()
         const result = await response.json()
+        console.log('📦 JSON 파싱 완료:', Date.now() - jsonStartTime, 'ms')
+        console.log('🎯 전체 프로필 로딩 완료:', Date.now() - startTime, 'ms')
         setProfileData(result.data)
         setFormData({
           username: result.data.username || "",

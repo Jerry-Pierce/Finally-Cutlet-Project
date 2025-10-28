@@ -6,34 +6,36 @@ import bcrypt from 'bcryptjs'
 export const GET = requireAuth(async (request: AuthenticatedRequest) => {
   try {
     const userInfo = request.user!
-    console.log('프로필 API 응답 - 사용자:', userInfo.email)
+    const startTime = Date.now()
+    console.log('🚀 프로필 API 시작 - 사용자:', userInfo.email, 'Time:', new Date().toISOString())
     
-    // 실제 사용자 데이터와 통계를 가져옴
-    const [user, totalUrls, totalFavorites] = await Promise.all([
-      db.user.findUnique({
-        where: { id: userInfo.userId },
-        select: {
-          id: true,
-          email: true,
-          username: true,
-          emailNotifications: true,
-          status: true,
-          createdAt: true,
-          updatedAt: true
-        }
-      }),
-      db.shortenedUrl.count({
-        where: { userId: userInfo.userId }
-      }),
-      db.shortenedUrl.count({
-        where: { userId: userInfo.userId, isFavorite: true }
-      })
-    ])
+    // 단계별 시간 측정을 위해 순차 실행
+    console.log('📊 사용자 기본 정보 조회 시작...')
+    const userStartTime = Date.now()
+    
+    const user = await db.user.findUnique({
+      where: { id: userInfo.userId },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        emailNotifications: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true
+      }
+    })
+    
+    console.log('✅ 사용자 기본 정보 조회 완료:', Date.now() - userStartTime, 'ms')
 
     if (!user) {
+      console.log('❌ 사용자를 찾을 수 없음')
       return NextResponse.json({ error: '사용자를 찾을 수 없습니다.' }, { status: 404 })
     }
 
+    // 통계는 임시로 0으로 설정 (성능 테스트)
+    console.log('📈 통계 조회 건너뛰기 (성능 테스트)')
+    
     const profile = {
       id: user.id,
       email: user.email,
@@ -43,14 +45,17 @@ export const GET = requireAuth(async (request: AuthenticatedRequest) => {
       createdAt: user.createdAt.toISOString(),
       updatedAt: user.updatedAt.toISOString(),
       stats: {
-        totalUrls,
-        totalFavorites
+        totalUrls: 0, // 임시로 0 설정
+        totalFavorites: 0 // 임시로 0 설정
       }
     }
 
+    const totalTime = Date.now() - startTime
+    console.log('🎉 프로필 API 완료 - 총 소요시간:', totalTime, 'ms')
+
     return NextResponse.json({ success: true, data: profile })
   } catch (error) {
-    console.error('프로필 조회 오류:', error)
+    console.error('❌ 프로필 조회 오류:', error)
     return NextResponse.json({ error: '프로필을 불러올 수 없습니다.' }, { status: 500 })
   }
 })
