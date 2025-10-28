@@ -330,7 +330,7 @@ export default function DashboardPage() {
                 {t("dashboard")}
               </h1>
               <p className="text-muted-foreground">
-                {t("welcomeMessage").replace("{name}", user.username || user.email)}
+                {t("welcomeMessage").replace("{name}", user?.username || user?.email || "사용자")}
               </p>
             </div>
             <div className="flex items-center gap-2">
