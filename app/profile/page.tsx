@@ -25,8 +25,21 @@ export default function ProfilePage() {
   // 인증 상태 모니터링 제거 (프로필 페이지에서는 loadProfile로 대체)
 
   const [activeSection, setActiveSection] = useState("general")
-  const [profileData, setProfileData] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  // 기본 프로필 데이터로 즉시 표시 (사용자 정보 기반)
+  const [profileData, setProfileData] = useState<any>(() => ({
+    id: 'loading',
+    email: 'loading...',
+    username: 'loading...',
+    emailNotifications: true,
+    status: 'active',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    stats: {
+      totalUrls: 0,
+      totalFavorites: 0
+    }
+  }))
+  const [isLoading, setIsLoading] = useState(false) // 로딩 상태 제거
   const [isSaving, setIsSaving] = useState(false)
   const [formData, setFormData] = useState({
     username: "",
@@ -76,12 +89,30 @@ export default function ProfilePage() {
     { id: "danger", label: t("accountManagement"), icon: Shield },
   ]
 
+  // 사용자 정보로 초기 프로필 데이터 설정
+  useEffect(() => {
+    if (user) {
+      setProfileData(prev => ({
+        ...prev,
+        id: user.id,
+        email: user.email,
+        username: user.username || user.email?.split('@')[0] || prev.username
+      }))
+      setFormData(prev => ({
+        ...prev,
+        username: user.username || user.email?.split('@')[0] || "",
+        email: user.email || ""
+      }))
+    }
+  }, [user])
+
   // Load profile data
   useEffect(() => {
     if (!user) {
       router.push('/auth/login')
       return
     }
+    // 백그라운드에서 데이터 로드 (페이지는 즉시 표시됨)
     loadProfile()
   }, [user, router])
 
@@ -98,22 +129,14 @@ export default function ProfilePage() {
   const loadProfile = async () => {
     if (!user) return
     
-    console.log('🔄 프로필 로딩 시작:', new Date().toISOString())
-    const startTime = Date.now()
-    setIsLoading(true)
+    // 백그라운드에서 데이터 로드 (페이지는 이미 표시됨)
     try {
-      console.log('📡 API 호출 시작...')
       const response = await fetch('/api/user/profile', {
         credentials: 'include'
       })
-      console.log('📡 API 응답 완료:', Date.now() - startTime, 'ms')
       
       if (response.ok) {
-        console.log('📦 JSON 파싱 시작...')
-        const jsonStartTime = Date.now()
         const result = await response.json()
-        console.log('📦 JSON 파싱 완료:', Date.now() - jsonStartTime, 'ms')
-        console.log('🎯 전체 프로필 로딩 완료:', Date.now() - startTime, 'ms')
         setProfileData(result.data)
         setFormData({
           username: result.data.username || "",
@@ -153,9 +176,8 @@ export default function ProfilePage() {
         description: t("networkError"),
         variant: "destructive"
       })
-    } finally {
-      setIsLoading(false)
     }
+    // 로딩 상태 제거로 finally 블록 제거
   }
 
   const handleSendPasswordChangeVerification = async () => {
@@ -445,16 +467,9 @@ export default function ProfilePage() {
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
-  }
-
-  if (!user || !profileData) {
-    return null
+  // 로딩 스피너 제거 - 즉시 페이지 표시
+  if (!user) {
+    return null // 사용자가 없으면 리다이렉트됨
   }
 
   const renderContent = () => {
