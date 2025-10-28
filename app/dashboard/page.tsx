@@ -617,8 +617,8 @@ export default function DashboardPage() {
               <CardContent>
                 {/* 즉시 차트 표시 - 로딩 스피너 제거 */}
                 <div className="flex flex-col items-center gap-6">
-                    {/* 도넛 차트 */}
-                    <div className="relative w-64 h-64">
+                  {/* 도넛 차트 */}
+                  <div className="relative w-64 h-64">
 
                       <svg className="w-full h-full" viewBox="0 0 100 100">
                         {/* 데스크톱 */}
