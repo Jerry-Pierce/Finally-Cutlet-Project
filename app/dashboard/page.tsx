@@ -341,11 +341,10 @@ export default function DashboardPage() {
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={() => loadUrls(currentPage)}
-                disabled={isLoading}
+                onClick={() => loadUrls(currentPage, false)}
                 className="flex items-center gap-2"
               >
-                <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+                <RefreshCw className="w-4 h-4" />
                 {t("refresh")}
               </Button>
               <Link href="/shortener">
@@ -616,12 +615,8 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {isLoadingDevice ? (
-                  <div className="flex items-center justify-center h-48">
-                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-6">
+                {/* 즉시 차트 표시 - 로딩 스피너 제거 */}
+                <div className="flex flex-col items-center gap-6">
                     {/* 도넛 차트 */}
                     <div className="relative w-64 h-64">
 
@@ -707,7 +702,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -715,39 +710,18 @@ export default function DashboardPage() {
 
         {activeTab === 'geo' && (
           <div>
-            {isLoadingGeo ? (
-              <div className="text-center py-8">
-                <div className="w-8 h-8 border-4 border-primary border-t-primary/30 rounded-full animate-spin mx-auto mb-4" />
-                <p className="text-muted-foreground">지리적 데이터를 불러오는 중...</p>
-              </div>
-            ) : geoData ? (
-              <GeoChart 
-                countryStats={geoData.countryStats}
-                cityStats={geoData.cityStats}
-                summary={geoData.summary}
-              />
-            ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <div className="text-4xl mx-auto mb-4">🌐</div>
-                  <h3 className="text-lg font-semibold mb-2">지리적 데이터가 없습니다</h3>
-                  <p className="text-muted-foreground">
-                    {t("urlShared")}
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+            {/* 즉시 지리적 분석 표시 - 로딩 스피너 제거 */}
+            <GeoChart 
+              countryStats={geoData.countryStats}
+              cityStats={geoData.cityStats}
+              summary={geoData.summary}
+            />
           </div>
         )}
 
         {/* URL 목록 */}
         <div className="space-y-4">
-          {isLoading ? (
-            <div className="text-center py-8">
-              <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-muted-foreground">{t("urlListLoading")}</p>
-            </div>
-          ) : urls.length === 0 ? (
+          {urls.length === 0 ? (
             <Card>
               <CardContent className="p-8 text-center">
                 <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
