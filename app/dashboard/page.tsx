@@ -622,85 +622,104 @@ export default function DashboardPage() {
 
                       <svg className="w-full h-full" viewBox="0 0 100 100">
                         {/* 데스크톱 */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="#ef4444"
-                          strokeWidth="16"
-                          strokeDasharray={`${calculateDeviceStats().desktop * 2.51} ${100 * 2.51}`}
-                          strokeDashoffset="0"
-                          className="transition-all duration-300 hover:stroke-[#dc2626]"
-                        />
-                        {/* 모바일 */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="#f97316"
-                          strokeWidth="16"
-                          strokeDasharray={`${calculateDeviceStats().mobile * 2.51} ${100 * 2.51}`}
-                          strokeDashoffset={`-${calculateDeviceStats().desktop * 2.51}`}
-                          className="transition-all duration-300 hover:stroke-[#ea580c]"
-                        />
-                        {/* 태블릿 */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="#22c55e"
-                          strokeWidth="16"
-                          strokeDasharray={`${calculateDeviceStats().tablet * 2.51} ${100 * 2.51}`}
-                          strokeDashoffset={`-${(calculateDeviceStats().desktop + calculateDeviceStats().mobile) * 2.51}`}
-                          className="transition-all duration-300 hover:stroke-[#16a34a]"
-                        />
+                        {(() => {
+                          const stats = calculateDeviceStats()
+                          return (
+                            <>
+                              <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                fill="none"
+                                stroke="#ef4444"
+                                strokeWidth="16"
+                                strokeDasharray={`${stats.desktop * 2.51} ${100 * 2.51}`}
+                                strokeDashoffset="0"
+                                className="transition-all duration-300 hover:stroke-[#dc2626]"
+                              />
+                              {/* 모바일 */}
+                              <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                fill="none"
+                                stroke="#f97316"
+                                strokeWidth="16"
+                                strokeDasharray={`${stats.mobile * 2.51} ${100 * 2.51}`}
+                                strokeDashoffset={`-${stats.desktop * 2.51}`}
+                                className="transition-all duration-300 hover:stroke-[#ea580c]"
+                              />
+                              {/* 태블릿 */}
+                              <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                fill="none"
+                                stroke="#22c55e"
+                                strokeWidth="16"
+                                strokeDasharray={`${stats.tablet * 2.51} ${100 * 2.51}`}
+                                strokeDashoffset={`-${(stats.desktop + stats.mobile) * 2.51}`}
+                                className="transition-all duration-300 hover:stroke-[#16a34a]"
+                              />
+                            </>
+                          )
+                        })()}
                         {/* 중앙 텍스트 */}
-                        <text
-                          x="50"
-                          y="45"
-                          textAnchor="middle"
-                          className="text-[10px] font-bold fill-foreground"
-                        >
-                          {calculateDeviceStats().desktop + calculateDeviceStats().mobile + calculateDeviceStats().tablet}%
-                        </text>
-                        <text
-                          x="50"
-                          y="58"
-                          textAnchor="middle"
-                          className="text-[8px] fill-muted-foreground"
-                        >
-                          {t("total")}
-                        </text>
+                        {(() => {
+                          const stats = calculateDeviceStats()
+                          return (
+                            <>
+                              <text
+                                x="50"
+                                y="45"
+                                textAnchor="middle"
+                                className="text-[10px] font-bold fill-foreground"
+                              >
+                                {stats.desktop + stats.mobile + stats.tablet}%
+                              </text>
+                              <text
+                                x="50"
+                                y="58"
+                                textAnchor="middle"
+                                className="text-[8px] fill-muted-foreground"
+                              >
+                                {t("total")}
+                              </text>
+                            </>
+                          )
+                        })()}
                       </svg>
                     </div>
 
                     {/* 범례 */}
-                    <div className="flex gap-6">
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded-full bg-red-500"></div>
-                        <div>
-                          <p className="font-medium text-sm">{t("desktop")}</p>
-                          <p className="text-lg font-bold text-red-500">{calculateDeviceStats().desktop}%</p>
+                    {(() => {
+                      const stats = calculateDeviceStats()
+                      return (
+                        <div className="flex gap-6">
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                            <div>
+                              <p className="font-medium text-sm">{t("desktop")}</p>
+                              <p className="text-lg font-bold text-red-500">{stats.desktop}%</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 rounded-full bg-orange-500"></div>
+                            <div>
+                              <p className="font-medium text-sm">{t("mobile")}</p>
+                              <p className="text-lg font-bold text-orange-500">{stats.mobile}%</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                            <div>
+                              <p className="font-medium text-sm">{t("tablet")}</p>
+                              <p className="text-lg font-bold text-green-500">{stats.tablet}%</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded-full bg-orange-500"></div>
-                        <div>
-                          <p className="font-medium text-sm">{t("mobile")}</p>
-                          <p className="text-lg font-bold text-orange-500">{calculateDeviceStats().mobile}%</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                        <div>
-                          <p className="font-medium text-sm">{t("tablet")}</p>
-                          <p className="text-lg font-bold text-green-500">{calculateDeviceStats().tablet}%</p>
-                        </div>
-                      </div>
-                    </div>
+                      )
+                    })()}
                   </div>
                 </div>
               </CardContent>
