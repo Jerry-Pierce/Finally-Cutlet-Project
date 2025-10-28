@@ -25,6 +25,11 @@ interface GeoChartProps {
 export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
   const { t } = useLanguage()
   
+  // 안전한 데이터 처리
+  const safeCountryStats = countryStats || []
+  const safeCityStats = cityStats || []
+  const safeSummary = summary || { totalCountries: 0, totalCities: 0, uniqueVisitors: 0 }
+  
   // 국가 코드를 국가명으로 변환
   const getCountryName = (code: string) => {
     const countryNames: { [key: string]: string } = {
@@ -45,10 +50,10 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
     return countryNames[code] || code
   }
 
-  // 상위 5개 국가만 표시
-  const topCountries = countryStats.slice(0, 5)
-  // 상위 10개 도시만 표시
-  const topCities = cityStats.slice(0, 10)
+  // 상위 5개 국가만 표시 (안전하게)
+  const topCountries = safeCountryStats.slice(0, 5)
+  // 상위 10개 도시만 표시 (안전하게)
+  const topCities = safeCityStats.slice(0, 10)
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -64,19 +69,19 @@ export function GeoChart({ countryStats, cityStats, summary }: GeoChartProps) {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                {summary.totalCountries}
+                {safeSummary.totalCountries}
               </div>
               <div className="text-sm text-muted-foreground">{t("countries")}</div>
             </div>
             <div className="text-center p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {summary.totalCities}
+                {safeSummary.totalCities}
               </div>
               <div className="text-sm text-muted-foreground">{t("cities")}</div>
             </div>
             <div className="text-center p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {summary.uniqueVisitors}
+                {safeSummary.uniqueVisitors}
               </div>
               <div className="text-sm text-muted-foreground">{t("visitors")}</div>
             </div>

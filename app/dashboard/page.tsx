@@ -76,8 +76,12 @@ export default function DashboardPage() {
   const [showFavorites, setShowFavorites] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [activeTab, setActiveTab] = useState<'urls' | 'analytics' | 'geo'>('urls')
-  // 기본 데이터로 즉시 표시 (백그라운드에서 실제 데이터 로드)
-  const [geoData, setGeoData] = useState<any>({ countries: [] })
+  // 기본 데이터로 즉시 표시 (GeoChart와 호환되는 구조)
+  const [geoData, setGeoData] = useState<any>({
+    countryStats: [],
+    cityStats: [],
+    summary: { totalCountries: 0, totalCities: 0, uniqueVisitors: 0 }
+  })
   const [isLoadingGeo, setIsLoadingGeo] = useState(false)
   const [deviceData, setDeviceData] = useState<any>({ desktop: 0, mobile: 0, tablet: 0 })
   const [isLoadingDevice, setIsLoadingDevice] = useState(false)
@@ -306,7 +310,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!user) return
     
-    if (activeTab === 'geo' && (!geoData || geoData.countries.length === 0)) {
+    if (activeTab === 'geo' && (!geoData || !geoData.countryStats || geoData.countryStats.length === 0)) {
       loadGeoData()
     }
     if (activeTab === 'analytics' && deviceData.desktop === 0 && deviceData.mobile === 0 && deviceData.tablet === 0) {
