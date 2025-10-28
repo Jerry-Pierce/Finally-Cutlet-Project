@@ -31,7 +31,6 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { GeoChart } from "@/components/ui/geo-chart"
-import { useAuthStatus } from "@/hooks/use-auth-status"
 
 interface UrlData {
   id: string
@@ -67,20 +66,20 @@ export default function DashboardPage() {
   const { toast } = useToast()
   const router = useRouter()
   
-  // 인증 상태 모니터링 (자동 로그아웃)
-  useAuthStatus()
+  // 인증 상태 모니터링 제거 (무한 루프 방지)
   
   const [urls, setUrls] = useState<UrlData[]>([])
   const [pagination, setPagination] = useState<PaginationData | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false) // 백그라운드 로딩으로 변경
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTag, setSelectedTag] = useState("")
   const [showFavorites, setShowFavorites] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [activeTab, setActiveTab] = useState<'urls' | 'analytics' | 'geo'>('urls')
-  const [geoData, setGeoData] = useState<any>(null)
+  // 기본 데이터로 즉시 표시 (백그라운드에서 실제 데이터 로드)
+  const [geoData, setGeoData] = useState<any>({ countries: [] })
   const [isLoadingGeo, setIsLoadingGeo] = useState(false)
-  const [deviceData, setDeviceData] = useState<any>(null)
+  const [deviceData, setDeviceData] = useState<any>({ desktop: 0, mobile: 0, tablet: 0 })
   const [isLoadingDevice, setIsLoadingDevice] = useState(false)
 
   // 인증 확인
@@ -90,11 +89,13 @@ export default function DashboardPage() {
     }
   }, [user, authLoading, router])
 
-  // URL 목록 로드
-  const loadUrls = async (page = 1) => {
+  // URL 목록 로드 (최적화된 버전)
+  const loadUrls = async (page = 1, showLoading = false) => {
     if (!user) return
 
-    setIsLoading(true)
+    // 첫 로딩이거나 명시적으로 요청한 경우만 로딩 표시
+    if (showLoading) setIsLoading(true)
+    
     try {
       const params = new URLSearchParams({
         page: page.toString(),
@@ -129,7 +130,7 @@ export default function DashboardPage() {
         variant: "destructive"
       })
     } finally {
-      setIsLoading(false)
+      if (showLoading) setIsLoading(false)
     }
   }
 
@@ -183,35 +184,18 @@ export default function DashboardPage() {
     }
   }
 
-  // 검색 및 필터 적용
+  // 검색 및 필터 적용 (초기 로딩만 스피너 표시)
   useEffect(() => {
     if (user) {
-      loadUrls(1)
+      // 첫 로딩시에만 로딩 스피너 표시
+      const isFirstLoad = urls.length === 0
+      loadUrls(1, isFirstLoad)
     }
   }, [user, searchTerm, selectedTag, showFavorites])
 
-  // 실시간 클릭 수 업데이트 (30초마다)
-  useEffect(() => {
-    if (!user) return
+  // 자동 새로고침 제거 (무한 루프 방지)
 
-    const interval = setInterval(() => {
-      loadUrls(currentPage)
-    }, 30000) // 30초마다 업데이트
-
-    return () => clearInterval(interval)
-  }, [user, currentPage])
-
-  // 페이지 포커스 시 데이터 새로고침
-  useEffect(() => {
-    const handleFocus = () => {
-      if (user) {
-        loadUrls(currentPage)
-      }
-    }
-
-    window.addEventListener('focus', handleFocus)
-    return () => window.removeEventListener('focus', handleFocus)
-  }, [user, currentPage])
+  // 페이지 포커스 새로고침 제거 (무한 루프 방지)
 
   // 기본 통계 데이터 계산
   const calculateBasicStats = () => {
@@ -318,26 +302,21 @@ export default function DashboardPage() {
     }
   }
 
-  // 탭 변경 시 데이터 로드
+  // 탭 변경 시 데이터 로드 (최적화된 버전)
   useEffect(() => {
-    if (user && activeTab === 'geo' && !geoData) {
+    if (!user) return
+    
+    if (activeTab === 'geo' && (!geoData || geoData.countries.length === 0)) {
       loadGeoData()
     }
-    if (user && activeTab === 'analytics' && !deviceData) {
+    if (activeTab === 'analytics' && deviceData.desktop === 0 && deviceData.mobile === 0 && deviceData.tablet === 0) {
       loadDeviceData()
     }
-  }, [user, activeTab, geoData, deviceData])
+  }, [user, activeTab]) // 의존성 배열에서 data 제거
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return null
+  // 페이지 레벨 로딩 스피너 제거 - 즉시 표시
+  if (!user && !authLoading) {
+    return null // 사용자가 없고 로딩도 끝났으면 리다이렉트됨
   }
 
   return (
